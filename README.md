@@ -1,4 +1,4 @@
-# jbl-bandbox
+# bandbox-stagehand
 
 <p align="center"><img src="Stagehand/Art/logo.png" alt="Bandbox Stagehand" width="420"></p>
 
