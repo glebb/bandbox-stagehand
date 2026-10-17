@@ -51,19 +51,20 @@ because every ad-hoc signed build counts as a new app.
 ### iPhone
 
 The same controller runs on the iPhone (landscape, screen kept on while it's open, a haptic
-tick on every press). It talks to the speaker directly; no Mac needed. With an iPhone
-connected by cable (Developer Mode on), build and install it with:
+tick on every press). It talks to the speaker directly; no Mac needed.
+
+Signing needs your Apple team ID (a free personal team works) and a bundle ID of your own.
+Copy `Stagehand/signing.env.example` to `Stagehand/signing.env` and fill in both; the file
+stays out of git. Then, with the iPhone connected by cable (Developer Mode on):
 
 ```bash
 cd Stagehand && ./ios-build.sh --install
 ```
 
-It's signed with a free personal team, so iOS stops opening it after 7 days: run the
-command again to reinstall. The first install needs Settings › General › VPN & Device
-Management › trust the developer profile.
-
-To sign with your own team, run it as `BANDBOX_TEAM=<your team id> ./ios-build.sh --install`
-and change `PRODUCT_BUNDLE_IDENTIFIER` in `project.yml` to an ID of your own.
+With a free team, iOS stops opening the app after 7 days: run the command again to
+reinstall. The first install needs Settings › General › VPN & Device Management › trust
+the developer profile. Without `signing.env`, `./ios-build.sh` only checks that the app
+compiles.
 
 #### Reinstalling automatically
 
@@ -144,3 +145,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 captures. Raw `.pklg` captures are kept out of git because they hold all of the phone's
 Bluetooth traffic. Nearby devices and the speaker's serial number are removed from the
 logs that are in git; check new ones for the same before committing them.
+
+## License
+
+MIT, see [LICENSE](LICENSE). The Yellowtail font in `Stagehand/Fonts/` is Apache 2.0.

@@ -33,9 +33,8 @@ targets:
         NSBluetoothAlwaysUsageDescription: Stagehand connects to your JBL BandBox Trio over Bluetooth to change tones, pedals, volumes, STEM AI and the tuner.
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: local.bandbox-stagehand
+        PRODUCT_BUNDLE_IDENTIFIER: local.bandbox-stagehand   # ios-build.sh sets yours from signing.env
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: ABCDE12345   # personal team; override with BANDBOX_TEAM
+        CODE_SIGN_STYLE: Automatic   # team from signing.env, passed by ios-build.sh
