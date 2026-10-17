@@ -15,8 +15,12 @@ with big buttons, meant to be used while holding a guitar. Swipe between them (t
 trackpad or drag), tap the dots, or use ← / →.
 
 1. **Tones and pedals**: four tone buttons (Clean, Crunch, Heavy, Lead; keys 1–4).
-   Hold one, or right-click it, to pick which of the speaker's tones it selects.
-   Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current tone.
+   Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
+   selects, or to save the pedals into that tone on the speaker (only while it's
+   playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
+   tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
+   names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
+   when the tone changes, unless saved.
 2. **Tuner and mix**: the tuner (string, cents and frequency), the volume of the selected
    channel (1–4, channel 3 by default) and master volume.
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
@@ -73,6 +77,30 @@ run is logged in `~/Library/Logs/Stagehand-install.log`.
 `./auto-install.sh --now` reinstalls right away, and `./auto-install.sh --disable` removes
 the launch agent.
 
+#### Alternative: AltStore
+
+[AltStore Classic](https://altstore.io) re-signs the app over Wi-Fi before the 7 days run
+out, as long as the iPhone and the Mac running AltServer are on the same network at least
+once a week. It's still a free 7-day signature, renewed for you.
+
+1. Install AltServer on the Mac and AltStore on the iPhone, following
+   [AltStore's guide](https://faq.altstore.io/altstore-classic/how-to-install-altstore-macos)
+   (Finder's "Show this iPhone when on Wi-Fi" must be on). It asks for an Apple ID; a
+   separate one just for this is a good idea.
+2. Delete any copy installed with `--install`: AltStore signs its own copy under a
+   slightly different bundle ID.
+3. Build the app as an `.ipa`, which AltStore signs itself:
+
+   ```bash
+   cd Stagehand && ./ios-build.sh --ipa
+   ```
+
+4. Get `build/Stagehand.ipa` onto the iPhone (AirDrop it and save to Files), then in
+   AltStore › My Apps tap **+** and pick it.
+
+Build and add a new `.ipa` only when the app changes. With free signing, AltStore itself
+takes one of the three sideloaded-app slots.
+
 ### Code and artwork
 
 The code is shared: `Sources/Shared` holds the protocol, client and screens, and
@@ -99,7 +127,8 @@ write to `…0002`, notifications on `…0001`, messages framed as
 |---|---|
 | `ble-scan.swift`, `build-blescan.sh` | Scanner/listener/sender (`BLEScan.app`): finds the speaker, dumps GATT, logs notifications, sends timed writes |
 | `guided-session.sh` | Runs the listener and speaks prompts aloud, so each button press lines up with its message |
-| `capture-speaker-controls.sh`, `capture-app-controls.sh` | The two guided sessions behind the latest notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |
+| `capture-speaker-controls.sh`, `capture-app-controls.sh` | Guided sessions behind the notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |
+| `capture-app-features.sh` | Prompts for one JBL app feature area per run (save, pedals, pickup, stem, pitch, drums, looper, eq), for the features not mapped yet |
 | `decode-pklg.py` | Decodes an iPhone PacketLogger `.pklg` capture into protocol messages |
 | `decode-log.py` | Decodes a `BLEScan.app` log the same way |
 | `discover-speaker.sh` | Early Wi-Fi/mDNS scan (the BandBox turned out to be Bluetooth-only) |
