@@ -1,10 +1,13 @@
 import SwiftUI
 
 /// The three controller screens, side by side. Swipe (touch, trackpad or drag), tap the dots,
-/// or use ← / → to change screen; 1–4 select the tone buttons.
+/// or use ← / → to change screen; 1–4 select the tone buttons and 5–9 switch the pedals.
 struct ContentView: View {
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
+    #if os(macOS)
+    @EnvironmentObject private var hotKeys: GlobalHotKeys
+    #endif
     @State private var page = 0
     @State private var channel = 3
     @State private var showLog = false
@@ -68,6 +71,16 @@ struct ContentView: View {
                 if let battery = client.battery {
                     Text("\(battery)%").monospacedDigit()
                 }
+                #if os(macOS)
+                // While on, 1–9 work from any app (and stop typing digits elsewhere).
+                Button { hotKeys.enabled.toggle() } label: {
+                    Text(hotKeys.enabled ? "Keys 1–9: everywhere" : "Keys 1–9: in app")
+                        .foregroundStyle(hotKeys.enabled ? Stage.amber : Stage.faintText)
+                }
+                .buttonStyle(.plain)
+                .padding(.leading, 10)
+                .help("When on, 1–4 select tones and 5–9 switch pedals while other apps are in front.")
+                #endif
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)
                     .padding(.leading, 10)
@@ -87,6 +100,10 @@ struct ContentView: View {
             ForEach(ToneSlot.all) { slot in
                 Button("") { if connected { client.setPreset(assignments.tones[slot.id]) } }
                     .keyboardShortcut(KeyEquivalent(Character("\(slot.id + 1)")), modifiers: [])
+            }
+            ForEach(Array(Pedal.allCases.enumerated()), id: \.element) { i, pedal in
+                Button("") { if let on = client.isOn(pedal) { client.setPedal(pedal, on: !on) } }
+                    .keyboardShortcut(KeyEquivalent(Character("\(ToneSlot.all.count + i + 1)")), modifiers: [])
             }
         }
         .opacity(0)

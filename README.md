@@ -14,7 +14,7 @@ Not affiliated with or endorsed by JBL or Harman. JBL and BandBox are their trad
 with big buttons, meant to be used while holding a guitar. Swipe between them (touch,
 trackpad or drag), tap the dots, or use ← / →.
 
-1. **Tones and pedals**: four tone buttons (Clean, Crunch, Heavy, Lead; keys 1–4).
+1. **Tones and pedals**: four tone buttons (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac).
    Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
    selects, or to save the pedals into that tone on the speaker (only while it's
    playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
@@ -32,6 +32,12 @@ A white splash screen with the logo shows while the app connects to the speaker
 
 Volumes step one knob click (1/32) at a time and show as 0–100%. The display stays
 awake while the app is open. The traffic log is behind the Log button.
+
+On the Mac, 1–4 select the tone buttons and 5–9 switch Comp, Dist, FX, Delay and Reverb.
+The **Keys 1–9** switch in the footer makes them work from any app, so you can keep
+another app in front and play with one free finger. While it's on (amber), those keys
+don't type digits anywhere else; turn it off to type normally. It stays as you left it.
+No permission is needed.
 
 Build and run (no Xcode project needed):
 

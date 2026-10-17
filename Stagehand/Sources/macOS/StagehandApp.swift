@@ -6,13 +6,16 @@ struct StagehandApp: App {
     @StateObject private var client = BandBoxClient()
     @StateObject private var assignments = ToneAssignments()
     private let keepAwake = KeepAwake()
+    @StateObject private var hotKeys = GlobalHotKeys()
 
     var body: some Scene {
         WindowGroup("Bandbox Stagehand") {
             RootView()
                 .environmentObject(client)
                 .environmentObject(assignments)
+                .environmentObject(hotKeys)
                 .preferredColorScheme(.dark)
+                .onAppear { hotKeys.start(client: client, assignments: assignments) }
         }
         .windowResizability(.contentMinSize)
     }
