@@ -1,0 +1,182 @@
+13:41:58.998  phone->spk  SET    karaoke=01
+13:41:59.025  spk->phone  SET-reply  
+13:41:59.040  spk->phone  EVENT  stem?3082=02 00
+13:41:59.043  phone->spk  ACK    02 00 00 00
+13:41:59.085  spk->phone  EVENT  STEM_AI=01  karaoke=01  stem?3081=01 02  stem?3081=02 00
+13:41:59.089  phone->spk  ACK    02 00 00 00
+13:42:03.020  phone->spk  SET    karaoke=00
+13:42:03.045  spk->phone  SET-reply  
+13:42:03.060  spk->phone  EVENT  stem?3082=02 20
+13:42:03.062  phone->spk  ACK    02 00 00 00
+13:42:03.105  spk->phone  EVENT  STEM_AI=01  karaoke=00  stem?3081=01 01  stem?3081=02 02
+13:42:03.110  phone->spk  ACK    02 00 00 00
+13:42:33.154  phone->spk  GET    pitch_shift
+13:42:33.196  spk->phone  GET-reply  pitch_shift=00
+13:42:35.046  phone->spk  SET    pitch_shift=ff
+13:42:35.086  spk->phone  SET-reply  
+13:42:35.086  spk->phone  EVENT  pitch_shift=ff  pitch_active=01
+13:42:35.091  phone->spk  ACK    02 00 00 00
+13:42:35.131  phone->spk  GET    pitch_shift
+13:42:35.175  spk->phone  GET-reply  pitch_shift=ff
+13:42:36.811  phone->spk  SET    pitch_shift=fe
+13:42:36.842  spk->phone  SET-reply  
+13:42:36.842  spk->phone  EVENT  pitch_shift=fe  pitch_active=01
+13:42:36.846  phone->spk  ACK    02 00 00 00
+13:42:36.871  phone->spk  GET    pitch_shift
+13:42:36.917  spk->phone  GET-reply  pitch_shift=fe
+13:42:38.342  phone->spk  SET    pitch_shift=fd
+13:42:38.386  spk->phone  SET-reply  
+13:42:38.386  spk->phone  EVENT  pitch_shift=fd  pitch_active=01
+13:42:38.391  phone->spk  ACK    02 00 00 00
+13:42:38.432  phone->spk  GET    pitch_shift
+13:42:38.477  spk->phone  GET-reply  pitch_shift=fd
+13:42:40.923  phone->spk  SET    pitch_shift=fe
+13:42:40.966  spk->phone  SET-reply  
+13:42:40.966  spk->phone  EVENT  pitch_shift=fe  pitch_active=01
+13:42:40.973  phone->spk  ACK    02 00 00 00
+13:42:40.997  phone->spk  GET    pitch_shift
+13:42:41.040  spk->phone  GET-reply  pitch_shift=fe
+13:42:41.340  phone->spk  SET    pitch_shift=ff
+13:42:41.386  spk->phone  SET-reply  
+13:42:41.386  spk->phone  EVENT  pitch_shift=ff  pitch_active=01
+13:42:41.392  phone->spk  ACK    02 00 00 00
+13:42:41.417  phone->spk  GET    pitch_shift
+13:42:41.475  spk->phone  GET-reply  pitch_shift=ff
+13:42:41.906  phone->spk  SET    pitch_shift=00
+13:42:41.941  spk->phone  SET-reply  
+13:42:41.945  phone->spk  GET    pitch_shift
+13:42:41.955  spk->phone  EVENT  pitch_shift=00  pitch_active=00
+13:42:41.972  phone->spk  ACK    02 00 00 00
+13:42:41.985  spk->phone  GET-reply  pitch_shift=00
+13:42:43.504  phone->spk  SET    pitch_shift=01
+13:42:43.531  spk->phone  SET-reply  
+13:42:43.534  phone->spk  GET    pitch_shift
+13:42:43.545  spk->phone  EVENT  pitch_shift=01  pitch_active=01
+13:42:43.561  phone->spk  ACK    02 00 00 00
+13:42:43.575  spk->phone  GET-reply  pitch_shift=01
+13:42:45.100  phone->spk  SET    pitch_shift=02
+13:42:45.121  spk->phone  SET-reply  
+13:42:45.124  phone->spk  GET    pitch_shift
+13:42:45.135  spk->phone  EVENT  pitch_shift=02  pitch_active=01
+13:42:45.152  phone->spk  ACK    02 00 00 00
+13:42:45.165  spk->phone  GET-reply  pitch_shift=02
+13:42:46.748  phone->spk  SET    pitch_shift=03
+13:42:46.771  spk->phone  SET-reply  
+13:42:46.771  spk->phone  EVENT  pitch_shift=03  pitch_active=01
+13:42:46.775  phone->spk  ACK    02 00 00 00
+13:42:46.803  phone->spk  GET    pitch_shift
+13:42:46.846  spk->phone  GET-reply  pitch_shift=03
+13:42:48.613  phone->spk  SET    pitch_shift=02
+13:42:48.660  spk->phone  SET-reply  
+13:42:48.660  spk->phone  EVENT  pitch_shift=02  pitch_active=01
+13:42:48.665  phone->spk  ACK    02 00 00 00
+13:42:48.691  phone->spk  GET    pitch_shift
+13:42:48.720  spk->phone  GET-reply  pitch_shift=02
+13:42:48.929  phone->spk  SET    pitch_shift=01
+13:42:48.975  spk->phone  SET-reply  
+13:42:48.975  spk->phone  EVENT  pitch_shift=01  pitch_active=01
+13:42:48.981  phone->spk  ACK    02 00 00 00
+13:42:49.008  phone->spk  GET    pitch_shift
+13:42:49.052  spk->phone  GET-reply  pitch_shift=01
+13:42:49.414  phone->spk  SET    pitch_shift=00
+13:42:49.441  spk->phone  SET-reply  
+13:42:49.444  phone->spk  GET    pitch_shift
+13:42:49.455  spk->phone  EVENT  pitch_shift=00  pitch_active=00
+13:42:49.473  phone->spk  ACK    02 00 00 00
+13:42:49.486  spk->phone  GET-reply  pitch_shift=00
+13:43:25.484  spk->phone  EVENT  battery%=44
+13:43:25.489  phone->spk  ACK    02 00 00 00
+13:43:25.500  spk->phone  EVENT  battery%=44
+13:43:25.517  phone->spk  ACK    02 00 00 00
+13:43:30.555  spk->phone  EVENT  keepalive=-
+13:43:30.559  phone->spk  ACK    02 00 00 00
+13:43:31.786  spk->phone  EVENT  battery%=44
+13:43:31.789  phone->spk  ACK    02 00 00 00
+13:43:31.801  spk->phone  EVENT  battery%=44
+13:43:31.817  phone->spk  ACK    02 00 00 00
+13:43:36.855  spk->phone  EVENT  keepalive=-
+13:43:36.859  phone->spk  ACK    02 00 00 00
+13:45:02.047  phone->spk  SET    effect_block=03 0f 02 02 04 00 ff 00
+13:45:02.073  spk->phone  SET-reply  
+13:45:02.086  spk->phone  EVENT  effect_block=03 0f 00 02 04 00 ff 03 00 00 00 30 42 01 00 00 4c 42 02 00 00 c8 42
+13:45:02.109  phone->spk  ACK    02 00 00 00
+13:45:05.545  phone->spk  SET    effect_block=03 0f 02 02 03 00 ff 00
+13:45:05.567  spk->phone  SET-reply  
+13:45:05.582  spk->phone  EVENT  effect_block=03 0f 00 02 03 00 ff 04 01 00 00 f0 41 03 00 00 20 42 00 00 00 c8 42 02 00 00 e0 40
+13:45:05.605  phone->spk  ACK    02 00 00 00
+13:45:09.327  phone->spk  SET    effect_block=03 0f 02 02 02 00 ff 00
+13:45:09.377  spk->phone  SET-reply  
+13:45:09.392  spk->phone  EVENT  effect_block=03 0f 00 02 02 00 ff 04 01 00 00 90 41 02 00 00 f8 41 04 00 00 50 42 00 00 00 9e 42
+13:45:09.418  phone->spk  ACK    02 00 00 00
+13:45:24.541  spk->phone  EVENT  keepalive=-
+13:45:24.546  phone->spk  ACK    02 00 00 00
+13:45:27.818  phone->spk  SET    effect_block=03 0f 02 05 0f 00 ff 00
+13:45:27.843  spk->phone  SET-reply  
+13:45:27.859  spk->phone  EVENT  effect_block=03 0f 00 05 0f 00 ff 03 00 00 00 10 42 01 00 00 c8 42 02 00 00 0c 42
+13:45:27.877  phone->spk  ACK    02 00 00 00
+13:45:30.582  phone->spk  SET    effect_block=03 0f 02 05 11 00 ff 00
+13:45:30.616  spk->phone  SET-reply  
+13:45:30.616  spk->phone  EVENT  effect_block=03 0f 00 05 11 00 ff 03 00 00 00 c0 41 01 00 00 1c 42 02 00 00 74 42
+13:45:30.656  phone->spk  ACK    02 00 00 00
+13:45:31.695  spk->phone  EVENT  battery%=44
+13:45:31.704  phone->spk  ACK    02 00 00 00
+13:45:31.711  spk->phone  EVENT  battery%=43
+13:45:31.741  phone->spk  ACK    02 00 00 00
+13:45:33.315  phone->spk  SET    effect_block=03 0f 02 05 12 00 ff 00
+13:45:33.362  spk->phone  SET-reply  
+13:45:33.362  spk->phone  EVENT  effect_block=03 0f 00 05 12 00 ff 03 00 00 00 96 42 01 00 00 90 41 02 00 00 1c 42
+13:45:33.402  phone->spk  ACK    02 00 00 00
+13:45:36.027  phone->spk  SET    effect_block=03 0f 02 05 13 00 ff 00
+13:45:36.077  spk->phone  SET-reply  
+13:45:36.092  spk->phone  EVENT  effect_block=03 0f 00 05 13 00 ff 04 01 00 00 00 00 02 00 00 38 42 03 00 00 c8 42 04 00 00 00 42
+13:45:36.123  phone->spk  ACK    02 00 00 00
+13:45:39.225  phone->spk  SET    effect_block=03 0f 02 05 0b 00 ff 00
+13:45:39.272  spk->phone  SET-reply  
+13:45:39.272  spk->phone  EVENT  effect_block=03 0f 00 05 0b 00 ff 03 00 00 00 34 42 01 00 00 80 41 04 00 00 10 42
+13:45:39.314  phone->spk  ACK    02 00 00 00
+13:45:42.105  phone->spk  SET    effect_block=03 0f 02 05 0c 00 ff 00
+13:45:42.152  spk->phone  SET-reply  
+13:45:42.152  spk->phone  EVENT  effect_block=03 0f 00 05 0c 00 ff 02 00 00 00 28 42 01 00 00 f8 41
+13:45:42.189  phone->spk  ACK    02 00 00 00
+13:45:45.019  phone->spk  SET    effect_block=03 0f 02 05 0d 00 ff 00
+13:45:45.063  spk->phone  SET-reply  
+13:45:45.063  spk->phone  EVENT  effect_block=03 0f 00 05 0d 00 ff 04 00 00 00 04 42 01 00 00 54 42 02 00 00 88 42 03 00 00 84 42
+13:45:45.100  phone->spk  ACK    02 00 00 00
+13:45:47.668  phone->spk  SET    effect_block=03 0f 02 05 09 00 ff 00
+13:45:47.717  spk->phone  SET-reply  
+13:45:47.717  spk->phone  EVENT  effect_block=03 0f 00 05 09 00 ff 02 00 00 00 b8 42 01 00 00 10 42
+13:45:47.748  phone->spk  ACK    02 00 00 00
+13:45:50.636  phone->spk  SET    effect_block=03 0f 02 05 0e 00 ff 00
+13:45:50.657  spk->phone  SET-reply  
+13:45:50.672  spk->phone  EVENT  effect_block=03 0f 00 05 0e 00 ff 01 00 00 00 a8 41
+13:45:50.690  phone->spk  ACK    02 00 00 00
+13:46:03.815  phone->spk  SET    effect_block=03 0f 02 06 15 00 ff 00
+13:46:03.856  spk->phone  SET-reply  
+13:46:03.857  spk->phone  EVENT  effect_block=03 0f 00 06 15 00 ff 03 01 00 00 db 43 02 00 00 00 42 00 00 00 1c 42
+13:46:03.893  phone->spk  ACK    02 00 00 00
+13:46:06.778  phone->spk  SET    effect_block=03 0f 02 06 16 00 ff 00
+13:46:06.827  spk->phone  SET-reply  
+13:46:06.827  spk->phone  EVENT  effect_block=03 0f 00 06 16 00 ff 03 01 00 00 7f 43 02 00 00 a6 42 00 00 00 c0 42
+13:46:06.865  phone->spk  ACK    02 00 00 00
+13:46:09.375  phone->spk  SET    effect_block=03 0f 02 06 17 00 ff 00
+13:46:09.423  spk->phone  SET-reply  
+13:46:09.423  spk->phone  EVENT  effect_block=03 0f 00 06 17 00 ff 05 01 00 00 4d 44 02 00 00 54 42 03 00 00 2c 42 04 00 00 80 42 00 00 00 c2 42
+13:46:09.464  phone->spk  ACK    02 00 00 00
+13:46:12.171  phone->spk  SET    effect_block=03 0f 02 06 18 00 ff 00
+13:46:12.212  spk->phone  SET-reply  
+13:46:12.212  spk->phone  EVENT  effect_block=03 0f 00 06 18 00 ff 03 01 00 00 8c 43 02 00 00 6c 42 00 00 00 1c 42
+13:46:12.246  phone->spk  ACK    02 00 00 00
+13:46:15.439  phone->spk  SET    effect_block=03 0f 02 06 14 00 ff 00
+13:46:15.483  spk->phone  SET-reply  
+13:46:15.497  spk->phone  EVENT  effect_block=03 0f 00 06 14 00 ff 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42
+13:46:15.522  phone->spk  ACK    02 00 00 00
+13:46:40.744  spk->phone  EVENT  keepalive=-
+13:46:40.748  phone->spk  ACK    02 00 00 00
+13:50:17.132  phone->spk  SET    tone_action=03 04 0f ff ff 00
+13:50:17.168  spk->phone  SET-reply  
+13:50:17.181  spk->phone  EVENT  tone_action=03 04 0f 0f ff 00
+13:50:17.184  phone->spk  ACK    02 00 00 00
+13:50:17.212  phone->spk  SET    tone_details_query=0f
+13:50:17.243  spk->phone  SET-reply  
+13:50:17.272  spk->phone  EVENT  tone_details=0f 03 0b 42 72 69 74 20 43 72 75 6e 63 68 08 00 00 00 01 01 00 00 00 f0 41 01 01 00 01 04 00 00 00 70 41 04 00 00 10 42 01 cd cc 22 42 02 00 00 00 42 02 02 00 01 04 01 00 00 90 41 02 00 00 f8 41 04 00 00 50 42 00 00 00 9e 42 03 06 03 00 05 00 00 00 54 42 01 00 00 44 42 02 00 00 34 42 03 00 00 1c 42 04 00 00 58 42 04 08 03 00 00 05 0e 00 01 01 00 00 00 a8 41 06 14 00 01 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42 07 1b 00 01 03 00 00 00 c0 41 02 00 00 c0 41 04 00 00 60 41
+13:50:17.277  phone->spk  ACK    02 00 00 00

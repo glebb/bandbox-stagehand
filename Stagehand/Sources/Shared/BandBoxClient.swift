@@ -115,6 +115,28 @@ final class BandBoxClient: NSObject, ObservableObject {
              "\(pedal.name) \(on ? "on" : "off")")
     }
 
+    /// Saves the current tone's pedal and model edits into the tone on the speaker, as the JBL app does.
+    /// Without it, the edits are lost when the speaker changes tone.
+    func saveTone() {
+        guard let preset else { return }
+        let name = tones.first { $0.id == preset }?.name ?? "#\(preset)"
+        send(BandBoxProtocol.set(Property.toneAction, [0x03, 0x04, UInt8(preset), 0xFF, 0xFF, 0x00]), "save tone \(name)")
+        send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(preset)]))
+    }
+
+    func model(_ pedal: Pedal) -> UInt16? {
+        toneDetails?.blocks.first { $0.slot == pedal.rawValue }?.model
+    }
+
+    /// Swaps the pedal's model in the current tone; the speaker answers with the new block
+    /// and its default parameters, keeping the on/off state.
+    func setModel(_ pedal: Pedal, _ model: PedalModel) {
+        guard let details = toneDetails, details.id == preset else { return }
+        send(BandBoxProtocol.set(Property.effectBlock,
+                                 [0x03, UInt8(details.id), 0x02, UInt8(pedal.rawValue)] + BandBoxProtocol.le16(model.id) + [0xFF, 0x00]),
+             "\(pedal.name) model \(model.name)")
+    }
+
     var masterVolume: Int? { levels[0] }
 
     static let streamChannel = 4
@@ -229,10 +251,16 @@ final class BandBoxClient: NSObject, ObservableObject {
                 return
             }
         case Property.effectBlock where r.value.count >= 7:
-            // 03 NN 01 slot ff ff bypass 00: the speaker confirming a block change
+            // 03 NN 01 slot ff ff bypass 00: the speaker confirming a bypass change;
+            // 03 NN 00 slot model ff k params…: a new model with its default parameters.
             if var details = toneDetails, details.id == Int(r.value[1]),
                let i = details.blocks.firstIndex(where: { $0.slot == Int(r.value[3]) }) {
-                details.blocks[i].bypassed = r.value[6] != 0
+                if r.value[2] == 0x00, var block = BandBoxProtocol.effectBlock(r.value, at: 3) {
+                    block.bypassed = r.value[6] == 0xFF ? details.blocks[i].bypassed : r.value[6] != 0
+                    details.blocks[i] = block
+                } else {
+                    details.blocks[i].bypassed = r.value[6] != 0
+                }
                 toneDetails = details
             }
         case Property.channelInfo where r.value.count >= 3:

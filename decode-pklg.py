@@ -15,7 +15,6 @@ from datetime import datetime, timezone
 PROPS = {
     0x0001: "hello",
     0x000D: "battery%",
-    0x3080: "stem?3080",
     0x3081: "stem?3081",
     0x3082: "stem?3082",
     0x3085: "STEM_AI",
@@ -33,6 +32,13 @@ PROPS = {
     0x3401: "chan_info",
     0x3405: "level_query",
     0x3804: "ui_mode?",
+    0x3080: "karaoke",
+    0x30C0: "pitch_active",
+    0x30C1: "pitch_shift",
+    0x3443: "tone_details_query",
+    0x3444: "tone_details",
+    0x3445: "effect_block",
+    0x3446: "tone_action",
 }
 
 ATT_OPS = {

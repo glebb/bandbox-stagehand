@@ -28,6 +28,9 @@ enum Property {
     static let stemTypeQuery: UInt16 = 0x3083     // SET ch: speaker answers with a stemType event
     static let stemLevelQuery: UInt16 = 0x3084    // SET ch: speaker answers with a stemLevel event
     static let stemAI: UInt16 = 0x3085
+    static let karaoke: UInt16 = 0x3080           // 00/01: STEM AI karaoke mode (vocals and others only)
+    static let pitchShiftActive: UInt16 = 0x30C0  // 01 while the pitch shift isn't 0 (event only)
+    static let pitchShift: UInt16 = 0x30C1        // signed semitones, ff = -1
     static let tuner: UInt16 = 0x3100
     static let tunerReference: UInt16 = 0x3103
     static let tunerFeed: UInt16 = 0x3106
@@ -40,7 +43,8 @@ enum Property {
     static let preset: UInt16 = 0x3442            // value 03 NN, NN = tone id from the library
     static let toneDetailsQuery: UInt16 = 0x3443  // SET NN: speaker answers with a toneDetails event
     static let toneDetails: UInt16 = 0x3444       // tone NN's name and effect blocks
-    static let effectBlock: UInt16 = 0x3445       // SET 03 NN 01 + block: replace one effect block of tone NN
+    static let effectBlock: UInt16 = 0x3445       // SET 03 NN op …: 01 + block replaces a block, 02 slot model ff 00 swaps its model
+    static let toneAction: UInt16 = 0x3446        // 03 op NN target ff 00: op 04 saves tone NN's edits (target ff = itself), 08 discards them?
     static let presetCategories: UInt16 = 0x344A  // GET: category names
     static let uiMode: UInt16 = 0x3804
 }
@@ -85,6 +89,30 @@ enum Pedal: Int, CaseIterable, Identifiable {
         case .reverb: "Reverb"
         }
     }
+
+    /// The models the JBL app offers for this pedal, in its order (model IDs from 0x3444 / 0x3445).
+    /// Compressor and reverb have one each; the distortion slot holds the wahs and the drive.
+    var models: [PedalModel] {
+        switch self {
+        case .compressor: [PedalModel(id: 0x01, name: "Compressor")]
+        case .distortion: [PedalModel(id: 0x02, name: "Auto-Wah"), PedalModel(id: 0x03, name: "Touch-Wah"),
+                           PedalModel(id: 0x04, name: "Precision Drive")]
+        case .fx: [PedalModel(id: 0x0E, name: "Echo Phase"), PedalModel(id: 0x0F, name: "Green Phaser"),
+                   PedalModel(id: 0x11, name: "Notch Phaser"), PedalModel(id: 0x12, name: "Minivibe"),
+                   PedalModel(id: 0x13, name: "Tremolo"), PedalModel(id: 0x0B, name: "Chorus"),
+                   PedalModel(id: 0x0C, name: "Retro Shiver"), PedalModel(id: 0x0D, name: "Jetter Flanger"),
+                   PedalModel(id: 0x09, name: "Grand Vibrato")]
+        case .delay: [PedalModel(id: 0x14, name: "Pure Echo"), PedalModel(id: 0x15, name: "Analog Echo"),
+                      PedalModel(id: 0x16, name: "Echopress 900"), PedalModel(id: 0x17, name: "Sweep Echo"),
+                      PedalModel(id: 0x18, name: "Sweet Echo")]
+        case .reverb: [PedalModel(id: 0x1B, name: "Reverb")]
+        }
+    }
+}
+
+struct PedalModel: Identifiable, Hashable {
+    let id: UInt16
+    let name: String
 }
 
 enum StemType: UInt8, CaseIterable, Identifiable {
@@ -188,6 +216,15 @@ enum BandBoxProtocol {
         return out
     }
 
+    /// One effect block starting at `i`; nil if it runs past the end.
+    static func effectBlock(_ v: [UInt8], at i: Int) -> EffectBlock? {
+        guard i + 5 <= v.count else { return nil }
+        let end = i + 5 + Int(v[i + 4]) * 5
+        guard end <= v.count else { return nil }
+        return EffectBlock(slot: Int(v[i]), model: UInt16(v[i + 1]) | UInt16(v[i + 2]) << 8,
+                           bypassed: v[i + 3] != 0, paramCount: v[i + 4], params: Array(v[i + 5 ..< end]))
+    }
+
     /// 0x3444: `NN cat len name… cnt` then `cnt` effect blocks.
     static func toneDetails(_ v: [UInt8]) -> ToneDetails? {
         guard v.count >= 4, 3 + Int(v[2]) < v.count else { return nil }
@@ -195,13 +232,9 @@ enum BandBoxProtocol {
         var blocks: [EffectBlock] = []
         var i = nameEnd + 1
         for _ in 0 ..< Int(v[nameEnd]) {
-            guard i + 5 <= v.count else { break }
-            let k = v[i + 4]
-            let end = i + 5 + Int(k) * 5
-            guard end <= v.count else { break }
-            blocks.append(EffectBlock(slot: Int(v[i]), model: UInt16(v[i + 1]) | UInt16(v[i + 2]) << 8,
-                                      bypassed: v[i + 3] != 0, paramCount: k, params: Array(v[i + 5 ..< end])))
-            i = end
+            guard let block = effectBlock(v, at: i) else { break }
+            blocks.append(block)
+            i += block.bytes.count
         }
         return ToneDetails(id: Int(v[0]), name: String(decoding: v[3 ..< nameEnd], as: UTF8.self), blocks: blocks)
     }

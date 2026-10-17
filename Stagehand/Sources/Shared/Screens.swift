@@ -7,23 +7,49 @@ struct TonesScreen: View {
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
     @State private var assigning: Int?
+    @State private var choosingModel: Pedal?
 
     var body: some View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
-                ForEach(Pedal.allCases) { pedal in
-                    let on = client.isOn(pedal)
-                    SwitchPad(on: on == true, action: { if let on { client.setPedal(pedal, on: !on) } }) {
-                        Text(pedal.name).font(.system(size: 13, weight: .medium))
-                    }
-                    .opacity(on == nil ? 0.4 : 1)
-                }
+                ForEach(Pedal.allCases) { pedalButton($0) }
             }
             .frame(height: 50)
 
             HStack(spacing: 10) {
                 ForEach(ToneSlot.all) { toneButton($0) }
             }
+        }
+    }
+
+    /// Tap switches the pedal on or off; long-press (or right-click) picks its model.
+    private func pedalButton(_ pedal: Pedal) -> some View {
+        let on = client.isOn(pedal)
+        let switchable = pedal.models.count > 1 && on != nil
+        return SwitchPad(on: on == true,
+                         longPress: switchable ? { choosingModel = pedal } : nil,
+                         action: { if let on { client.setPedal(pedal, on: !on) } }) {
+            Text(pedal.name).font(.system(size: 13, weight: .medium))
+        }
+        .opacity(on == nil ? 0.4 : 1)
+        #if os(macOS)
+        .contextMenu {
+            if switchable {
+                ForEach(pedal.models) { model in
+                    Button { client.setModel(pedal, model) } label: {
+                        if client.model(pedal) == model.id { Label(model.name, systemImage: "checkmark") } else { Text(model.name) }
+                    }
+                }
+            }
+        }
+        #endif
+        .popover(isPresented: Binding(get: { choosingModel == pedal },
+                                      set: { if !$0 { choosingModel = nil } })) {
+            ModelPicker(pedal: pedal, current: client.model(pedal)) {
+                client.setModel(pedal, $0)
+                choosingModel = nil
+            }
+            .presentationCompactAdaptation(.popover)
         }
     }
 
@@ -39,7 +65,7 @@ struct TonesScreen: View {
                 Text(slot.name)
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(selected ? slot.color : Stage.text)
-                Text(client.tones.first { $0.id == toneID }?.name ?? "Tone #\(toneID)")
+                Text(toneName(toneID))
                     .font(.system(size: 12))
                     .foregroundStyle(selected ? Stage.control : Stage.mutedText)
                     .lineLimit(1)
@@ -55,6 +81,9 @@ struct TonesScreen: View {
         #if os(macOS)
         // Right-click as well as hold; on the iPhone a long press already opens the picker.
         .contextMenu {
+            Button("Save Pedals to \(toneName(toneID))") { client.saveTone() }
+                .disabled(!selected || client.toneDetails?.id != toneID)
+            Divider()
             toneMenu { assignments.assign($0, to: slot.id) }
         }
         #endif
@@ -64,9 +93,44 @@ struct TonesScreen: View {
                 assignments.assign($0, to: slot.id)
                 client.setPreset($0)
                 assigning = nil
+            } header: {
+                saveRow(toneID)
             }
             .presentationCompactAdaptation(.popover)
         }
+    }
+
+    private func toneName(_ id: Int) -> String {
+        client.tones.first { $0.id == id }?.name ?? "Tone #\(id)"
+    }
+
+    /// Saves the pedals as they are now into the button's tone on the speaker.
+    /// Only for the playing tone: the pedal states are the speaker's, for that tone.
+    private func saveRow(_ toneID: Int) -> some View {
+        let ready = client.preset == toneID && client.toneDetails?.id == toneID
+        let on = Pedal.allCases.filter { client.isOn($0) == true }.map(\.name)
+        return Button {
+            client.saveTone()
+            assigning = nil
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Save pedals to \(toneName(toneID))")
+                    Text(ready ? (on.isEmpty ? "All pedals off" : on.joined(separator: ", "))
+                               : "Select this tone first")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+                Spacer()
+                Image(systemName: "square.and.arrow.down")
+            }
+            .padding(12)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!ready)
+        .opacity(ready ? 1 : 0.4)
     }
 
     @ViewBuilder
@@ -81,16 +145,52 @@ struct TonesScreen: View {
     }
 }
 
+/// The models a pedal can use in the current tone; picking one swaps it in.
+struct ModelPicker: View {
+    let pedal: Pedal
+    let current: UInt16?
+    let pick: (PedalModel) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("\(pedal.name) pedal").font(.headline).padding(12)
+            Divider()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(pedal.models) { model in
+                        Button { pick(model) } label: {
+                            HStack {
+                                Text(model.name)
+                                Spacer()
+                                if model.id == current { Image(systemName: "checkmark") }
+                            }
+                            .padding(.vertical, 5)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(12)
+            }
+        }
+        .frame(width: 220, height: min(CGFloat(pedal.models.count) * 30 + 70, 380))
+    }
+}
+
 /// Every tone in the speaker's library, grouped by category; picking one assigns it.
-struct TonePicker: View {
+/// `header` goes between the title and the list.
+struct TonePicker<Header: View>: View {
     @EnvironmentObject private var client: BandBoxClient
     let title: String
     let current: Int
     let pick: (Int) -> Void
+    @ViewBuilder var header: () -> Header
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(title).font(.headline).padding(12)
+            Divider()
+            header()
             Divider()
             ScrollView {
                 VStack(alignment: .leading, spacing: 2) {
@@ -117,7 +217,7 @@ struct TonePicker: View {
                 .padding(.bottom, 12)
             }
         }
-        .frame(width: 260, height: 380)
+        .frame(width: 260, height: 440)
     }
 }
 

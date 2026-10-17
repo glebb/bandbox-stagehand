@@ -78,12 +78,14 @@ enum Haptics {
 /// A pedal-style switch: quiet when off; amber label, warm tint and a short glowing line when on.
 struct SwitchPad<Label: View>: View {
     let on: Bool
+    var longPress: (() -> Void)?
     var action: () -> Void
     @ViewBuilder var label: () -> Label
 
     var body: some View {
         Pad(fill: on ? Stage.amberTint : Stage.tile,
             border: on ? Stage.amberBorder : Stage.tileBorder,
+            longPress: longPress,
             action: action) {
             label().foregroundStyle(on ? Stage.amber : Stage.mutedText)
         }

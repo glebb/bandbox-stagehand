@@ -65,8 +65,8 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3442 | 2 | `03 NN` | **Current tone**: NN = tone ID from the 0x3440 library (not a 1–3 slot; the speaker's preset buttons step through the library). SET selects a tone. GET returns nothing; use 0x3441. The leading `03` is always 03 (input channel?) | listen + app capture 2 + Mac test |
 | 0x3443 | 1 | `NN` | **Query tone details**: SET 0x3443 = NN → EVENT 0x3444. The app sends it after every tone change | app capture 2 |
 | 0x3444 | ~160 | `NN cat len name… cnt blocks…` | **Tone details**: ID, category, name length, name, then `cnt` (8) **effect blocks**, each `slot u8 · model u16 · bypass u8 · k u8 · k × (param u8, float32)`. bypass 1 = off, 0 = on. Slots: 0 gate?, **1 compressor, 2 distortion**, 3 amp (5 params), 4 cab (no params), **5 FX, 6 delay, 7 reverb**. Example Brit Crunch: delay params (1, 450.0)=time ms? | app capture 2 + 3 |
-| 0x3445 | var | `03 NN 01 slot model bypass k params…` | **Set one effect block** of tone NN (on channel 03): SET with the slot's whole block from 0x3444 and the new bypass byte. To toggle a pedal, copy the block and flip bypass. Speaker replies EVENT `03 NN 01 slot ff ff bypass 00`. Whether the edit is saved into the tone is unknown | app capture 3 |
-| 0x3446 | 6 | `03 08 0f ff ff 00` | SET once and echoed back; unknown (no prompt matched it) | app capture 3 |
+| 0x3445 | var | `03 NN op slot …` | **Edit one effect block** of tone NN (on channel 03). The edit lasts until the tone changes; 0x3446 op 04 saves it. **op 01 = replace the block**: `03 NN 01 slot model bypass k params…`, the slot's whole block from 0x3444 with the new bypass byte; to toggle a pedal, copy the block and flip bypass. Speaker replies EVENT `03 NN 01 slot ff ff bypass 00`. **op 02 = change model**: `03 NN 02 slot model(u16) ff 00` (ff = leave bypass alone); speaker replies EVENT op 00 `03 NN 00 slot model ff k params…`, the new model with its default parameters. See *Effect models* below | app capture 3 + 4 |
+| 0x3446 | 6 | `03 op NN target ff 00` | **Tone action**. **op 04 = save** tone NN's pedal and model edits into the tone, target ff = into itself; the echo fills the target (`03 04 0f 0f ff 00`), then the app re-queries 0x3443. A target other than NN is probably *save as* (user tones 0x33, 0x34); not captured. **op 08**: sent when leaving the pedal page after unsaved edits in capture 3, echoed unchanged and followed by EVENT 0x3442 with the same tone: probably *discard edits* (reload the saved tone) | app capture 3 + 4 |
 | 0x3448 / 0x3449 | 1 / 6 | `03` / `03 04 01 09 0e 16` | SET 0x3448 = 03 → EVENT 0x3449: `03`, count 4, then 4 tone IDs. Probably the tones on the speaker's preset buttons | app capture 3 |
 | 0x3406 | 3 | `a b VV` | **Level table** (the app SETs `a b VV` + 7 zero bytes; 3 bytes also work), keyed by (a,b). VV is **0–32** (32 knob clicks, verified end to end). `(00 00)` = **master volume**; SET 0x3406 = 00 00 VV sets it. `(03 02)` = **channel 3 volume**; `(02 03)` = channel 2 volume (key from 0x3401). The speaker sends an EVENT on every knob click. Other keys seen: (01 02)=31, (01 01)=7, (04 04)=24 | `captures/speaker-controls.listen.log` |
 | 0x2d42 | 1 | `07` | **Channel 4 volume** (USB / Bluetooth audio; channel 4 has no input jack). Not in the 0x3406 table: EVENT on every knob click with channel 4 selected, GET and SET from the Mac work (7→8→7). Range 0–32 like the other channels (32 confirmed as the speaker's maximum). (04 04) in 0x3406 is something else: SETs to it are accepted but don't change channel 4 | Mac app log 2026-10-17 |
@@ -74,7 +74,9 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3400 / 0x3401 | 1 / 3 | `n` / `n s k` | Channel query / **channel selection**: EVENT when the speaker's channel selection changes. n = channel, s = 1 selected / 0 deselected, k = second byte of that channel's level key in 0x3406, i.e. its volume is (n,k). Seen: ch 3 → k 02, ch 2 → k 03. The volume knob acts on the selected channel | `captures/speaker-controls.listen.log` |
 | 0x31c3 | 14 | `02 01 00 …` | Sent with a channel selection change; unknown | `captures/speaker-controls.listen.log` |
 | 0x3085 | 1 | `00`/`01` | **STEM AI off/on**. **SET and GET from the Mac work** | listen + Mac test |
-| 0x3080 | 1 | `00` | GET with STEM AI; always 00 so far | app capture 3 |
+| 0x3080 | 1 | `00`/`01` | **STEM AI karaoke mode** off/on (STEM AI already on). On: the speaker sets stem 1 = vocals, stem 2 = off and stem 2's volume (0x3082) to 0, leaving only vocals and Others. Off: stem 1 = guitar, stem 2 = vocals, stem 2 volume back to 32 | app capture 4 |
+| 0x30c1 | 1 | `fd`…`03` | **Pitch shift** (probably): signed semitones, ff = −1. The app SETs then GETs it; the speaker EVENTs 0x30c1 + 0x30c0. Seen −3…+3 (the app may allow ±5). Read once on connect. Was captured where pickup selection was expected, so confirm which control it is | app capture 4 |
+| 0x30c0 | 1 | `00`/`01` | 1 while 0x30c1 is not 0 (pitch shift active?); EVENT only | app capture 4 |
 | 0x3081 | 2 | `ch type` | **STEM channel type**, ch 1–2: 0 off, 1 guitar, 2 vocals, 3 drums. SET selects it. A type can be on only one channel: the app first sets the other channel to a different type or off. EVENT 0x3085 + 0x3080 + both 0x3081 follows each change | app capture 3 |
 | 0x3082 | 2 | `ch VV` | **STEM channel volume**, ch 1, 2, 3 (3 = Others), VV 0–32. The app SETs `ch VV` + 7 zero bytes. Turning STEM AI off resets all three to 32 | app capture 3 |
 | 0x3083 / 0x3084 | 1 | `ch` | SET to query: 0x3083 = ch → EVENT 0x3081; 0x3084 = ch → EVENT 0x3082 | app capture 3 |
@@ -84,6 +86,35 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | Capability/feature list? | app capture |
 | 0x1008, 0x000c, 0x2c00–0x2c05, 0x30c1, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect; unknown | app capture |
 
+## Effect models
+The model in a 0x3444 block is a u16. For the pedals it's one ID space; the amp (slot 3) and
+cab (slot 4) use the low byte for the type (06 amp, 08 cab) and the high byte for the variant.
+The JBL app's model lists (app capture 4, changing models on Brit Crunch):
+
+| Slot | Pedal | Model IDs | Notes |
+|---|---|---|---|
+| 0 | gate? | 00 | always off in factory tones |
+| 1 | Compressor | 01 | one model |
+| 2 | Distortion | 02 Auto-Wah, 03 Touch-Wah, 04 Precision Drive | Wahs and the drive share this slot. 04 = Precision Drive for sure (Soulful Verb's 40/25/36 = Drive, Bright, Level); 02 vs 03 from tap order only |
+| 3 | Amp | 0x0006, 0x0106, 0x0206, 0x0306, 0x0506 seen | not switched yet |
+| 4 | Cab | 0x0008, 0x0208, 0x0308, 0x0608, 0x0b08 seen | not switched yet |
+| 5 | FX | 0e Echo Phase, 0f Green Phaser, 11 Notch Phaser, 12 Minivibe, 13 Tremolo, 0b Chorus, 0c Retro Shiver, 0d Jetter Flanger, 09 Grand Vibrato | App order. 9 models; 0a and 10 not offered. Matched by tap order and knob count; Echo Phase's one knob = Speed |
+| 6 | Delay | 14 Pure Echo, 15 Analog Echo, 16 Echopress 900, 17 Sweep Echo, 18 Sweet Echo | Pure Echo params: 1 Time (ms), 2 Fdbk, 0 Mix |
+| 7 | Reverb | 1b | one model |
+
+The names come from the JBL app's pedal pages (screenshots, 2026-10-17); the speaker sends only IDs.
+Each parameter is `(param id u8, float32)`; parameter IDs are per model, not per slot.
+The ranges aren't mapped yet; known values look like 0–100 knobs, and delay param 1 is the time in ms (180–820 seen).
+
+## Not mapped yet
+Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:
+- **Pickup type** (active, passive humbucker, single coil): not in app capture 4.
+- **Pitch shifter**: probably 0x30c1 (above); confirm and check the ±5 ends.
+- **Pedal parameters** (gain, delay time…): the change is probably 0x3445 op 01 with new param floats; not captured.
+- **Amp and cab models**.
+- **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
+- **Save as** a new user tone (0x3446 with another target?).
+
 ## Still unknown
 - ~~SET commands for preset and STEM AI~~ **Verified from the Mac** (`captures/preset-stem-test-1.log`).
 - ~~How to read the current preset on connect~~ **SET 0x3441 = 03** (verified).
@@ -92,10 +123,12 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 - ~~Live tuner readings~~ All in 0x3106 (decoded 2026-10-17); 0x3101/02/04/07 stayed 0.
 - Channel 1's level key, and channel 2's beyond one sample: no instruments were plugged into them.
 - The app shows no percentages either; approximate 50% gave 16 and 100% gave 32, so percent = raw / 32.
-- Slot 0 and 0x3446; whether 0x3445 edits are saved into the tone.
+- Slot 0. ~~Whether 0x3445 edits are saved into the tone~~: not until SET 0x3446 = 03 04 NN ff ff 00 (app capture 4).
+- 0x3446 op 08 (discard edits?).
 - ~~Whether SET works from the Mac without the app's connect sequence~~ **It does** (2026-10-16 20:39, `captures/tuner-test-1.log`): no datetime/handshake needed, no ACKs needed.
 
 ## Logs
+- `captures/app-capture-4-features.pklg` (+ `.decoded.txt`): JBL app, 13:41–13:50, 2026-10-17, no spoken prompts: karaoke on/off, pitch shift (0x30c1) −3…+3, Brit Crunch's distortion, FX and delay models, then saving the tone (13:50:17)
 - `captures/app-capture-3-controls.pklg` (+ `.decoded.txt`), prompts in `captures/app-controls.markers.log`: JBL app toggling each pedal, master and ch 3 volume, STEM AI types and volumes (10:49–10:56, 2026-10-17). Script: `capture-app-controls.sh`
 - `captures/speaker-controls.listen.log` (+ `.timeline.log`, `.decoded.txt`): speaker knobs swept master and ch 3 volume 0→32, channel select, tuner on low E (in tune, flat), A and high E (10:39–10:45, 2026-10-17). Script: `capture-speaker-controls.sh`
 - `captures/app-capture-2-presets.pklg` (+ `.decoded.txt`): JBL app stepping tones 1 → 9, 20:53, 2026-10-16
