@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Builds the iPhone app and, with --install, puts it on a connected iPhone.
 # Usage: ./ios-build.sh [--install | --ipa]   (BANDBOX_TEAM=<team id> to sign with another team,
-# BANDBOX_TEAM= to only check that the app compiles, unsigned)
+# BANDBOX_TEAM= to only check that the app compiles, unsigned, BANDBOX_LAUNCH=0 to install
+# without opening the app)
 # --ipa builds an unsigned release build/Stagehand.ipa for AltStore, which signs it itself.
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -34,9 +35,11 @@ APP=build/ios/Build/Products/Debug-iphoneos/Stagehand.app
 echo "built $APP"
 
 if [[ "${1:-}" == "--install" ]]; then
-  DEVICE=$(xcrun devicectl list devices 2>/dev/null | grep -E 'iPhone.*(available|connected)' \
+  DEVICE=$(xcrun devicectl list devices 2>/dev/null | grep -E 'iPhone.* (available|connected)' \
     | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
   [[ -n "$DEVICE" ]] || { echo "no connected iPhone found"; exit 1; }
   xcrun devicectl device install app --device "$DEVICE" "$APP"
-  xcrun devicectl device process launch --device "$DEVICE" local.bandbox-stagehand || true
+  if [[ "${BANDBOX_LAUNCH:-1}" != 0 ]]; then
+    xcrun devicectl device process launch --device "$DEVICE" local.bandbox-stagehand || true
+  fi
 fi

@@ -54,6 +54,25 @@ Management › trust the developer profile.
 To sign with your own team, run it as `BANDBOX_TEAM=<your team id> ./ios-build.sh --install`
 and change `PRODUCT_BUNDLE_IDENTIFIER` in `project.yml` to an ID of your own.
 
+#### Reinstalling automatically
+
+The Mac can do the weekly reinstall itself, over Wi-Fi once the iPhone has been connected
+by cable and shows up in Xcode's Devices window:
+
+```bash
+cd Stagehand && ./auto-install.sh --enable
+```
+
+This adds a launch agent that runs `auto-install.sh` every day at 05:00, or when the Mac
+next wakes if it was asleep then. Once 5 days have passed since the last install, it
+rebuilds the app and installs it without opening it; otherwise it does nothing. The phone
+needs to be on the same Wi-Fi (or on the cable) and the Mac signed in to Xcode. A failed
+install, or an iPhone still out of reach a day before expiry, shows a notification. Each
+run is logged in `~/Library/Logs/Stagehand-install.log`.
+
+`./auto-install.sh --now` reinstalls right away, and `./auto-install.sh --disable` removes
+the launch agent.
+
 ### Code and artwork
 
 The code is shared: `Sources/Shared` holds the protocol, client and screens, and
