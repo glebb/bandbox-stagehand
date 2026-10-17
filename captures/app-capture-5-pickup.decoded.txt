@@ -1,0 +1,12 @@
+14:11:32.074  spk->phone  EVENT  keepalive=-
+14:11:32.078  phone->spk  ACK    02 00 00 00
+14:11:35.617  phone->spk  SET    0x3402=03
+14:11:35.644  spk->phone  SET-reply  
+14:11:35.659  spk->phone  EVENT  0x3403=03 02
+14:11:35.661  phone->spk  ACK    02 00 00 00
+14:11:40.700  spk->phone  EVENT  keepalive=-
+14:11:40.703  phone->spk  ACK    02 00 00 00
+14:11:41.540  phone->spk  SET    0x3403=03 00
+14:11:41.571  spk->phone  SET-reply  
+14:11:41.586  spk->phone  EVENT  0x3403=03 00
+14:11:41.588  phone->spk  ACK    02 00 00 00

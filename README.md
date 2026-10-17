@@ -21,8 +21,9 @@ trackpad or drag), tap the dots, or use ← / →.
    tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
-2. **Tuner and mix**: the tuner (string, cents and frequency), the volume of the selected
-   channel (1–4, channel 3 by default) and master volume.
+2. **Tuner and mix**: the guitar input's pickup type (Active, Humbucker, Single coil)
+   above the tuner (string, cents and frequency), the volume of the selected channel
+   (1–4, channel 3 by default) and master volume.
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
    and the volumes of both plus Others.
 

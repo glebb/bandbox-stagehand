@@ -72,10 +72,11 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x2d42 | 1 | `07` | **Channel 4 volume** (USB / Bluetooth audio; channel 4 has no input jack). Not in the 0x3406 table: EVENT on every knob click with channel 4 selected, GET and SET from the Mac work (7→8→7). Range 0–32 like the other channels (32 confirmed as the speaker's maximum). (04 04) in 0x3406 is something else: SETs to it are accepted but don't change channel 4 | Mac app log 2026-10-17 |
 | 0x3405 | 2 | `a b` | SET to query entries of 0x3406 | app capture |
 | 0x3400 / 0x3401 | 1 / 3 | `n` / `n s k` | Channel query / **channel selection**: EVENT when the speaker's channel selection changes. n = channel, s = 1 selected / 0 deselected, k = second byte of that channel's level key in 0x3406, i.e. its volume is (n,k). Seen: ch 3 → k 02, ch 2 → k 03. The volume knob acts on the selected channel | `captures/speaker-controls.listen.log` |
+| 0x3402 / 0x3403 | 1 / 2 | `03` / `03 TT` | **Pickup type** of the guitar input (03, as in the tone messages): SET 0x3402 = 03 → EVENT 0x3403 = 03 TT; SET 0x3403 = 03 TT selects it, echoed as an EVENT. TT **00 = Single coil, 01 = Active, 02 = Passive humbucker** (checked against the JBL app with Stagehand showing the speaker's setting) | app capture 5 |
 | 0x31c3 | 14 | `02 01 00 …` | Sent with a channel selection change; unknown | `captures/speaker-controls.listen.log` |
 | 0x3085 | 1 | `00`/`01` | **STEM AI off/on**. **SET and GET from the Mac work** | listen + Mac test |
 | 0x3080 | 1 | `00`/`01` | **STEM AI karaoke mode** off/on (STEM AI already on). On: the speaker sets stem 1 = vocals, stem 2 = off and stem 2's volume (0x3082) to 0, leaving only vocals and Others. Off: stem 1 = guitar, stem 2 = vocals, stem 2 volume back to 32 | app capture 4 |
-| 0x30c1 | 1 | `fd`…`03` | **Pitch shift** (probably): signed semitones, ff = −1. The app SETs then GETs it; the speaker EVENTs 0x30c1 + 0x30c0. Seen −3…+3 (the app may allow ±5). Read once on connect. Was captured where pickup selection was expected, so confirm which control it is | app capture 4 |
+| 0x30c1 | 1 | `fd`…`03` | **Pitch shift** (probably): signed semitones, ff = −1. The app SETs then GETs it; the speaker EVENTs 0x30c1 + 0x30c0. Seen −3…+3 (the app may allow ±5). Read once on connect. Not pickup type: that's 0x3403 | app capture 4 |
 | 0x30c0 | 1 | `00`/`01` | 1 while 0x30c1 is not 0 (pitch shift active?); EVENT only | app capture 4 |
 | 0x3081 | 2 | `ch type` | **STEM channel type**, ch 1–2: 0 off, 1 guitar, 2 vocals, 3 drums. SET selects it. A type can be on only one channel: the app first sets the other channel to a different type or off. EVENT 0x3085 + 0x3080 + both 0x3081 follows each change | app capture 3 |
 | 0x3082 | 2 | `ch VV` | **STEM channel volume**, ch 1, 2, 3 (3 = Others), VV 0–32. The app SETs `ch VV` + 7 zero bytes. Turning STEM AI off resets all three to 32 | app capture 3 |
@@ -108,7 +109,6 @@ The ranges aren't mapped yet; known values look like 0–100 knobs, and delay pa
 
 ## Not mapped yet
 Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:
-- **Pickup type** (active, passive humbucker, single coil): not in app capture 4.
 - **Pitch shifter**: probably 0x30c1 (above); confirm and check the ±5 ends.
 - **Pedal parameters** (gain, delay time…): the change is probably 0x3445 op 01 with new param floats; not captured.
 - **Amp and cab models**.
@@ -128,6 +128,7 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Whether SET works from the Mac without the app's connect sequence~~ **It does** (2026-10-16 20:39, `captures/tuner-test-1.log`): no datetime/handshake needed, no ACKs needed.
 
 ## Logs
+- `captures/app-capture-5-pickup.pklg` (+ `.decoded.txt`): JBL app opening the pickup page (on Passive humbucker) and choosing Single coil, 14:11, 2026-10-17
 - `captures/app-capture-4-features.pklg` (+ `.decoded.txt`): JBL app, 13:41–13:50, 2026-10-17, no spoken prompts: karaoke on/off, pitch shift (0x30c1) −3…+3, Brit Crunch's distortion, FX and delay models, then saving the tone (13:50:17)
 - `captures/app-capture-3-controls.pklg` (+ `.decoded.txt`), prompts in `captures/app-controls.markers.log`: JBL app toggling each pedal, master and ch 3 volume, STEM AI types and volumes (10:49–10:56, 2026-10-17). Script: `capture-app-controls.sh`
 - `captures/speaker-controls.listen.log` (+ `.timeline.log`, `.decoded.txt`): speaker knobs swept master and ch 3 volume 0→32, channel select, tuner on low E (in tune, flat), A and high E (10:39–10:45, 2026-10-17). Script: `capture-speaker-controls.sh`

@@ -243,9 +243,19 @@ struct MixScreen: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            TunerPad()
-                .frame(maxWidth: .infinity)
-                .layoutPriority(1)
+            VStack(spacing: 8) {
+                // Same height as the volume columns' headers, so the rows line up.
+                Segmented(options: Pickup.allCases.map { Int($0.rawValue) },
+                          selected: client.pickup.map { Int($0.rawValue) } ?? -1,
+                          label: { Pickup(rawValue: UInt8($0))?.name ?? "" },
+                          enabled: { _ in client.pickup != nil }) {
+                    if let type = Pickup(rawValue: UInt8($0)) { client.setPickup(type) }
+                }
+                .frame(height: 26)
+                TunerPad()
+            }
+            .frame(maxWidth: .infinity)
+            .layoutPriority(1)
             VolumeColumn(level: client.channelVolume(channel)) {
                 client.changeChannelVolume(channel, by: $0)
             } header: {

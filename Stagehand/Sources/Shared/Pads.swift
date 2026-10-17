@@ -179,14 +179,17 @@ struct LevelTile: View {
 struct Segmented: View {
     let options: [Int]
     let selected: Int
+    var label: (Int) -> String = { "\($0)" }
     var enabled: (Int) -> Bool = { _ in true }
     let pick: (Int) -> Void
 
     var body: some View {
         HStack(spacing: 2) {
             ForEach(options, id: \.self) { n in
-                Text("\(n)")
+                Text(label(n))
                     .font(.system(size: 12, weight: n == selected ? .medium : .regular))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                     .foregroundStyle(n == selected ? Stage.text : Stage.secondaryText)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(RoundedRectangle(cornerRadius: 6, style: .continuous)

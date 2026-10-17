@@ -36,6 +36,8 @@ enum Property {
     static let tunerFeed: UInt16 = 0x3106
     static let channelQuery: UInt16 = 0x3400      // SET n: speaker answers with a channelInfo event
     static let channelInfo: UInt16 = 0x3401       // n selected k: channel n's volume is level (n, k)
+    static let pickupQuery: UInt16 = 0x3402       // SET 03: speaker answers with a pickup event
+    static let pickup: UInt16 = 0x3403            // 03 type: the guitar input's pickup type (Pickup)
     static let levelQuery: UInt16 = 0x3405
     static let level: UInt16 = 0x3406
     static let presetLibrary: UInt16 = 0x3440     // GET: all tones (id, category, name); 2 fragments
@@ -113,6 +115,20 @@ enum Pedal: Int, CaseIterable, Identifiable {
 struct PedalModel: Identifiable, Hashable {
     let id: UInt16
     let name: String
+}
+
+/// The guitar input's pickup setting, in the order the controller shows them.
+enum Pickup: UInt8, CaseIterable, Identifiable {
+    case active = 1, passiveHumbucker = 2, singleCoil = 0
+
+    var id: UInt8 { rawValue }
+    var name: String {
+        switch self {
+        case .active: "Active"
+        case .passiveHumbucker: "Humbucker"
+        case .singleCoil: "Single coil"
+        }
+    }
 }
 
 enum StemType: UInt8, CaseIterable, Identifiable {

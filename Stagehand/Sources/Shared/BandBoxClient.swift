@@ -19,6 +19,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var tones: [Tone] = []
     @Published private(set) var categories: [Int: String] = [:]
     @Published private(set) var stemAI: Bool?
+    @Published private(set) var pickup: Pickup?
     @Published private(set) var tunerOn = false
     @Published private(set) var tuner: TunerReading?
     @Published private(set) var tunerReference: Double?
@@ -77,6 +78,12 @@ final class BandBoxClient: NSObject, ObservableObject {
     func setPreset(_ toneID: Int) {
         let name = tones.first { $0.id == toneID }?.name ?? "#\(toneID)"
         send(BandBoxProtocol.set(Property.preset, [0x03, UInt8(toneID)]), "preset \(name)")
+    }
+
+    /// The leading 03 is the guitar input, as in the tone messages.
+    func setPickup(_ type: Pickup) {
+        pickup = type
+        send(BandBoxProtocol.set(Property.pickup, [0x03, type.rawValue]), "pickup \(type.name)")
     }
 
     func setStemAI(_ on: Bool) {
@@ -269,6 +276,8 @@ final class BandBoxClient: NSObject, ObservableObject {
                 channelKeys[channel] = r.value[2]
                 send(BandBoxProtocol.set(Property.levelQuery, [r.value[0], r.value[2]]))
             }
+        case Property.pickup where r.value.count >= 2 && r.value[0] == 0x03:
+            pickup = Pickup(rawValue: r.value[1])
         case Property.streamVolume where !r.value.isEmpty:
             streamVolume = Int(r.value[0])
         case Property.stemType where r.value.count >= 2:
@@ -325,6 +334,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         send(BandBoxProtocol.get([Property.presetCategories]))
         send(BandBoxProtocol.get([Property.presetLibrary]))      // big reply, sent in fragments
         send(BandBoxProtocol.set(Property.presetQuery, [0x03]))  // speaker answers with the preset event
+        send(BandBoxProtocol.set(Property.pickupQuery, [0x03]))  // and with the pickup event
     }
 
     // MARK: Discovery
