@@ -62,9 +62,11 @@ struct TonesScreen: View {
                    longPress: { assigning = slot.id },
                    action: { client.setPreset(toneID) }) {
             VStack(spacing: 10) {
-                Text(slot.name)
+                Text(assignments.name(slot))
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(selected ? slot.color : Stage.text)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                 Text(toneName(toneID))
                     .font(.system(size: 12))
                     .foregroundStyle(selected ? Stage.control : Stage.mutedText)
@@ -81,6 +83,7 @@ struct TonesScreen: View {
         #if os(macOS)
         // Right-click as well as hold; on the iPhone a long press already opens the picker.
         .contextMenu {
+            Button("Rename…") { assigning = slot.id }
             Button("Save Pedals to \(toneName(toneID))") { client.saveTone() }
                 .disabled(!selected || client.toneDetails?.id != toneID)
             Divider()
@@ -89,11 +92,13 @@ struct TonesScreen: View {
         #endif
         .popover(isPresented: Binding(get: { assigning == slot.id },
                                       set: { if !$0 { assigning = nil } })) {
-            TonePicker(title: "\(slot.name) button", current: toneID) {
+            TonePicker(title: "\(assignments.name(slot)) button", current: toneID) {
                 assignments.assign($0, to: slot.id)
                 client.setPreset($0)
                 assigning = nil
             } header: {
+                nameField(slot)
+                Divider()
                 saveRow(toneID)
             }
             .presentationCompactAdaptation(.popover)
@@ -102,6 +107,17 @@ struct TonesScreen: View {
 
     private func toneName(_ id: Int) -> String {
         client.tones.first { $0.id == id }?.name ?? "Tone #\(id)"
+    }
+
+    /// Renames the button; clearing the field brings back its own name.
+    private func nameField(_ slot: ToneSlot) -> some View {
+        HStack {
+            Text("Name").foregroundStyle(.secondary)
+            TextField(slot.name, text: $assignments.names[slot.id])
+                .textFieldStyle(.roundedBorder)
+                .onSubmit { assigning = nil }
+        }
+        .padding(12)
     }
 
     /// Saves the pedals as they are now into the button's tone on the speaker.
@@ -217,7 +233,7 @@ struct TonePicker<Header: View>: View {
                 .padding(.bottom, 12)
             }
         }
-        .frame(width: 260, height: 440)
+        .frame(width: 260, height: 500)
     }
 }
 

@@ -218,17 +218,31 @@ struct ToneSlot: Identifiable {
     ]
 }
 
+/// Each button's tone and the name the user gave it ("" = the slot's own name).
 final class ToneAssignments: ObservableObject {
     private static let key = "toneSlots"
+    private static let namesKey = "toneSlotNames"
 
     @Published private(set) var tones: [Int] {
         didSet { UserDefaults.standard.set(tones, forKey: Self.key) }
     }
 
+    @Published var names: [String] {
+        didSet { UserDefaults.standard.set(names, forKey: Self.namesKey) }
+    }
+
     init() {
+        let count = ToneSlot.all.count
         let saved = UserDefaults.standard.array(forKey: Self.key) as? [Int]
-        tones = saved?.count == ToneSlot.all.count ? saved! : ToneSlot.all.map(\.defaultTone)
+        tones = saved?.count == count ? saved! : ToneSlot.all.map(\.defaultTone)
+        let savedNames = UserDefaults.standard.stringArray(forKey: Self.namesKey)
+        names = savedNames?.count == count ? savedNames! : Array(repeating: "", count: count)
     }
 
     func assign(_ tone: Int, to slot: Int) { tones[slot] = tone }
+
+    func name(_ slot: ToneSlot) -> String {
+        let custom = names[slot.id].trimmingCharacters(in: .whitespaces)
+        return custom.isEmpty ? slot.name : custom
+    }
 }
