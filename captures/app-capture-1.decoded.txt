@@ -1,0 +1,94 @@
+20:06:37.781  phone->spk  GET    hello fw_version 0x0005 model_name serial 0x0009 0x000a 0x000c 0x1008 battery% 0x2c00 0x2c01 0x2c80 0x2c02 0x2c03 0x2c04 0x2c05 0x3805 0x0c00 0x0052
+20:06:37.806  spk->phone  EVENT  hello=00 01
+20:06:37.831  phone->spk  ACK    02 00 00 00
+20:06:37.906  spk->phone  GET-reply  fw_version=11 21  model_name=4a 42 4c 20 42 61 6e 64 42 6f 78 20 54 72 69 6f  serial=(redacted)  0x000c=1a 1c 15 0a 0a  0x1008=83 0e 00 00  battery%=64  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3805=01 02 03 04 05 06 09 0a 0b 0d  0x0052=-
+20:06:37.937  phone->spk  GET    battery%
+20:06:37.981  spk->phone  GET-reply  battery%=64
+20:06:37.983  phone->spk  SET    datetime=25 06 14 05 10 0a ea 07 02 2b 30 33 3a 30 30 01
+20:06:38.031  spk->phone  SET-reply  
+20:06:38.034  phone->spk  GET    0x3148
+20:06:38.083  phone->spk  GET    hello fw_version 0x0005 model_name serial 0x0009 0x000a 0x000c 0x1008 battery% 0x2c00 0x2c01 0x2c80 0x2c02 0x2c03 0x2c04 0x2c05 0x3805 0x0c00 0x0052
+20:06:38.106  spk->phone  GET-reply  0x3148=00
+20:06:38.208  spk->phone  GET-reply  fw_version=11 21  model_name=4a 42 4c 20 42 61 6e 64 42 6f 78 20 54 72 69 6f  serial=(redacted)  0x000c=1a 1c 15 0a 0a  0x1008=83 0e 00 00  battery%=64  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3805=01 02 03 04 05 06 09 0a 0b 0d  0x0052=-
+20:06:43.137  spk->phone  EVENT  keepalive=-
+20:06:43.140  phone->spk  ACK    02 00 00 00
+20:06:48.176  spk->phone  EVENT  keepalive=-
+20:06:48.179  phone->spk  ACK    02 00 00 00
+20:06:53.217  spk->phone  EVENT  keepalive=-
+20:06:53.220  phone->spk  ACK    02 00 00 00
+20:06:58.259  spk->phone  EVENT  keepalive=-
+20:06:58.262  phone->spk  ACK    02 00 00 00
+20:07:02.047  phone->spk  GET    0x30c1
+20:07:02.068  phone->spk  type0x0201 ver=1 raw=
+20:07:02.082  spk->phone  GET-reply  0x30c1=00
+20:07:02.099  phone->spk  GET    0x1008
+20:07:02.143  spk->phone  type0x0201 ver=1 raw=00 00 03 01 02 00 02 00 0e 01 02 00 01 00 03 08 03 00 08 40 00 04 01 02 00 3d 00 03 06 06 00 0f 01 00 11 3d 00 03 02 06 00 18 2f 00 1c 0d 00 02 01 02 00 01 00 0a 01 02 00 02 00 02 02 02 00 40 00 01 04 02 00 40 00
+20:07:02.157  spk->phone  GET-reply  0x1008=83 0e 00 00
+20:07:02.185  phone->spk  GET    hello fw_version 0x0005 model_name serial 0x0009 0x000a 0x000c 0x1008 battery% 0x2c00 0x2c01 0x2c80 0x2c02 0x2c03 0x2c04 0x2c05 0x3805 0x0c00 0x0052
+20:07:02.218  phone->spk  GET    hello fw_version 0x0005 model_name serial 0x0009 0x000a 0x000c 0x1008 battery% 0x2c00 0x2c01 0x2c80 0x2c02 0x2c03 0x2c04 0x2c05 0x3805 0x0c00 0x0052
+20:07:02.248  phone->spk  GET    0x3404
+20:07:02.278  phone->spk  GET    0x3407
+20:07:02.322  spk->phone  GET-reply  fw_version=11 21  model_name=4a 42 4c 20 42 61 6e 64 42 6f 78 20 54 72 69 6f  serial=(redacted)  0x000c=1a 1c 15 0a 0a  0x1008=83 0e 00 00  battery%=64  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3805=01 02 03 04 05 06 09 0a 0b 0d  0x0052=-
+20:07:02.324  phone->spk  GET    0x2d42
+20:07:02.353  phone->spk  GET    0x0ba1
+20:07:02.369  spk->phone  GET-reply  fw_version=11 21  model_name=4a 42 4c 20 42 61 6e 64 42 6f 78 20 54 72 69 6f  serial=(redacted)  0x000c=1a 1c 15 0a 0a  0x1008=83 0e 00 00  battery%=64  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3805=01 02 03 04 05 06 09 0a 0b 0d  0x0052=-
+20:07:02.383  spk->phone  GET-reply  0x3404=01
+20:07:02.383  phone->spk  SET    level_query=00 00  level_query=01 02  level_query=01 01  level_query=02 03  level_query=02 01  level_query=03 02  level_query=04 04
+20:07:02.398  spk->phone  GET-reply  0x3407=00
+20:07:02.398  spk->phone  GET-reply  0x2d42=18
+20:07:02.413  phone->spk  SET    chan_query=01  chan_query=02  chan_query=03  chan_query=04
+20:07:02.428  spk->phone  GET-reply  0x0ba1=01
+20:07:02.443  spk->phone  SET-reply  
+20:07:02.443  phone->spk  GET    0x30c1
+20:07:02.458  spk->phone  EVENT  volume=00 00 11  volume=01 02 1f  volume=01 01 07  volume=02 03 07  volume=02 01 07  volume=03 02 08  volume=04 04 18
+20:07:02.473  phone->spk  GET    0x3805
+20:07:02.487  spk->phone  SET-reply  
+20:07:02.502  spk->phone  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  chan_info=04 00 04
+20:07:02.503  phone->spk  GET    0x3000
+20:07:02.517  spk->phone  GET-reply  0x30c1=00
+20:07:02.548  spk->phone  GET-reply  0x3805=01 02 03 04 05 06 09 0a 0b 0d
+20:07:02.548  spk->phone  GET-reply  0x3000=00
+20:07:02.550  phone->spk  GET    0x3040
+20:07:02.578  phone->spk  GET    0x3145
+20:07:02.608  spk->phone  GET-reply  0x3040=00
+20:07:02.608  phone->spk  type0x02ff ver=1 raw=
+20:07:02.622  spk->phone  GET-reply  0x3145=00
+20:07:02.637  phone->spk  ACK    02 00 00 00
+20:07:02.652  spk->phone  type0x02ff ver=1 raw=00 00
+20:07:02.668  phone->spk  ACK    02 00 00 00
+20:07:07.722  spk->phone  EVENT  keepalive=-
+20:07:07.726  phone->spk  ACK    02 00 00 00
+20:07:12.763  spk->phone  EVENT  keepalive=-
+20:07:12.767  phone->spk  ACK    02 00 00 00
+20:07:17.817  spk->phone  EVENT  keepalive=-
+20:07:17.821  phone->spk  ACK    02 00 00 00
+20:07:22.871  spk->phone  EVENT  keepalive=-
+20:07:22.875  phone->spk  ACK    02 00 00 00
+20:07:27.927  spk->phone  EVENT  keepalive=-
+20:07:27.969  phone->spk  GET    0x3102
+20:07:28.005  phone->spk  GET    0x3107
+20:07:28.018  spk->phone  GET-reply  0x3102=00
+20:07:28.033  phone->spk  GET    0x3101
+20:07:28.049  spk->phone  GET-reply  0x3107=00
+20:07:28.064  phone->spk  GET    tuner_ref
+20:07:28.078  spk->phone  GET-reply  0x3101=00
+20:07:28.108  phone->spk  SET    TUNER=01
+20:07:28.109  spk->phone  GET-reply  tuner_ref=30 11
+20:07:28.140  phone->spk  SET    ui_mode?=01 02
+20:07:28.153  spk->phone  SET-reply  
+20:07:28.168  phone->spk  ACK    02 00 00 00
+20:07:28.182  spk->phone  SET-reply  
+20:07:33.224  spk->phone  EVENT  keepalive=-
+20:07:33.229  phone->spk  ACK    02 00 00 00
+20:07:35.737  phone->spk  SET    ui_mode?=01 00
+20:07:35.760  phone->spk  SET    TUNER=00
+20:07:35.775  spk->phone  SET-reply  
+20:07:35.803  spk->phone  SET-reply  
+20:07:36.014  spk->phone  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+20:07:36.019  phone->spk  ACK    02 00 00 00
+20:07:41.067  spk->phone  EVENT  keepalive=-
+20:07:41.071  phone->spk  ACK    02 00 00 00
+20:07:46.107  spk->phone  EVENT  keepalive=-
+20:07:46.112  phone->spk  ACK    02 00 00 00
+20:07:51.162  spk->phone  EVENT  keepalive=-
+20:07:51.166  phone->spk  ACK    02 00 00 00

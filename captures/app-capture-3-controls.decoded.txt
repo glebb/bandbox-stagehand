@@ -1,0 +1,667 @@
+10:48:40.227  spk->phone  EVENT  keepalive=-
+10:48:40.231  phone->spk  ACK    02 00 00 00
+10:48:45.298  spk->phone  EVENT  keepalive=-
+10:48:45.302  phone->spk  ACK    02 00 00 00
+10:48:50.336  spk->phone  EVENT  keepalive=-
+10:48:50.340  phone->spk  ACK    02 00 00 00
+10:48:55.378  spk->phone  EVENT  keepalive=-
+10:48:55.382  phone->spk  ACK    02 00 00 00
+10:49:00.417  spk->phone  EVENT  keepalive=-
+10:49:00.421  phone->spk  ACK    02 00 00 00
+10:49:05.457  spk->phone  EVENT  keepalive=-
+10:49:05.461  phone->spk  ACK    02 00 00 00
+10:49:07.130  phone->spk  SET    0x3448=03
+10:49:07.152  phone->spk  GET    0x3440
+10:49:07.167  spk->phone  SET-reply  
+10:49:07.167  spk->phone  EVENT  0x3449=03 04 01 09 0e 16
+10:49:07.182  phone->spk  SET    0x3441=03
+10:49:07.212  spk->phone  GET ver=2 raw=00 00 40 34 b0 01 01 00 0d 43 6c 65 61 6e 20 43 6f 6d 70 69 6e 67 02 00 09 50 6f 70 20 43 6c 65 61 6e 03 00 0c 56 69 6e 74 61 67 65 20 54 72 65 6d 04 00 0b 53 6d 6f 6f 74 68 20 4a 61 7a 7a 05 00 0c 53 6f 75 6c 66 75 6c 20 56 65 72 62 06 00 0d 52 26 42 20 41 6c 6c 20 4e 69 67 68 74 07 01 0b 44 69 73 63 6f 20 54 77 61 6e 67 08 01 0b 46 75 6e 6b 79 20 4d 6f 75 74 68 09 02 10 43 72 6f 73 73 72 6f 61 64 73 20 44 72 69 76 65 0a 02 0d 51 75 65 65 6e 27 73 20 43 72 6f 77 6e 0b 02 0d 43 6f 75 6e 74 72 79 20 43 6c 65 61 6e 0c 02 0c 54 65 78 61 73 20 42 6f 6f 67 69 65 0d 03 0f 46 65 61 74 68 65 72 65 64 20 42 6c 75 65 73 0e 03 09 4c 65 61 64 20 53 6f 6c 6f 0f 03 0b 42 72 69 74 20 43 72 75 6e 63 68 10 03 10 38 30 73 20 41
+10:49:07.216  spk->phone  GET ver=258 raw=72 65 6e 61 20 43 68 6f 72 75 73 11 03 0e 48 69 67 68 20 47 61 69 6e 20 4c 65 61 64 12 03 0d 43 6f 61 73 74 61 6c 20 44 72 69 76 65 13 03 0e 54 65 61 72 20 44 72 6f 70 20 56 65 72 62 14 03 0a 56 6f 6f 64 6f 6f 20 48 65 78 15 04 10 49 6e 64 75 73 74 72 69 61 6c 20 4d 65 74 61 6c 16 04 08 55 53 20 4d 65 74 61 6c 17 05 08 41 63 6f 75 73 74 69 63 18 05 0f 41 63 6f 75 73 74 69 63 20 43 68 6f 72 75 73 19 06 0b 43 68 6f 72 75 73 20 42 61 73 73 1a 06 0b 53 74 75 64 69 6f 20 42 61 73 73 1b 07 08 42 79 70 61 73 73 65 64 33 04 07 41 20 6d 65 74 61 6c 34 04 0d 43 6c 65 61 6e 20 43 6f 6d 70 69 6e 67
+10:49:07.217  phone->spk  ACK    02 00 00 00
+10:49:07.228  spk->phone  SET-reply  
+10:49:07.228  spk->phone  EVENT  preset=03 0f
+10:49:07.254  phone->spk  ACK    02 00 00 00
+10:49:07.286  phone->spk  SET    0x3443=0f
+10:49:07.317  spk->phone  SET-reply  
+10:49:07.333  spk->phone  EVENT  0x3444=0f 03 0b 42 72 69 74 20 43 72 75 6e 63 68 08 00 00 00 01 01 00 00 00 f0 41 01 01 00 00 04 00 00 00 70 41 04 00 00 10 42 01 cd cc 22 42 02 00 00 00 42 02 02 00 01 04 01 00 00 90 41 02 00 00 f8 41 04 00 00 50 42 00 00 00 9e 42 03 06 03 00 05 00 00 00 54 42 01 00 00 44 42 02 00 00 34 42 03 00 00 1c 42 04 00 00 58 42 04 08 03 00 00 05 0e 00 01 01 00 00 00 a8 41 06 14 00 01 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42 07 1b 00 01 03 00 00 00 c0 41 02 00 00 c0 41 04 00 00 60 41
+10:49:07.337  phone->spk  ACK    02 00 00 00
+10:49:12.371  spk->phone  EVENT  keepalive=-
+10:49:12.377  phone->spk  ACK    02 00 00 00
+10:49:17.412  spk->phone  EVENT  keepalive=-
+10:49:17.417  phone->spk  ACK    02 00 00 00
+10:49:18.769  phone->spk  SET    0x3445=03 0f 01 01 01 00 01 04 00 00 00 70 41 04 00 00 10 42 01 cd cc 22 42 02 00 00 00 42
+10:49:18.808  spk->phone  SET-reply  
+10:49:18.808  spk->phone  EVENT  0x3445=03 0f 01 01 ff ff 01 00
+10:49:18.825  phone->spk  ACK    02 00 00 00
+10:49:23.861  spk->phone  EVENT  keepalive=-
+10:49:23.866  phone->spk  ACK    02 00 00 00
+10:49:28.904  spk->phone  EVENT  keepalive=-
+10:49:28.909  phone->spk  ACK    02 00 00 00
+10:49:31.090  phone->spk  SET    0x3445=03 0f 01 02 02 00 00 04 01 00 00 90 41 02 00 00 f8 41 04 00 00 50 42 00 00 00 9e 42
+10:49:31.138  spk->phone  SET-reply  
+10:49:31.138  spk->phone  EVENT  0x3445=03 0f 01 02 ff ff 00 00
+10:49:31.156  phone->spk  ACK    02 00 00 00
+10:49:36.194  spk->phone  EVENT  keepalive=-
+10:49:36.199  phone->spk  ACK    02 00 00 00
+10:49:41.232  spk->phone  EVENT  keepalive=-
+10:49:41.237  phone->spk  ACK    02 00 00 00
+10:49:43.344  phone->spk  SET    0x3445=03 0f 01 02 02 00 01 04 01 00 00 90 41 02 00 00 f8 41 04 00 00 50 42 00 00 00 9e 42
+10:49:43.392  spk->phone  SET-reply  
+10:49:43.392  spk->phone  EVENT  0x3445=03 0f 01 02 ff ff 01 00
+10:49:43.410  phone->spk  ACK    02 00 00 00
+10:49:48.447  spk->phone  EVENT  keepalive=-
+10:49:48.453  phone->spk  ACK    02 00 00 00
+10:49:51.597  spk->phone  EVENT  battery%=5a
+10:49:51.603  phone->spk  ACK    02 00 00 00
+10:49:51.613  spk->phone  EVENT  battery%=5a
+10:49:51.628  phone->spk  ACK    02 00 00 00
+10:49:56.363  phone->spk  SET    0x3445=03 0f 01 05 0e 00 00 01 00 00 00 a8 41
+10:49:56.413  spk->phone  SET-reply  
+10:49:56.413  spk->phone  EVENT  0x3445=03 0f 01 05 ff ff 00 00
+10:49:56.431  phone->spk  ACK    02 00 00 00
+10:50:00.822  spk->phone  EVENT  battery%=5a
+10:50:00.836  phone->spk  ACK    02 00 00 00
+10:50:00.852  spk->phone  EVENT  battery%=5a
+10:50:00.869  phone->spk  ACK    02 00 00 00
+10:50:05.909  spk->phone  EVENT  keepalive=-
+10:50:05.914  phone->spk  ACK    02 00 00 00
+10:50:07.701  phone->spk  SET    0x3445=03 0f 01 05 0e 00 01 01 00 00 00 a8 41
+10:50:07.738  spk->phone  SET-reply  
+10:50:07.738  spk->phone  EVENT  0x3445=03 0f 01 05 ff ff 01 00
+10:50:07.754  phone->spk  ACK    02 00 00 00
+10:50:12.779  spk->phone  EVENT  keepalive=-
+10:50:12.784  phone->spk  ACK    02 00 00 00
+10:50:17.817  spk->phone  EVENT  keepalive=-
+10:50:17.823  phone->spk  ACK    02 00 00 00
+10:50:19.820  phone->spk  SET    0x3445=03 0f 01 06 14 00 00 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42
+10:50:19.872  spk->phone  SET-reply  
+10:50:19.872  spk->phone  EVENT  0x3445=03 0f 01 06 ff ff 00 00
+10:50:19.889  phone->spk  ACK    02 00 00 00
+10:50:21.734  spk->phone  EVENT  battery%=5a
+10:50:21.739  phone->spk  ACK    02 00 00 00
+10:50:21.749  spk->phone  EVENT  battery%=5a
+10:50:21.764  phone->spk  ACK    02 00 00 00
+10:50:26.802  spk->phone  EVENT  keepalive=-
+10:50:26.807  phone->spk  ACK    02 00 00 00
+10:50:28.033  spk->phone  EVENT  battery%=5a
+10:50:28.037  phone->spk  ACK    02 00 00 00
+10:50:28.048  spk->phone  EVENT  battery%=5a
+10:50:28.064  phone->spk  ACK    02 00 00 00
+10:50:32.039  phone->spk  SET    0x3445=03 0f 01 06 14 00 01 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42
+10:50:32.083  spk->phone  SET-reply  
+10:50:32.083  spk->phone  EVENT  0x3445=03 0f 01 06 ff ff 01 00
+10:50:32.100  phone->spk  ACK    02 00 00 00
+10:50:37.136  spk->phone  EVENT  keepalive=-
+10:50:37.141  phone->spk  ACK    02 00 00 00
+10:50:42.179  spk->phone  EVENT  keepalive=-
+10:50:42.184  phone->spk  ACK    02 00 00 00
+10:50:44.210  phone->spk  SET    0x3445=03 0f 01 07 1b 00 00 03 00 00 00 c0 41 02 00 00 c0 41 04 00 00 60 41
+10:50:44.249  spk->phone  SET-reply  
+10:50:44.249  spk->phone  EVENT  0x3445=03 0f 01 07 ff ff 00 00
+10:50:44.265  phone->spk  ACK    02 00 00 00
+10:50:49.303  spk->phone  EVENT  keepalive=-
+10:50:49.308  phone->spk  ACK    02 00 00 00
+10:50:54.344  spk->phone  EVENT  keepalive=-
+10:50:54.349  phone->spk  ACK    02 00 00 00
+10:50:56.613  phone->spk  SET    0x3445=03 0f 01 07 1b 00 01 03 00 00 00 c0 41 02 00 00 c0 41 04 00 00 60 41
+10:50:56.638  spk->phone  SET-reply  
+10:50:56.652  spk->phone  EVENT  0x3445=03 0f 01 07 ff ff 01 00
+10:50:56.665  phone->spk  ACK    02 00 00 00
+10:51:01.707  spk->phone  EVENT  keepalive=-
+10:51:01.712  phone->spk  ACK    02 00 00 00
+10:51:04.467  spk->phone  EVENT  battery%=5a
+10:51:04.472  phone->spk  ACK    02 00 00 00
+10:51:04.483  spk->phone  EVENT  battery%=5a
+10:51:04.498  phone->spk  ACK    02 00 00 00
+10:51:09.538  spk->phone  EVENT  keepalive=-
+10:51:09.543  phone->spk  ACK    02 00 00 00
+10:51:10.669  phone->spk  SET    0x3446=03 08 0f ff ff 00
+10:51:10.708  spk->phone  SET-reply  
+10:51:10.723  spk->phone  EVENT  0x3446=03 08 0f ff ff 00
+10:51:10.723  spk->phone  EVENT  preset=03 0f
+10:51:10.729  phone->spk  ACK    02 00 00 00
+10:51:10.754  phone->spk  ACK    02 00 00 00
+10:51:11.969  spk->phone  EVENT  battery%=5a
+10:51:11.984  spk->phone  EVENT  battery%=5a
+10:51:12.123  phone->spk  ACK    02 00 00 00
+10:51:12.149  phone->spk  ACK    02 00 00 00
+10:51:17.187  spk->phone  EVENT  keepalive=-
+10:51:19.198  spk->phone  EVENT  keepalive=-
+10:51:19.757  phone->spk  ACK    02 00 00 00
+10:51:19.784  phone->spk  ACK    02 00 00 00
+10:51:20.277  spk->phone  EVENT  battery%=5a
+10:51:20.279  phone->spk  ACK    02 00 00 00
+10:51:20.322  spk->phone  EVENT  battery%=5a
+10:51:20.339  phone->spk  ACK    02 00 00 00
+10:51:22.705  phone->spk  SET    volume=00 00 0d 00 00 00 00 00 00 00
+10:51:22.738  spk->phone  SET-reply  
+10:51:22.740  phone->spk  SET    volume=00 00 0d 00 00 00 00 00 00 00
+10:51:22.783  spk->phone  EVENT  volume=00 00 0d
+10:51:22.787  phone->spk  ACK    02 00 00 00
+10:51:22.798  spk->phone  SET-reply  
+10:51:22.798  spk->phone  EVENT  volume=00 00 0d
+10:51:22.815  phone->spk  ACK    02 00 00 00
+10:51:24.153  phone->spk  SET    volume=00 00 0c 00 00 00 00 00 00 00
+10:51:24.180  spk->phone  SET-reply  
+10:51:24.193  spk->phone  EVENT  volume=00 00 0c
+10:51:24.195  phone->spk  ACK    02 00 00 00
+10:51:24.448  phone->spk  SET    volume=00 00 06 00 00 00 00 00 00 00
+10:51:24.478  spk->phone  SET-reply  
+10:51:24.493  spk->phone  EVENT  volume=00 00 06
+10:51:24.495  phone->spk  ACK    02 00 00 00
+10:51:24.580  phone->spk  SET    volume=00 00 04 00 00 00 00 00 00 00
+10:51:24.613  spk->phone  SET-reply  
+10:51:24.630  spk->phone  EVENT  volume=00 00 04
+10:51:24.633  phone->spk  ACK    02 00 00 00
+10:51:25.440  phone->spk  SET    volume=00 00 05 00 00 00 00 00 00 00
+10:51:25.483  spk->phone  SET-reply  
+10:51:25.498  spk->phone  EVENT  volume=00 00 05
+10:51:25.500  phone->spk  ACK    02 00 00 00
+10:51:25.917  phone->spk  SET    volume=00 00 07 00 00 00 00 00 00 00
+10:51:25.963  spk->phone  SET-reply  
+10:51:25.978  spk->phone  EVENT  volume=00 00 07
+10:51:25.981  phone->spk  ACK    02 00 00 00
+10:51:30.748  spk->phone  EVENT  battery%=5a
+10:51:30.748  spk->phone  EVENT  battery%=5a
+10:51:30.754  phone->spk  ACK    02 00 00 00
+10:51:30.780  phone->spk  ACK    02 00 00 00
+10:51:35.818  spk->phone  EVENT  keepalive=-
+10:51:35.823  phone->spk  ACK    02 00 00 00
+10:51:36.492  phone->spk  SET    volume=00 00 08 00 00 00 00 00 00 00
+10:51:36.538  spk->phone  SET-reply  
+10:51:36.553  spk->phone  EVENT  volume=00 00 08
+10:51:36.555  phone->spk  ACK    02 00 00 00
+10:51:36.974  phone->spk  SET    volume=00 00 0f 00 00 00 00 00 00 00
+10:51:37.003  spk->phone  SET-reply  
+10:51:37.018  spk->phone  EVENT  volume=00 00 0f
+10:51:37.021  phone->spk  ACK    02 00 00 00
+10:51:37.704  phone->spk  SET    volume=00 00 10 00 00 00 00 00 00 00
+10:51:37.738  spk->phone  SET-reply  
+10:51:37.754  spk->phone  EVENT  volume=00 00 10
+10:51:37.756  phone->spk  ACK    02 00 00 00
+10:51:38.268  phone->spk  SET    volume=00 00 10 00 00 00 00 00 00 00
+10:51:38.295  spk->phone  SET-reply  
+10:51:38.310  spk->phone  EVENT  volume=00 00 10
+10:51:38.312  phone->spk  ACK    02 00 00 00
+10:51:43.333  spk->phone  EVENT  keepalive=-
+10:51:43.338  phone->spk  ACK    02 00 00 00
+10:51:48.372  spk->phone  EVENT  keepalive=-
+10:51:48.376  phone->spk  ACK    02 00 00 00
+10:51:49.407  spk->phone  EVENT  battery%=5a
+10:51:49.411  phone->spk  ACK    02 00 00 00
+10:51:49.424  spk->phone  EVENT  battery%=5a
+10:51:49.439  phone->spk  ACK    02 00 00 00
+10:51:50.388  phone->spk  SET    volume=00 00 11 00 00 00 00 00 00 00
+10:51:50.429  spk->phone  SET-reply  
+10:51:50.429  spk->phone  EVENT  volume=00 00 11
+10:51:50.433  phone->spk  ACK    02 00 00 00
+10:51:50.701  phone->spk  SET    volume=00 00 1e 00 00 00 00 00 00 00
+10:51:50.728  spk->phone  SET-reply  
+10:51:50.743  spk->phone  EVENT  volume=00 00 1e
+10:51:50.747  phone->spk  ACK    02 00 00 00
+10:51:51.156  phone->spk  SET    volume=00 00 20 00 00 00 00 00 00 00
+10:51:51.179  spk->phone  SET-reply  
+10:51:51.193  spk->phone  EVENT  volume=00 00 20
+10:51:51.198  phone->spk  ACK    02 00 00 00
+10:51:55.693  spk->phone  EVENT  battery%=5a
+10:51:55.697  phone->spk  ACK    02 00 00 00
+10:51:55.710  spk->phone  EVENT  battery%=5a
+10:51:55.725  phone->spk  ACK    02 00 00 00
+10:52:00.763  spk->phone  EVENT  keepalive=-
+10:52:00.767  phone->spk  ACK    02 00 00 00
+10:52:04.971  phone->spk  SET    volume=00 00 1f 00 00 00 00 00 00 00
+10:52:04.995  spk->phone  SET-reply  
+10:52:05.025  spk->phone  EVENT  volume=00 00 1f
+10:52:05.027  phone->spk  ACK    02 00 00 00
+10:52:05.302  phone->spk  SET    volume=00 00 14 00 00 00 00 00 00 00
+10:52:05.339  spk->phone  SET-reply  
+10:52:05.339  spk->phone  EVENT  volume=00 00 14
+10:52:05.341  phone->spk  ACK    02 00 00 00
+10:52:05.620  phone->spk  SET    volume=00 00 0c 00 00 00 00 00 00 00
+10:52:05.668  spk->phone  SET-reply  
+10:52:05.684  spk->phone  EVENT  volume=00 00 0c
+10:52:05.686  phone->spk  ACK    02 00 00 00
+10:52:06.353  phone->spk  SET    volume=00 00 0d 00 00 00 00 00 00 00
+10:52:06.389  spk->phone  SET-reply  
+10:52:06.389  spk->phone  EVENT  volume=00 00 0d
+10:52:06.391  phone->spk  ACK    02 00 00 00
+10:52:06.557  phone->spk  SET    volume=00 00 0e 00 00 00 00 00 00 00
+10:52:06.599  spk->phone  SET-reply  
+10:52:06.615  spk->phone  EVENT  volume=00 00 0e
+10:52:06.620  phone->spk  ACK    02 00 00 00
+10:52:08.367  spk->phone  EVENT  battery%=5a
+10:52:08.371  phone->spk  ACK    02 00 00 00
+10:52:08.383  spk->phone  EVENT  battery%=5a
+10:52:08.399  phone->spk  ACK    02 00 00 00
+10:52:12.148  phone->spk  SET    0x3083=01  0x3083=02
+10:52:12.179  phone->spk  SET    0x3084=01  0x3084=02  0x3084=03
+10:52:12.194  spk->phone  SET-reply  
+10:52:12.194  spk->phone  EVENT  stem?3081=01 03  stem?3081=02 01
+10:52:12.209  spk->phone  SET-reply  
+10:52:12.209  phone->spk  GET    0x0ba1
+10:52:12.223  spk->phone  EVENT  stem?3082=01 20  stem?3082=02 20  stem?3082=03 20
+10:52:12.239  phone->spk  GET    stem?3080
+10:52:12.254  spk->phone  GET-reply  0x0ba1=00
+10:52:12.270  phone->spk  GET    STEM_AI
+10:52:12.285  spk->phone  GET-reply  stem?3080=00
+10:52:12.299  spk->phone  GET-reply  STEM_AI=01
+10:52:12.300  phone->spk  ACK    02 00 00 00
+10:52:12.329  phone->spk  ACK    02 00 00 00
+10:52:17.367  spk->phone  EVENT  keepalive=-
+10:52:17.372  phone->spk  ACK    02 00 00 00
+10:52:19.723  spk->phone  EVENT  battery%=5a
+10:52:19.727  phone->spk  ACK    02 00 00 00
+10:52:19.739  spk->phone  EVENT  battery%=5a
+10:52:19.763  phone->spk  ACK    02 00 00 00
+10:52:20.040  phone->spk  SET    volume=03 02 07 00 00 00 00 00 00 00
+10:52:20.084  spk->phone  SET-reply  
+10:52:20.084  spk->phone  EVENT  volume=03 02 07
+10:52:20.086  phone->spk  ACK    02 00 00 00
+10:52:20.474  phone->spk  SET    volume=03 02 00 00 00 00 00 00 00 00
+10:52:20.503  spk->phone  SET-reply  
+10:52:20.518  spk->phone  EVENT  volume=03 02 00
+10:52:20.524  phone->spk  ACK    02 00 00 00
+10:52:25.558  spk->phone  EVENT  keepalive=-
+10:52:25.562  phone->spk  ACK    02 00 00 00
+10:52:30.600  spk->phone  EVENT  keepalive=-
+10:52:30.604  phone->spk  ACK    02 00 00 00
+10:52:32.061  phone->spk  SET    volume=03 02 04 00 00 00 00 00 00 00
+10:52:32.099  spk->phone  SET-reply  
+10:52:32.099  spk->phone  EVENT  volume=03 02 04
+10:52:32.101  phone->spk  ACK    02 00 00 00
+10:52:32.372  phone->spk  SET    volume=03 02 0c 00 00 00 00 00 00 00
+10:52:32.414  spk->phone  SET-reply  
+10:52:32.444  spk->phone  EVENT  volume=03 02 0c
+10:52:32.446  phone->spk  ACK    02 00 00 00
+10:52:32.681  phone->spk  SET    volume=03 02 0d 00 00 00 00 00 00 00
+10:52:32.729  spk->phone  SET-reply  
+10:52:32.743  spk->phone  EVENT  volume=03 02 0d
+10:52:32.747  phone->spk  ACK    02 00 00 00
+10:52:33.613  phone->spk  SET    volume=03 02 0c 00 00 00 00 00 00 00
+10:52:33.659  spk->phone  SET-reply  
+10:52:33.659  spk->phone  EVENT  volume=03 02 0c
+10:52:33.661  phone->spk  ACK    02 00 00 00
+10:52:34.029  phone->spk  SET    volume=03 02 09 00 00 00 00 00 00 00
+10:52:34.079  spk->phone  SET-reply  
+10:52:34.093  spk->phone  EVENT  volume=03 02 09
+10:52:34.096  phone->spk  ACK    02 00 00 00
+10:52:34.633  spk->phone  EVENT  battery%=5a
+10:52:34.638  phone->spk  ACK    02 00 00 00
+10:52:34.648  spk->phone  EVENT  battery%=5a
+10:52:34.666  phone->spk  ACK    02 00 00 00
+10:52:39.702  spk->phone  EVENT  keepalive=-
+10:52:39.706  phone->spk  ACK    02 00 00 00
+10:52:42.750  spk->phone  EVENT  battery%=5a
+10:52:42.758  phone->spk  ACK    02 00 00 00
+10:52:42.763  spk->phone  EVENT  battery%=59
+10:52:42.779  phone->spk  ACK    02 00 00 00
+10:52:43.767  spk->phone  EVENT  battery%=59
+10:52:43.771  phone->spk  ACK    02 00 00 00
+10:52:43.783  spk->phone  EVENT  battery%=59
+10:52:43.799  phone->spk  ACK    02 00 00 00
+10:52:45.633  phone->spk  SET    volume=03 02 0a 00 00 00 00 00 00 00
+10:52:45.659  spk->phone  SET-reply  
+10:52:45.673  spk->phone  EVENT  volume=03 02 0a
+10:52:45.676  phone->spk  ACK    02 00 00 00
+10:52:46.244  phone->spk  SET    volume=03 02 10 00 00 00 00 00 00 00
+10:52:46.289  spk->phone  SET-reply  
+10:52:46.289  spk->phone  EVENT  volume=03 02 10
+10:52:46.294  phone->spk  ACK    02 00 00 00
+10:52:51.328  spk->phone  EVENT  keepalive=-
+10:52:51.333  phone->spk  ACK    02 00 00 00
+10:52:56.370  spk->phone  EVENT  keepalive=-
+10:52:56.374  phone->spk  ACK    02 00 00 00
+10:52:57.448  spk->phone  EVENT  battery%=59
+10:52:57.452  phone->spk  ACK    02 00 00 00
+10:52:57.480  spk->phone  EVENT  battery%=59
+10:52:57.483  phone->spk  ACK    02 00 00 00
+10:52:59.266  phone->spk  SET    volume=03 02 11 00 00 00 00 00 00 00
+10:52:59.309  spk->phone  SET-reply  
+10:52:59.309  spk->phone  EVENT  volume=03 02 11
+10:52:59.311  phone->spk  ACK    02 00 00 00
+10:52:59.943  phone->spk  SET    volume=03 02 20 00 00 00 00 00 00 00
+10:52:59.984  spk->phone  SET-reply  
+10:52:59.984  spk->phone  EVENT  volume=03 02 20
+10:52:59.991  phone->spk  ACK    02 00 00 00
+10:53:05.023  spk->phone  EVENT  keepalive=-
+10:53:05.027  phone->spk  ACK    02 00 00 00
+10:53:07.905  spk->phone  EVENT  battery%=59
+10:53:07.909  phone->spk  ACK    02 00 00 00
+10:53:07.920  spk->phone  EVENT  battery%=59
+10:53:07.935  phone->spk  ACK    02 00 00 00
+10:53:12.973  spk->phone  EVENT  keepalive=-
+10:53:12.977  phone->spk  ACK    02 00 00 00
+10:53:13.974  phone->spk  SET    volume=03 02 1c 00 00 00 00 00 00 00
+10:53:14.009  spk->phone  SET-reply  
+10:53:14.009  spk->phone  EVENT  volume=03 02 1c
+10:53:14.014  phone->spk  ACK    02 00 00 00
+10:53:14.287  phone->spk  SET    volume=03 02 09 00 00 00 00 00 00 00
+10:53:14.309  spk->phone  SET-reply  
+10:53:14.323  spk->phone  EVENT  volume=03 02 09
+10:53:14.326  phone->spk  ACK    02 00 00 00
+10:53:14.670  phone->spk  SET    volume=03 02 05 00 00 00 00 00 00 00
+10:53:14.714  spk->phone  SET-reply  
+10:53:14.714  spk->phone  EVENT  volume=03 02 05
+10:53:14.716  phone->spk  ACK    02 00 00 00
+10:53:14.921  phone->spk  SET    volume=03 02 04 00 00 00 00 00 00 00
+10:53:14.984  spk->phone  SET-reply  
+10:53:14.984  spk->phone  EVENT  volume=03 02 04
+10:53:14.988  phone->spk  ACK    02 00 00 00
+10:53:20.023  spk->phone  EVENT  keepalive=-
+10:53:20.027  phone->spk  ACK    02 00 00 00
+10:53:21.299  spk->phone  EVENT  battery%=59
+10:53:21.303  phone->spk  ACK    02 00 00 00
+10:53:21.314  spk->phone  EVENT  battery%=59
+10:53:21.330  phone->spk  ACK    02 00 00 00
+10:53:26.367  spk->phone  EVENT  keepalive=-
+10:53:26.399  phone->spk  ACK    02 00 00 00
+10:53:26.528  phone->spk  SET    0x3083=01  0x3083=02
+10:53:26.549  phone->spk  SET    0x3084=01  0x3084=02  0x3084=03
+10:53:26.564  spk->phone  SET-reply  
+10:53:26.579  spk->phone  EVENT  stem?3081=01 03  stem?3081=02 01
+10:53:26.580  spk->phone  SET-reply  
+10:53:26.582  phone->spk  GET    0x0ba1
+10:53:26.594  spk->phone  EVENT  stem?3082=01 20  stem?3082=02 20  stem?3082=03 20
+10:53:26.609  phone->spk  GET    stem?3080
+10:53:26.624  spk->phone  GET-reply  0x0ba1=00
+10:53:26.639  phone->spk  GET    STEM_AI
+10:53:26.654  spk->phone  GET-reply  stem?3080=00
+10:53:26.669  spk->phone  GET-reply  STEM_AI=01
+10:53:26.670  phone->spk  ACK    02 00 00 00
+10:53:26.699  phone->spk  ACK    02 00 00 00
+10:53:28.439  phone->spk  SET    STEM_AI=00
+10:53:28.484  spk->phone  SET-reply  
+10:53:28.484  spk->phone  EVENT  stem?3082=01 20
+10:53:28.484  spk->phone  EVENT  stem?3082=03 20
+10:53:28.489  phone->spk  ACK    02 00 00 00
+10:53:28.500  spk->phone  EVENT  stem?3082=02 20
+10:53:28.516  phone->spk  ACK    02 00 00 00
+10:53:28.529  spk->phone  EVENT  STEM_AI=00  stem?3080=00  stem?3081=01 03  stem?3081=02 01
+10:53:28.544  phone->spk  ACK    02 00 00 00
+10:53:28.575  phone->spk  ACK    02 00 00 00
+10:53:29.593  phone->spk  SET    STEM_AI=01
+10:53:29.623  spk->phone  SET-reply  
+10:53:29.684  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 03  stem?3081=02 01
+10:53:29.688  phone->spk  ACK    02 00 00 00
+10:53:29.699  spk->phone  EVENT  stem?3082=01 20
+10:53:29.699  spk->phone  EVENT  stem?3082=02 20
+10:53:29.699  spk->phone  EVENT  stem?3082=03 20
+10:53:29.715  phone->spk  ACK    02 00 00 00
+10:53:29.745  phone->spk  ACK    02 00 00 00
+10:53:29.775  phone->spk  ACK    02 00 00 00
+10:53:34.812  spk->phone  EVENT  keepalive=-
+10:53:34.816  phone->spk  ACK    02 00 00 00
+10:53:39.149  spk->phone  EVENT  battery%=59
+10:53:39.153  phone->spk  ACK    02 00 00 00
+10:53:39.179  spk->phone  EVENT  battery%=59
+10:53:39.183  phone->spk  ACK    02 00 00 00
+10:53:43.316  phone->spk  SET    stem?3082=02 20 00 00 00 00 00 00 00
+10:53:43.349  spk->phone  SET-reply  
+10:53:43.352  phone->spk  SET    stem?3081=02 00
+10:53:43.364  spk->phone  EVENT  stem?3082=02 20
+10:53:43.380  phone->spk  ACK    02 00 00 00
+10:53:43.394  spk->phone  SET-reply  
+10:53:43.439  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 03  stem?3081=02 00
+10:53:43.443  phone->spk  ACK    02 00 00 00
+10:53:44.862  phone->spk  SET    stem?3082=01 20 00 00 00 00 00 00 00
+10:53:44.895  phone->spk  SET    stem?3081=01 01
+10:53:44.909  spk->phone  SET-reply  
+10:53:44.909  spk->phone  EVENT  stem?3082=01 20
+10:53:44.925  phone->spk  ACK    02 00 00 00
+10:53:44.939  spk->phone  SET-reply  
+10:53:44.939  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 01  stem?3081=02 00
+10:53:44.955  phone->spk  ACK    02 00 00 00
+10:53:48.478  spk->phone  EVENT  battery%=59
+10:53:48.482  phone->spk  ACK    02 00 00 00
+10:53:48.494  spk->phone  EVENT  battery%=59
+10:53:48.539  phone->spk  ACK    02 00 00 00
+10:53:53.580  spk->phone  EVENT  keepalive=-
+10:53:53.585  phone->spk  ACK    02 00 00 00
+10:53:54.877  phone->spk  SET    stem?3082=01 20 00 00 00 00 00 00 00
+10:53:54.899  phone->spk  SET    stem?3081=01 02
+10:53:54.914  spk->phone  SET-reply  
+10:53:54.914  spk->phone  EVENT  stem?3082=01 20
+10:53:54.929  spk->phone  SET-reply  
+10:53:54.930  phone->spk  ACK    02 00 00 00
+10:53:54.987  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 02  stem?3081=02 00
+10:53:54.990  phone->spk  ACK    02 00 00 00
+10:54:00.029  spk->phone  EVENT  keepalive=-
+10:54:00.033  phone->spk  ACK    02 00 00 00
+10:54:01.064  spk->phone  EVENT  battery%=59
+10:54:01.068  phone->spk  ACK    02 00 00 00
+10:54:01.079  spk->phone  EVENT  battery%=59
+10:54:01.110  phone->spk  ACK    02 00 00 00
+10:54:06.149  spk->phone  EVENT  keepalive=-
+10:54:06.152  phone->spk  ACK    02 00 00 00
+10:54:07.869  phone->spk  SET    stem?3082=01 20 00 00 00 00 00 00 00
+10:54:07.890  phone->spk  SET    stem?3081=01 03
+10:54:07.904  spk->phone  SET-reply  
+10:54:07.904  spk->phone  EVENT  stem?3082=01 20
+10:54:07.919  spk->phone  SET-reply  
+10:54:07.920  phone->spk  ACK    02 00 00 00
+10:54:07.994  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 03  stem?3081=02 00
+10:54:07.998  phone->spk  ACK    02 00 00 00
+10:54:10.499  spk->phone  EVENT  battery%=59
+10:54:10.503  phone->spk  ACK    02 00 00 00
+10:54:10.514  spk->phone  EVENT  battery%=59
+10:54:10.560  phone->spk  ACK    02 00 00 00
+10:54:15.600  spk->phone  EVENT  keepalive=-
+10:54:15.604  phone->spk  ACK    02 00 00 00
+10:54:20.639  spk->phone  EVENT  keepalive=-
+10:54:20.643  phone->spk  ACK    02 00 00 00
+10:54:22.375  phone->spk  SET    stem?3082=02 20 00 00 00 00 00 00 00
+10:54:22.410  phone->spk  SET    stem?3081=02 02
+10:54:22.425  spk->phone  SET-reply  
+10:54:22.440  spk->phone  EVENT  stem?3082=02 20
+10:54:22.443  phone->spk  ACK    02 00 00 00
+10:54:22.455  spk->phone  SET-reply  
+10:54:22.500  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 03  stem?3081=02 02
+10:54:22.504  phone->spk  ACK    02 00 00 00
+10:54:24.156  phone->spk  SET    stem?3082=01 20 00 00 00 00 00 00 00
+10:54:24.193  spk->phone  SET-reply  
+10:54:24.196  phone->spk  SET    stem?3081=01 00
+10:54:24.209  spk->phone  EVENT  stem?3082=01 20
+10:54:24.225  phone->spk  ACK    02 00 00 00
+10:54:24.239  spk->phone  SET-reply  
+10:54:24.239  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 00  stem?3081=02 02
+10:54:24.258  phone->spk  ACK    02 00 00 00
+10:54:29.295  spk->phone  EVENT  keepalive=-
+10:54:29.299  phone->spk  ACK    02 00 00 00
+10:54:34.335  spk->phone  EVENT  keepalive=-
+10:54:34.340  phone->spk  ACK    02 00 00 00
+10:54:34.823  phone->spk  SET    stem?3082=02 20 00 00 00 00 00 00 00
+10:54:34.844  spk->phone  SET-reply  
+10:54:34.847  phone->spk  SET    stem?3081=02 03
+10:54:34.874  spk->phone  EVENT  stem?3082=02 20
+10:54:34.889  spk->phone  SET-reply  
+10:54:34.892  phone->spk  ACK    02 00 00 00
+10:54:34.950  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 00  stem?3081=02 03
+10:54:34.954  phone->spk  ACK    02 00 00 00
+10:54:36.407  phone->spk  SET    stem?3082=01 20 00 00 00 00 00 00 00
+10:54:36.436  phone->spk  SET    stem?3081=01 02
+10:54:36.450  spk->phone  SET-reply  
+10:54:36.450  spk->phone  EVENT  stem?3082=01 20
+10:54:36.466  phone->spk  ACK    02 00 00 00
+10:54:36.480  spk->phone  SET-reply  
+10:54:36.480  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 02  stem?3081=02 03
+10:54:36.497  phone->spk  ACK    02 00 00 00
+10:54:41.533  spk->phone  EVENT  keepalive=-
+10:54:41.537  phone->spk  ACK    02 00 00 00
+10:54:46.589  spk->phone  EVENT  keepalive=-
+10:54:46.593  phone->spk  ACK    02 00 00 00
+10:54:49.290  phone->spk  SET    stem?3082=02 20 00 00 00 00 00 00 00
+10:54:49.320  phone->spk  SET    stem?3081=02 00
+10:54:49.349  spk->phone  SET-reply  
+10:54:49.349  spk->phone  EVENT  stem?3082=02 20
+10:54:49.365  phone->spk  ACK    02 00 00 00
+10:54:49.379  spk->phone  SET-reply  
+10:54:49.423  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 02  stem?3081=02 00
+10:54:49.426  phone->spk  ACK    02 00 00 00
+10:54:50.424  phone->spk  SET    stem?3082=02 20 00 00 00 00 00 00 00
+10:54:50.444  spk->phone  SET-reply  
+10:54:50.446  phone->spk  SET    stem?3081=02 03
+10:54:50.459  spk->phone  EVENT  stem?3082=02 20
+10:54:50.475  phone->spk  ACK    02 00 00 00
+10:54:50.489  spk->phone  SET-reply  
+10:54:50.489  spk->phone  EVENT  STEM_AI=01  stem?3080=00  stem?3081=01 02  stem?3081=02 03
+10:54:50.505  phone->spk  ACK    02 00 00 00
+10:54:53.310  spk->phone  EVENT  battery%=59
+10:54:53.314  phone->spk  ACK    02 00 00 00
+10:54:53.326  spk->phone  EVENT  battery%=59
+10:54:53.342  phone->spk  ACK    02 00 00 00
+10:54:58.378  spk->phone  EVENT  keepalive=-
+10:54:58.382  phone->spk  ACK    02 00 00 00
+10:54:59.491  spk->phone  EVENT  battery%=59
+10:54:59.495  phone->spk  ACK    02 00 00 00
+10:54:59.521  spk->phone  EVENT  battery%=59
+10:54:59.524  phone->spk  ACK    02 00 00 00
+10:55:00.425  phone->spk  SET    stem?3082=01 1f 00 00 00 00 00 00 00
+10:55:00.450  spk->phone  SET-reply  
+10:55:00.464  spk->phone  EVENT  stem?3082=01 1f
+10:55:00.467  phone->spk  ACK    02 00 00 00
+10:55:00.735  phone->spk  SET    stem?3082=01 18 00 00 00 00 00 00 00
+10:55:00.764  spk->phone  SET-reply  
+10:55:00.779  spk->phone  EVENT  stem?3082=01 18
+10:55:00.781  phone->spk  ACK    02 00 00 00
+10:55:01.050  phone->spk  SET    stem?3082=01 0b 00 00 00 00 00 00 00
+10:55:01.094  spk->phone  SET-reply  
+10:55:01.094  spk->phone  EVENT  stem?3082=01 0b
+10:55:01.098  phone->spk  ACK    02 00 00 00
+10:55:01.383  phone->spk  SET    stem?3082=01 07 00 00 00 00 00 00 00
+10:55:01.424  spk->phone  SET-reply  
+10:55:01.424  spk->phone  EVENT  stem?3082=01 07
+10:55:01.428  phone->spk  ACK    02 00 00 00
+10:55:01.784  phone->spk  SET    stem?3082=01 06 00 00 00 00 00 00 00
+10:55:01.830  spk->phone  SET-reply  
+10:55:01.830  spk->phone  EVENT  stem?3082=01 06
+10:55:01.834  phone->spk  ACK    02 00 00 00
+10:55:02.200  phone->spk  SET    stem?3082=01 07 00 00 00 00 00 00 00
+10:55:02.251  spk->phone  SET-reply  
+10:55:02.266  spk->phone  EVENT  stem?3082=01 07
+10:55:02.267  phone->spk  ACK    02 00 00 00
+10:55:02.582  phone->spk  SET    stem?3082=01 07 00 00 00 00 00 00 00
+10:55:02.610  spk->phone  SET-reply  
+10:55:02.624  spk->phone  EVENT  stem?3082=01 07
+10:55:02.628  phone->spk  ACK    02 00 00 00
+10:55:07.663  spk->phone  EVENT  keepalive=-
+10:55:07.667  phone->spk  ACK    02 00 00 00
+10:55:12.704  spk->phone  EVENT  keepalive=-
+10:55:12.708  phone->spk  ACK    02 00 00 00
+10:55:13.873  phone->spk  SET    stem?3082=01 08 00 00 00 00 00 00 00
+10:55:13.919  spk->phone  SET-reply  
+10:55:13.919  spk->phone  EVENT  stem?3082=01 08
+10:55:13.922  phone->spk  ACK    02 00 00 00
+10:55:14.184  phone->spk  SET    stem?3082=01 13 00 00 00 00 00 00 00
+10:55:14.219  spk->phone  SET-reply  
+10:55:14.219  spk->phone  EVENT  stem?3082=01 13
+10:55:14.222  phone->spk  ACK    02 00 00 00
+10:55:14.655  phone->spk  SET    stem?3082=01 19 00 00 00 00 00 00 00
+10:55:14.699  spk->phone  SET-reply  
+10:55:14.714  spk->phone  EVENT  stem?3082=01 19
+10:55:14.716  phone->spk  ACK    02 00 00 00
+10:55:14.969  phone->spk  SET    stem?3082=01 1a 00 00 00 00 00 00 00
+10:55:14.999  spk->phone  SET-reply  
+10:55:15.014  spk->phone  EVENT  stem?3082=01 1a
+10:55:15.018  phone->spk  ACK    02 00 00 00
+10:55:20.056  spk->phone  EVENT  keepalive=-
+10:55:20.060  phone->spk  ACK    02 00 00 00
+10:55:25.093  spk->phone  EVENT  keepalive=-
+10:55:25.097  phone->spk  ACK    02 00 00 00
+10:55:28.326  phone->spk  SET    stem?3082=02 1e 00 00 00 00 00 00 00
+10:55:28.364  spk->phone  SET-reply  
+10:55:28.364  spk->phone  EVENT  stem?3082=02 1e
+10:55:28.368  phone->spk  ACK    02 00 00 00
+10:55:28.631  phone->spk  SET    stem?3082=02 0d 00 00 00 00 00 00 00
+10:55:28.665  spk->phone  SET-reply  
+10:55:28.679  spk->phone  EVENT  stem?3082=02 0d
+10:55:28.681  phone->spk  ACK    02 00 00 00
+10:55:29.287  phone->spk  SET    stem?3082=02 08 00 00 00 00 00 00 00
+10:55:29.324  spk->phone  SET-reply  
+10:55:29.324  spk->phone  EVENT  stem?3082=02 08
+10:55:29.331  phone->spk  ACK    02 00 00 00
+10:55:34.364  spk->phone  EVENT  keepalive=-
+10:55:34.368  phone->spk  ACK    02 00 00 00
+10:55:39.406  spk->phone  EVENT  keepalive=-
+10:55:39.410  phone->spk  ACK    02 00 00 00
+10:55:41.843  phone->spk  SET    stem?3082=02 0a 00 00 00 00 00 00 00
+10:55:41.879  spk->phone  SET-reply  
+10:55:41.879  spk->phone  EVENT  stem?3082=02 0a
+10:55:41.883  phone->spk  ACK    02 00 00 00
+10:55:42.171  phone->spk  SET    stem?3082=02 15 00 00 00 00 00 00 00
+10:55:42.210  spk->phone  SET-reply  
+10:55:42.224  spk->phone  EVENT  stem?3082=02 15
+10:55:42.226  phone->spk  ACK    02 00 00 00
+10:55:42.571  phone->spk  SET    stem?3082=02 18 00 00 00 00 00 00 00
+10:55:42.614  spk->phone  SET-reply  
+10:55:42.614  spk->phone  EVENT  stem?3082=02 18
+10:55:42.618  phone->spk  ACK    02 00 00 00
+10:55:42.837  phone->spk  SET    stem?3082=02 18 00 00 00 00 00 00 00
+10:55:42.883  spk->phone  SET-reply  
+10:55:42.899  spk->phone  EVENT  stem?3082=02 18
+10:55:42.903  phone->spk  ACK    02 00 00 00
+10:55:47.941  spk->phone  EVENT  keepalive=-
+10:55:47.945  phone->spk  ACK    02 00 00 00
+10:55:52.981  spk->phone  EVENT  keepalive=-
+10:55:52.985  phone->spk  ACK    02 00 00 00
+10:55:55.528  phone->spk  SET    stem?3082=03 1e 00 00 00 00 00 00 00
+10:55:55.559  spk->phone  SET-reply  
+10:55:55.574  spk->phone  EVENT  stem?3082=03 1e
+10:55:55.576  phone->spk  ACK    02 00 00 00
+10:55:55.856  phone->spk  SET    stem?3082=03 11 00 00 00 00 00 00 00
+10:55:55.889  spk->phone  SET-reply  
+10:55:55.904  spk->phone  EVENT  stem?3082=03 11
+10:55:55.907  phone->spk  ACK    02 00 00 00
+10:55:56.257  phone->spk  SET    stem?3082=03 09 00 00 00 00 00 00 00
+10:55:56.280  spk->phone  SET-reply  
+10:55:56.294  spk->phone  EVENT  stem?3082=03 09
+10:55:56.296  phone->spk  ACK    02 00 00 00
+10:55:56.857  phone->spk  SET    stem?3082=03 07 00 00 00 00 00 00 00
+10:55:56.895  spk->phone  SET-reply  
+10:55:56.895  spk->phone  EVENT  stem?3082=03 07
+10:55:56.899  phone->spk  ACK    02 00 00 00
+10:55:56.987  phone->spk  SET    stem?3082=03 07 00 00 00 00 00 00 00
+10:55:57.030  spk->phone  SET-reply  
+10:55:57.030  spk->phone  EVENT  stem?3082=03 07
+10:55:57.034  phone->spk  ACK    02 00 00 00
+10:56:02.068  spk->phone  EVENT  keepalive=-
+10:56:02.072  phone->spk  ACK    02 00 00 00
+10:56:07.110  spk->phone  EVENT  keepalive=-
+10:56:07.115  phone->spk  ACK    02 00 00 00
+10:56:08.613  phone->spk  SET    stem?3082=03 09 00 00 00 00 00 00 00
+10:56:08.655  spk->phone  SET-reply  
+10:56:08.655  spk->phone  EVENT  stem?3082=03 09
+10:56:08.659  phone->spk  ACK    02 00 00 00
+10:56:08.925  phone->spk  SET    stem?3082=03 18 00 00 00 00 00 00 00
+10:56:08.970  spk->phone  SET-reply  
+10:56:08.970  spk->phone  EVENT  stem?3082=03 18
+10:56:08.973  phone->spk  ACK    02 00 00 00
+10:56:09.242  phone->spk  SET    stem?3082=03 17 00 00 00 00 00 00 00
+10:56:09.285  spk->phone  SET-reply  
+10:56:09.301  spk->phone  EVENT  stem?3082=03 17
+10:56:09.303  phone->spk  ACK    02 00 00 00
+10:56:09.506  phone->spk  SET    stem?3082=03 17 00 00 00 00 00 00 00
+10:56:09.540  spk->phone  SET-reply  
+10:56:09.554  spk->phone  EVENT  stem?3082=03 17
+10:56:09.558  phone->spk  ACK    02 00 00 00
+10:56:14.594  spk->phone  EVENT  keepalive=-
+10:56:14.598  phone->spk  ACK    02 00 00 00
+10:56:19.633  spk->phone  EVENT  keepalive=-
+10:56:19.637  phone->spk  ACK    02 00 00 00
+10:56:22.367  phone->spk  SET    STEM_AI=00
+10:56:22.410  spk->phone  SET-reply  
+10:56:22.410  spk->phone  EVENT  stem?3082=01 20
+10:56:22.410  spk->phone  EVENT  stem?3082=03 20
+10:56:22.416  phone->spk  ACK    02 00 00 00
+10:56:22.425  spk->phone  EVENT  stem?3082=02 20
+10:56:22.440  phone->spk  ACK    02 00 00 00
+10:56:22.456  spk->phone  EVENT  STEM_AI=00  stem?3080=00  stem?3081=01 02  stem?3081=02 03
+10:56:22.470  phone->spk  ACK    02 00 00 00
+10:56:22.502  phone->spk  ACK    02 00 00 00
+10:56:27.539  spk->phone  EVENT  keepalive=-
+10:56:27.544  phone->spk  ACK    02 00 00 00
+10:56:32.580  spk->phone  EVENT  keepalive=-
+10:56:32.584  phone->spk  ACK    02 00 00 00
+10:56:37.618  spk->phone  EVENT  keepalive=-
+10:56:37.622  phone->spk  ACK    02 00 00 00
+10:56:42.660  spk->phone  EVENT  keepalive=-
+10:56:42.664  phone->spk  ACK    02 00 00 00

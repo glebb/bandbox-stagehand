@@ -1,0 +1,155 @@
+Bluetooth on — scanning 15s…
+• JBL BandBox Trio  [D4224BE5-0A0F-C5E3-33A6-543D9847616C]  rssi=-51
+
+>>> connecting to JBL BandBox Trio …
+[20:18:28.346] connected to JBL BandBox Trio
+[20:18:28.350] listening for 180s — use the speaker and the app now
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:29.064] subscribed com/0001 (notifying=true)
+[20:18:29.065] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:29.125] com/0001 error: Reading is not permitted.
+[20:18:29.244] subscribed cnl/0001 (notifying=true)
+[20:18:29.304] cnl/0001 error: Reading is not permitted.
+[20:18:29.365] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:29.965] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:30.714] subscribed com/0001 (notifying=true)
+[20:18:30.714] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:30.773] com/0001 error: Reading is not permitted.
+[20:18:30.894] subscribed cnl/0001 (notifying=true)
+[20:18:30.954] cnl/0001 error: Reading is not permitted.
+[20:18:30.985] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:31.495] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:32.214] subscribed com/0001 (notifying=true)
+[20:18:32.214] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:32.273] com/0001 error: Reading is not permitted.
+[20:18:32.394] subscribed cnl/0001 (notifying=true)
+[20:18:32.454] cnl/0001 error: Reading is not permitted.
+[20:18:32.514] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:32.964] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:33.714] subscribed com/0001 (notifying=true)
+[20:18:33.716] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:33.774] com/0001 error: Reading is not permitted.
+[20:18:33.924] subscribed cnl/0001 (notifying=true)
+[20:18:33.984] cnl/0001 error: Reading is not permitted.
+[20:18:34.015] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:34.435] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:35.244] subscribed com/0001 (notifying=true)
+[20:18:35.244] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:35.304] com/0001 error: Reading is not permitted.
+[20:18:35.424] subscribed cnl/0001 (notifying=true)
+[20:18:35.484] cnl/0001 error: Reading is not permitted.
+[20:18:35.514] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:36.055] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:36.804] subscribed com/0001 (notifying=true)
+[20:18:36.804] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:36.863] com/0001 error: Reading is not permitted.
+[20:18:36.984] subscribed cnl/0001 (notifying=true)
+[20:18:37.043] cnl/0001 error: Reading is not permitted.
+[20:18:37.075] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:37.614] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:38.394] subscribed com/0001 (notifying=true)
+[20:18:38.395] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:38.454] com/0001 error: Reading is not permitted.
+[20:18:38.574] subscribed cnl/0001 (notifying=true)
+[20:18:38.634] cnl/0001 error: Reading is not permitted.
+[20:18:38.665] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:39.264] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:40.044] subscribed com/0001 (notifying=true)
+[20:18:40.046] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:40.104] com/0001 error: Reading is not permitted.
+[20:18:40.224] subscribed cnl/0001 (notifying=true)
+[20:18:40.284] cnl/0001 error: Reading is not permitted.
+[20:18:40.315] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:40.824] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:41.574] subscribed com/0001 (notifying=true)
+[20:18:41.574] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:41.634] com/0001 error: Reading is not permitted.
+[20:18:41.754] subscribed cnl/0001 (notifying=true)
+[20:18:41.814] cnl/0001 error: Reading is not permitted.
+[20:18:41.846] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:42.325] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:43.043] subscribed com/0001 (notifying=true)
+[20:18:43.075] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:43.103] com/0001 error: Reading is not permitted.
+[20:18:43.224] subscribed cnl/0001 (notifying=true)
+[20:18:43.284] cnl/0001 error: Reading is not permitted.
+[20:18:43.315] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:43.735] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:44.484] subscribed com/0001 (notifying=true)
+[20:18:44.484] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:44.543] com/0001 error: Reading is not permitted.
+[20:18:44.665] subscribed cnl/0001 (notifying=true)
+[20:18:44.724] cnl/0001 error: Reading is not permitted.
+[20:18:44.755] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:45.174] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:45.924] subscribed com/0001 (notifying=true)
+[20:18:45.925] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:45.984] com/0001 error: Reading is not permitted.
+[20:18:46.104] subscribed cnl/0001 (notifying=true)
+[20:18:46.164] cnl/0001 error: Reading is not permitted.
+[20:18:46.195] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:46.614] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:47.364] subscribed com/0001 (notifying=true)
+[20:18:47.364] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:47.424] com/0001 error: Reading is not permitted.
+[20:18:47.544] subscribed cnl/0001 (notifying=true)
+[20:18:47.604] cnl/0001 error: Reading is not permitted.
+[20:18:47.635] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:48.055] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:48.804] subscribed com/0001 (notifying=true)
+[20:18:48.806] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:48.864] com/0001 error: Reading is not permitted.
+[20:18:48.984] subscribed cnl/0001 (notifying=true)
+[20:18:49.044] cnl/0001 error: Reading is not permitted.
+[20:18:49.075] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:49.495] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:50.213] subscribed com/0001 (notifying=true)
+[20:18:50.244] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:50.273] com/0001 error: Reading is not permitted.
+[20:18:50.424] subscribed cnl/0001 (notifying=true)
+[20:18:50.514] cnl/0001 error: Reading is not permitted.
+[20:18:50.545] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:51.085] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:51.894] subscribed com/0001 (notifying=true)
+[20:18:51.895] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:51.954] com/0001 error: Reading is not permitted.
+[20:18:52.074] subscribed cnl/0001 (notifying=true)
+[20:18:52.134] cnl/0001 error: Reading is not permitted.
+[20:18:52.164] DISCONNECTED: The specified device has disconnected from us. — reconnecting
+[20:18:52.704] connected to JBL BandBox Trio
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+SERVICE 65786365-6C70-6F69-6E74-2E636E6C0000
+[20:18:53.424] subscribed com/0001 (notifying=true)
+[20:18:53.484] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:18:53.514] com/0001 error: Reading is not permitted.

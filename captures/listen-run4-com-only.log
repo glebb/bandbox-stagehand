@@ -1,0 +1,14 @@
+Bluetooth on — scanning 15s…
+• JBL BandBox Trio  [D4224BE5-0A0F-C5E3-33A6-543D9847616C]  rssi=-62
+
+>>> connecting to JBL BandBox Trio …
+[20:20:11.576] connected to JBL BandBox Trio
+[20:20:11.581] listening for 20s — use the speaker and the app now
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+[20:20:12.297] subscribed com/0001 (notifying=true)
+[20:20:12.297] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[20:20:15.206] com/0001 <- (15B) 00 dd 03 00 01 00 07 00 00 00 0d 00 01 00 63  |..............c|
+[20:20:15.267] com/0001 <- (15B) 00 dd 03 00 01 00 07 00 00 00 0d 00 01 00 63  |..............c|
+[20:20:24.433] com/0001 <- (15B) 00 dd 03 00 01 00 07 00 00 00 0d 00 01 00 63  |..............c|
+[20:20:24.449] com/0001 <- (15B) 00 dd 03 00 01 00 07 00 00 00 0d 00 01 00 63  |..............c|
+[20:20:32.580] done listening
