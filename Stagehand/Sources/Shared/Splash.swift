@@ -53,6 +53,14 @@ struct Logo: View {
     static let bandboxAmber = Color(hex: 0xB07A1E)   // Stage.amber, dark enough for white
     static let toneColors = ToneSlot.all.map(\.color)
 
+    /// "Stagehand" with room after the final "d", whose swash reaches 0.25 em past the
+    /// text's box; iOS clips at the box. With 0.3 em the box also stays centered on the ink.
+    static func word(size: CGFloat) -> AttributedString {
+        var word = AttributedString("Stagehand")
+        word[word.characters.index(before: word.endIndex)...].kern = size * 0.3
+        return word
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             Text("BANDBOX")
@@ -60,7 +68,7 @@ struct Logo: View {
                 .tracking(size * 0.22 * 0.32)
                 .foregroundStyle(Self.bandboxAmber)
                 .padding(.leading, size * 0.22 * 0.32)   // balance the tracking after the last letter
-            Text("Stagehand")
+            Text(Self.word(size: size))
                 .font(.custom("Yellowtail-Regular", size: size))
                 .foregroundStyle(Stage.background)
             HStack(spacing: size * 0.054) {
