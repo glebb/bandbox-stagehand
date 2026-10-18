@@ -212,7 +212,10 @@ struct ModelPicker: View {
                 .padding(12)
             }
         }
-        .frame(width: 220, height: min(CGFloat(pedal.models.count) * 30 + 70, 380))
+        // Preferred height, not a fixed one: a popover on a landscape iPhone has less room,
+        // and the list must shrink into it to scroll to its last row.
+        .frame(width: 220)
+        .frame(minHeight: 120, idealHeight: min(CGFloat(pedal.models.count) * 30 + 70, 380), maxHeight: 380)
     }
 }
 
@@ -256,7 +259,8 @@ struct TonePicker<Header: View>: View {
                 .padding(.bottom, 12)
             }
         }
-        .frame(width: 260, height: 500)
+        .frame(width: 260)
+        .frame(minHeight: 200, idealHeight: 500, maxHeight: 500)   // shrinks to fit, as ModelPicker
     }
 }
 

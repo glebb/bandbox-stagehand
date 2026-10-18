@@ -63,7 +63,7 @@ IDs); not yet against the speaker, which needs the editor UI.
 
 ## Phase 3: editor UI (`PresetEditor.swift`) — done
 Tried on the Mac with the speaker (2026-10-18): knobs, models, bypass and save as work.
-Not yet tried on the iPhone.
+Tried on the iPhone too; its popovers needed a flexible height to scroll to their last row.
 
 - **Its own page in the pager**, the last one (after the tones pages, mix and STEM AI),
   so it can be reached by swiping like the other screens.
@@ -88,7 +88,7 @@ Not yet tried on the iPhone.
   then offers the channel's four tone buttons (or none) for the new tone. Save as keeps the source tone unchanged.
 - The editor's tone menu: Rename and Delete for user tones, Reset to factory for factory tones.
 
-## Phase 4: wrap-up
+## Phase 4: wrap-up — done
 README section, protocol notes, check on the iPhone and the Mac.
 
 ## Decisions
