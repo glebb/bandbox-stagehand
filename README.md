@@ -20,8 +20,8 @@ drag), tap the dots, or use ← / →.
    controls (CH 1 / CH 3) next to the page dots. Each channel has its own four tone buttons
    (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac); channel 1 starts as a copy of channel 3's.
    Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
-   selects, or to save the pedals into that tone on the speaker (only while it's
-   playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
+   selects, to open its tone in the preset editor, or to save the pedals into that tone
+   on the speaker (only while it's playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
    tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
@@ -32,6 +32,17 @@ drag), tap the dots, or use ← / →.
    Master volume is on the right.
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
    and the volumes of both plus Others.
+4. **Preset editor**: the whole chain of the tone a guitar channel plays: gate,
+   compressor, distortion, amp, cabinet, FX, delay and reverb, joined like a pedalboard
+   (amber when on). Tap a slot to show its models (by the JBL app's names: 11 amps, 12
+   cabinets, 9 FX…) and its knobs; drag a knob up or down to turn it, and the power button
+   switches the pedal on or off. Tap the tone's name to edit another tone (it plays, so
+   you hear what you edit); with guitars in both channels, CH 1 / CH 3 picks the channel.
+   **Save** writes the changes into the tone, **Save as…** makes a new tone with a name
+   and category (then offers to put it on a tone button), and the ⋯ menu discards the
+   changes, renames or deletes a tone you saved, or puts a factory tone back to its
+   factory settings. Changes that aren't saved are lost when the tone changes, as on the
+   tones page; the editor asks first when you pick another tone.
 
 A white splash screen with the logo shows while the app connects to the speaker
 (at most 10 s).
@@ -149,6 +160,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 | `capture-ch1-guitar.sh` | The Mac switches channel 1's tone and toggles its delay while you play, then runs the tuner |
 | `capture-ch2-controls.sh` | Guided session for channel 2's knobs: mic Delay and Reverb, then line-in Bass, Mid and Treble |
 | `capture-inputs.sh` | Guided session plugging a mic, guitar and line-in into each channel, polling the per-channel queries while you do |
+| `capture-preset-edit.sh` | The preset editor's research: the Mac edits a tone while you listen (`listen`), and one JBL app area per run (gate, comp, dist, amp, cab, fx, delay, reverb, save) |
 | `capture-app-features.sh` | Prompts for one JBL app feature area per run (save, pedals, pickup, stem, pitch, drums, looper, eq), for the features not mapped yet |
 | `decode-pklg.py` | Decodes an iPhone PacketLogger `.pklg` capture into protocol messages |
 | `decode-log.py` | Decodes a `BLEScan.app` log the same way |
