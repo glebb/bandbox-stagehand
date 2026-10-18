@@ -66,6 +66,17 @@ cd Stagehand && ./build.sh --run
 macOS asks for Bluetooth permission on first launch, and again after each rebuild,
 because every ad-hoc signed build counts as a new app.
 
+#### Releases
+
+`./release.sh X.Y.Z` builds a universal app (Apple silicon and Intel) with that version,
+and puts the zip, its SHA-256 and draft release notes in `Stagehand/build/release/`. It
+needs a clean working tree. Read the notes, then `./release.sh X.Y.Z --publish` tags
+`vX.Y.Z`, pushes the tag and creates the GitHub release with the zip (needs
+[gh](https://cli.github.com), signed in).
+
+The app is ad-hoc signed, not notarized, so macOS blocks it the first time it opens
+after downloading; the release notes explain **Open Anyway** in Privacy & Security.
+
 ### iPhone
 
 The same controller runs on the iPhone (landscape, screen kept on while it's open, a haptic
