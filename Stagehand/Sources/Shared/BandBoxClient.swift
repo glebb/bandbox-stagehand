@@ -26,6 +26,11 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var tunerReference: Double?
     /// Guitar channel → the effect blocks of its current tone, with that channel's unsaved edits.
     @Published private(set) var toneDetails: [Int: ToneDetails] = [:]
+    /// Guitar channel → its current tone as saved on the speaker. 0x3444 always answers with the
+    /// saved tone, so the edits exist only in toneDetails (and in the speaker, until saved).
+    @Published private(set) var savedDetails: [Int: ToneDetails] = [:]
+    /// The tone the last save as made, and the channel it was saved from; it plays there now.
+    @Published private(set) var createdTone: CreatedTone?
     /// Channel 1–3 → what is plugged into it, from channelInfo events.
     @Published private(set) var inputs: [Int: ChannelInput] = [:]
     /// Level table (0x3406) keyed by `a << 8 | b`; master volume is key 0.
@@ -63,7 +68,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     private var confirmed = false
     private var candidates: [CBPeripheral] = []
     private var rejected = Set<UUID>()
-    private var writeQueue: [Data] = []
+    private var writeQueue: [(data: Data, key: String?)] = []
     private var writeInFlight = false
     private var fragments: [UInt16: [UInt8]] = [:]
     private var rescanTimer: Timer?
@@ -110,42 +115,106 @@ final class BandBoxClient: NSObject, ObservableObject {
         }
     }
 
-    func isOn(_ pedal: Pedal, channel: Int) -> Bool? {
-        toneDetails[channel]?.blocks.first { $0.slot == pedal.rawValue }.map { !$0.bypassed }
+    // MARK: Tone editing
+    // Edits go to the tone the channel is playing (0x3445) and last until the tone changes,
+    // unless saved (0x3446). The speaker can't report them: 0x3444 returns the saved tone.
+
+    func block(_ slot: EffectSlot, channel: Int) -> EffectBlock? { toneDetails[channel]?.block(slot) }
+
+    /// Whether the channel's tone has edits that aren't saved on the speaker.
+    func isEdited(channel: Int) -> Bool {
+        guard let details = toneDetails[channel] else { return false }
+        return details != savedDetails[channel]
     }
 
-    /// Resends the pedal's effect block from the channel's current tone with the bypass byte flipped.
-    func setPedal(_ pedal: Pedal, on: Bool, channel: Int) {
-        guard var details = toneDetails[channel], details.id == presets[channel],
-              let i = details.blocks.firstIndex(where: { $0.slot == pedal.rawValue }) else { return }
+    func isOn(_ pedal: Pedal, channel: Int) -> Bool? { block(pedal.slot, channel: channel).map { !$0.bypassed } }
+
+    func setPedal(_ pedal: Pedal, on: Bool, channel: Int) { setBypass(pedal.slot, on: on, channel: channel) }
+
+    /// Resends the slot's effect block from the channel's current tone with the bypass byte flipped.
+    func setBypass(_ slot: EffectSlot, on: Bool, channel: Int) {
+        guard var details = editableDetails(channel),
+              let i = details.blocks.firstIndex(where: { $0.slot == slot.rawValue }) else { return }
         details.blocks[i].bypassed = !on
         toneDetails[channel] = details
-        send(BandBoxProtocol.set(Property.effectBlock, [UInt8(channel), UInt8(details.id), 0x01] + details.blocks[i].bytes),
-             "channel \(channel) \(pedal.name) \(on ? "on" : "off")")
+        sendEdit(channel, details, .bypass, details.blocks[i].bytes, "channel \(channel) \(slot.name) \(on ? "on" : "off")")
     }
 
-    /// Saves the channel's pedal and model edits into its current tone on the speaker, as the JBL app
-    /// does. Without it, the edits are lost when the speaker changes tone. Only seen for channel 3.
-    func saveTone(channel: Int) {
-        guard let preset = presets[channel] else { return }
-        let name = tones.first { $0.id == preset }?.name ?? "#\(preset)"
-        send(BandBoxProtocol.set(Property.toneAction, [UInt8(channel), 0x04, UInt8(preset), 0xFF, 0xFF, 0x00]),
-             "channel \(channel) save tone \(name)")
-        send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(preset)]))
-    }
+    func model(_ pedal: Pedal, channel: Int) -> UInt16? { block(pedal.slot, channel: channel)?.model }
 
-    func model(_ pedal: Pedal, channel: Int) -> UInt16? {
-        toneDetails[channel]?.blocks.first { $0.slot == pedal.rawValue }?.model
-    }
+    func setModel(_ pedal: Pedal, _ model: EffectModel, channel: Int) { setModel(pedal.slot, model, channel: channel) }
 
-    /// Swaps the pedal's model in the current tone; the speaker answers with the new block
+    /// Swaps the slot's model in the current tone; the speaker answers with the new block
     /// and its default parameters, keeping the on/off state.
-    func setModel(_ pedal: Pedal, _ model: PedalModel, channel: Int) {
-        guard let details = toneDetails[channel], details.id == presets[channel] else { return }
-        send(BandBoxProtocol.set(Property.effectBlock,
-                                 [UInt8(channel), UInt8(details.id), 0x02, UInt8(pedal.rawValue)] + BandBoxProtocol.le16(model.id) + [0xFF, 0x00]),
-             "channel \(channel) \(pedal.name) model \(model.name)")
+    func setModel(_ slot: EffectSlot, _ model: EffectModel, channel: Int) {
+        guard let details = editableDetails(channel) else { return }
+        sendEdit(channel, details, slot.modelOp(model.id), [UInt8(slot.rawValue)] + BandBoxProtocol.le16(model.id) + [0xFF, 0x00],
+                 "channel \(channel) \(slot.name) model \(model.name)")
     }
+
+    /// Sets one knob of the channel's current tone, snapped to the knob's range and step.
+    /// Not logged: a drag sends one every write.
+    func setParam(_ slot: EffectSlot, _ param: UInt8, to value: Float, channel: Int) {
+        guard var details = editableDetails(channel),
+              let i = details.blocks.firstIndex(where: { $0.slot == slot.rawValue }),
+              let p = details.blocks[i].params.firstIndex(where: { $0.id == param }) else { return }
+        let block = details.blocks[i]
+        let value = slot.model(block.model)?.params.first { $0.id == param }?.clamp(value) ?? value
+        details.blocks[i].params[p].value = value
+        toneDetails[channel] = details
+        sendEdit(channel, details, .param,
+                 [UInt8(slot.rawValue)] + BandBoxProtocol.le16(block.model) + [0xFF, 0x01, param] + BandBoxProtocol.f32(value),
+                 nil, coalesce: "param \(channel) \(slot.rawValue) \(param)")
+    }
+
+    /// Saves the channel's edits into its current tone on the speaker, as the JBL app does.
+    /// Without it, the edits are lost when the speaker changes tone.
+    func saveTone(channel: Int) {
+        guard let details = editableDetails(channel) else { return }
+        send(BandBoxProtocol.toneAction(.save, channel: channel, tone: details.id), "channel \(channel) save tone \(details.name)")
+    }
+
+    /// Saves the channel's current tone with its edits as a new user tone; the speaker answers
+    /// with its ID, and the channel then plays it (see createdTone). The tone itself keeps its
+    /// saved settings. The category is an ID from `categories`.
+    func saveToneAs(_ name: String, category: Int, channel: Int) {
+        guard let details = editableDetails(channel) else { return }
+        send(BandBoxProtocol.toneAction(.saveAs, channel: channel, tone: details.id, category: UInt8(category), name: name),
+             "channel \(channel) save \(details.name) as \(name)")
+    }
+
+    /// Drops the channel's edits; the speaker goes back to the saved tone.
+    func discardEdits(channel: Int) {
+        guard let details = editableDetails(channel) else { return }
+        send(BandBoxProtocol.toneAction(.discard, channel: channel, tone: details.id), "channel \(channel) discard edits")
+    }
+
+    func renameTone(_ toneID: Int, to name: String, channel: Int) {
+        send(BandBoxProtocol.toneAction(.rename, channel: channel, tone: toneID, target: UInt8(toneID), name: name),
+             "rename \(toneName(toneID)) to \(name)")
+    }
+
+    func deleteTone(_ toneID: Int, channel: Int) {
+        send(BandBoxProtocol.toneAction(.delete, channel: channel, tone: toneID), "delete \(toneName(toneID))")
+    }
+
+    /// Puts a factory tone back to its factory settings.
+    func resetTone(_ toneID: Int, channel: Int) {
+        send(BandBoxProtocol.toneAction(.reset, channel: channel, tone: toneID), "reset \(toneName(toneID)) to factory")
+    }
+
+    /// The channel's tone, if it's the one playing: edits only apply to that.
+    private func editableDetails(_ channel: Int) -> ToneDetails? {
+        guard let details = toneDetails[channel], details.id == presets[channel] else { return nil }
+        return details
+    }
+
+    private func sendEdit(_ channel: Int, _ details: ToneDetails, _ op: EffectOp, _ rest: [UInt8], _ label: String?,
+                          coalesce key: String? = nil) {
+        send(BandBoxProtocol.set(Property.effectBlock, [UInt8(channel), UInt8(details.id), op.rawValue] + rest), label, coalesce: key)
+    }
+
+    private func toneName(_ id: Int) -> String { tones.first { $0.id == id }?.name ?? "#\(id)" }
 
     var masterVolume: Int? { levels[0] }
 
@@ -213,10 +282,16 @@ final class BandBoxClient: NSObject, ObservableObject {
 
     // MARK: Sending
 
-    private func send(_ data: Data, _ label: String? = nil) {
+    /// Queues a write. A write with a `coalesce` key replaces a queued one with the same key, so
+    /// a knob being dragged sends its latest value once the previous write is done.
+    private func send(_ data: Data, _ label: String? = nil, coalesce key: String? = nil) {
         guard link == .connected else { return }
+        if let key, let i = writeQueue.firstIndex(where: { $0.key == key }) {
+            writeQueue[i].data = data
+            return
+        }
         if let label { record("→ \(label)") }
-        writeQueue.append(data)
+        writeQueue.append((data, key))
         pumpWrites()
     }
 
@@ -224,7 +299,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         guard !writeInFlight, !writeQueue.isEmpty,
               let p = peripheral, let w = writeCharacteristic else { return }
         writeInFlight = true
-        p.writeValue(writeQueue.removeFirst(), for: w, type: .withResponse)
+        p.writeValue(writeQueue.removeFirst().data, for: w, type: .withResponse)
     }
 
     // MARK: Receiving
@@ -258,27 +333,42 @@ final class BandBoxClient: NSObject, ObservableObject {
             }
         case Property.toneDetails:
             // The query and its answer name only the tone, so it goes to every channel playing it.
+            // It's the saved tone: a channel's unsaved edits to it stay.
             if let details = BandBoxProtocol.toneDetails(r.value) {
                 for channel in Self.guitarChannels where presets[channel] == details.id {
-                    toneDetails[channel] = details
+                    if !isEdited(channel: channel) || toneDetails[channel]?.id != details.id {
+                        toneDetails[channel] = details
+                    } else {
+                        toneDetails[channel]?.name = details.name   // after a rename
+                    }
+                    savedDetails[channel] = details
                 }
                 record("← tone \(details.name): \(details.blocks.count) effect blocks")
                 return
             }
         case Property.effectBlock where r.value.count >= 7:
-            // ch NN 01 slot ff ff bypass 00: the speaker confirming a bypass change;
-            // ch NN 00 slot model ff k params…: a new model with its default parameters.
+            // Echoes of our edits, ch NN op slot …
             let channel = Int(r.value[0])
-            if var details = toneDetails[channel], details.id == Int(r.value[1]),
-               let i = details.blocks.firstIndex(where: { $0.slot == Int(r.value[3]) }) {
-                if r.value[2] == 0x00, var block = BandBoxProtocol.effectBlock(r.value, at: 3) {
+            let op = EffectOp(rawValue: r.value[2])
+            if op == .param { return }  // echoed as sent, already applied; stale during a drag, and many
+            guard var details = toneDetails[channel], details.id == Int(r.value[1]),
+                  let i = details.blocks.firstIndex(where: { $0.slot == Int(r.value[3]) }) else { break }
+            switch op {
+            case .block:
+                // ch NN 00 slot model ff k params…: a new model with its default parameters.
+                if var block = BandBoxProtocol.effectBlock(r.value, at: 3) {
                     block.bypassed = r.value[6] == 0xFF ? details.blocks[i].bypassed : r.value[6] != 0
                     details.blocks[i] = block
-                } else {
-                    details.blocks[i].bypassed = r.value[6] != 0
                 }
-                toneDetails[channel] = details
+            case .bypass where r.value[6] != 0xFF:
+                // ch NN 01 slot ff ff bypass 00: the speaker confirming a bypass change.
+                details.blocks[i].bypassed = r.value[6] != 0
+            default:
+                break
             }
+            toneDetails[channel] = details
+        case Property.toneAction where r.value.count >= 4:
+            toneActionDone(channel: Int(r.value[0]), ToneAction(rawValue: r.value[1]), tone: Int(r.value[2]), target: Int(r.value[3]))
         case Property.channelInfo where r.value.count >= 3:
             // n plugged type: the input type also keys the channel's volume, (n, type).
             let channel = Int(r.value[0])
@@ -332,6 +422,33 @@ final class BandBoxClient: NSObject, ObservableObject {
             break
         }
         record("← \(String(format: "0x%04x", r.id)) = \(BandBoxProtocol.hex(r.value))")
+    }
+
+    /// Follows up the speaker's echo of a tone action (ch op NN target …), as the JBL app does.
+    private func toneActionDone(channel: Int, _ action: ToneAction?, tone: Int, target: Int) {
+        let playing = Self.guitarChannels.filter { presets[$0] == tone }
+        switch action {
+        case .save:
+            // Save the edits we have as the saved tone, so the re-read replaces both.
+            for c in playing { savedDetails[c] = toneDetails[c] }
+            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+        case .discard, .reset:
+            for c in playing { toneDetails[c] = savedDetails[c] }
+            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+        case .saveAs:
+            // The echo has ff for the tone and the new tone's ID as target.
+            createdTone = CreatedTone(channel: channel, id: target)
+            send(BandBoxProtocol.get([Property.presetLibrary]))
+            setPreset(target, channel: channel)
+        case .rename:
+            send(BandBoxProtocol.get([Property.presetLibrary]))
+            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+        case .delete:
+            send(BandBoxProtocol.get([Property.presetLibrary]))
+            for c in playing { setPreset(1, channel: c) }
+        case nil:
+            break
+        }
     }
 
     private func requestInitialState() {
@@ -450,6 +567,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
         tunerKeepAlive?.invalidate()
         tunerKeepAlive = nil
         toneDetails = [:]
+        savedDetails = [:]
         startSearching()
     }
 }

@@ -167,7 +167,7 @@ struct TonesScreen: View {
 struct ModelPicker: View {
     let pedal: Pedal
     let current: UInt16?
-    let pick: (PedalModel) -> Void
+    let pick: (EffectModel) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

@@ -39,7 +39,7 @@ param f32`, app-capture-6-delay), **verified by ear from the Mac**, and op 08 au
 **Phase 0 is done** (2026-10-18): every slot's models, knob names and ranges, and the tone
 actions (save, save as, rename, delete, reset, discard) are in protocol-notes.md.
 
-## Phase 1: model layer (`Protocol.swift`)
+## Phase 1: model layer (`Protocol.swift`, `Effects.swift`) — done
 - `EffectBlock.params` becomes `[EffectParam]` (`id u8`, `value Float`); `bytes` builds from them.
 - `EffectSlot` covers all 8 slots (gate, comp, dist, amp, cab, FX, delay, reverb) with their
   models; `Pedal` stays as the tones screen's quick-switch subset.
@@ -47,7 +47,10 @@ actions (save, save as, rename, delete, reset, discard) are in protocol-notes.md
   missing from it shows as a generic knob over its raw value, so the editor works before
   the research is complete.
 
-## Phase 2: client (`BandBoxClient.swift`)
+## Phase 2: client (`BandBoxClient.swift`) — done
+Checked offline against the captures (builders, round trip of every captured tone, catalog
+IDs); not yet against the speaker, which needs the editor UI.
+
 - `setParam(slot:param:value:channel:)`: optimistic update + op 04 with that one param; while a knob is
   dragged, coalesce writes (latest value, about every 50 ms).
 - `setPedal` / `setModel` for every slot.

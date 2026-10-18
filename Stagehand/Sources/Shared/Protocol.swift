@@ -45,8 +45,8 @@ enum Property {
     static let preset: UInt16 = 0x3442            // ch NN: guitar channel ch (1 or 3) plays tone NN from the library
     static let toneDetailsQuery: UInt16 = 0x3443  // SET NN: speaker answers with a toneDetails event
     static let toneDetails: UInt16 = 0x3444       // tone NN's name and effect blocks
-    static let effectBlock: UInt16 = 0x3445       // SET ch NN op …: 01 + block replaces a block, 02 slot model ff 00 swaps its model
-    static let toneAction: UInt16 = 0x3446        // ch op NN target ff 00: op 04 saves tone NN's edits (target ff = itself), 08 discards them?
+    static let effectBlock: UInt16 = 0x3445       // SET ch NN op slot …: 01 bypass, 02 / 03 model, 04 one param (EffectOp)
+    static let toneAction: UInt16 = 0x3446        // ch op NN target cat len name: save, save as, rename… (ToneAction)
     static let presetCategories: UInt16 = 0x344A  // GET: category names
     static let uiMode: UInt16 = 0x3804
 }
@@ -55,6 +55,16 @@ struct Tone: Identifiable, Hashable {
     let id: Int
     let categoryID: Int
     let name: String
+
+    /// Saved by the user (save as): 0x33 up; the 27 factory tones are 0x01–0x1b.
+    /// User tones can be renamed and deleted, factory tones reset.
+    var isUser: Bool { id >= 0x33 }
+}
+
+/// One knob of an effect block: parameter ID and value (meaning per model, see EffectSlot.models).
+struct EffectParam: Hashable {
+    let id: UInt8
+    var value: Float
 }
 
 /// One effect slot of a tone, as carried in 0x3444 and 0x3445:
@@ -63,58 +73,58 @@ struct EffectBlock: Hashable {
     let slot: Int
     let model: UInt16
     var bypassed: Bool
-    let paramCount: UInt8
-    let params: [UInt8]     // raw, resent unchanged when toggling
+    var params: [EffectParam]
 
     var bytes: [UInt8] {
-        [UInt8(slot)] + BandBoxProtocol.le16(model) + [bypassed ? 1 : 0, paramCount] + params
+        [UInt8(slot)] + BandBoxProtocol.le16(model) + [bypassed ? 1 : 0, UInt8(params.count)]
+            + params.flatMap { [$0.id] + BandBoxProtocol.f32($0.value) }
     }
+
+    func value(_ param: UInt8) -> Float? { params.first { $0.id == param }?.value }
 }
 
-struct ToneDetails {
+/// A tone's name and its eight effect blocks (0x3444).
+struct ToneDetails: Equatable {
     let id: Int
-    let name: String
+    var name: String
     var blocks: [EffectBlock]
+
+    func block(_ slot: EffectSlot) -> EffectBlock? { blocks.first { $0.slot == slot.rawValue } }
 }
 
-/// The pedals the controller shows, by their effect slot in a tone.
+/// The ops of 0x3445: `ch NN op slot …`, editing the tone the channel plays until it's saved.
+enum EffectOp: UInt8 {
+    case block = 0x00       // speaker → host: a whole block, the answer to a model change
+    case bypass = 0x01      // a whole block; only its bypass byte is applied
+    case model = 0x02       // slot model(u16) ff 00
+    case variant = 0x03     // the same, between the variants of the amps and cabs
+    case param = 0x04       // slot model(u16) ff 01 param f32: one knob
+}
+
+/// The ops of 0x3446: `ch op NN target cat len name…` (protocol-notes.md, Tone actions).
+enum ToneAction: UInt8 {
+    case reset = 0x02       // factory tone back to factory settings
+    case rename = 0x03      // user tone, target = NN
+    case save = 0x04        // edits into the tone itself
+    case delete = 0x07      // user tone
+    case discard = 0x08     // drop the edits
+    case saveAs = 0x09      // a new user tone with the edits; the echo's target is its ID
+}
+
+/// A tone made by save as, and the guitar channel it was saved from.
+struct CreatedTone: Equatable {
+    let channel: Int
+    let id: Int
+}
+
+/// The pedals the tones screen switches, by their slot in a tone's chain.
 enum Pedal: Int, CaseIterable, Identifiable {
     case compressor = 1, distortion = 2, fx = 5, delay = 6, reverb = 7
 
     var id: Int { rawValue }
-    var name: String {
-        switch self {
-        case .compressor: "Comp"
-        case .distortion: "Dist"
-        case .fx: "FX"
-        case .delay: "Delay"
-        case .reverb: "Reverb"
-        }
-    }
-
-    /// The models the JBL app offers for this pedal, in its order (model IDs from 0x3444 / 0x3445).
-    /// Compressor and reverb have one each; the distortion slot holds the wahs and the drive.
-    var models: [PedalModel] {
-        switch self {
-        case .compressor: [PedalModel(id: 0x01, name: "Compressor")]
-        case .distortion: [PedalModel(id: 0x02, name: "Auto-Wah"), PedalModel(id: 0x03, name: "Touch-Wah"),
-                           PedalModel(id: 0x04, name: "Precision Drive")]
-        case .fx: [PedalModel(id: 0x0E, name: "Echo Phase"), PedalModel(id: 0x0F, name: "Green Phaser"),
-                   PedalModel(id: 0x11, name: "Notch Phaser"), PedalModel(id: 0x12, name: "Minivibe"),
-                   PedalModel(id: 0x13, name: "Tremolo"), PedalModel(id: 0x0B, name: "Chorus"),
-                   PedalModel(id: 0x0C, name: "Retro Shiver"), PedalModel(id: 0x0D, name: "Jetter Flanger"),
-                   PedalModel(id: 0x09, name: "Grand Vibrato")]
-        case .delay: [PedalModel(id: 0x14, name: "Pure Echo"), PedalModel(id: 0x15, name: "Analog Echo"),
-                      PedalModel(id: 0x16, name: "Echopress 900"), PedalModel(id: 0x17, name: "Sweep Echo"),
-                      PedalModel(id: 0x18, name: "Sweet Echo")]
-        case .reverb: [PedalModel(id: 0x1B, name: "Reverb")]
-        }
-    }
-}
-
-struct PedalModel: Identifiable, Hashable {
-    let id: UInt16
-    let name: String
+    var slot: EffectSlot { EffectSlot(rawValue: rawValue)! }
+    var name: String { slot.name }
+    var models: [EffectModel] { slot.models }
 }
 
 /// What a channel's switch is set to (channel 3 is always guitar).
@@ -179,6 +189,22 @@ struct Message {
 
 enum BandBoxProtocol {
     static func le16(_ v: UInt16) -> [UInt8] { [UInt8(v & 0xFF), UInt8(v >> 8)] }
+
+    static func f32(_ v: Float) -> [UInt8] {
+        let bits = v.bitPattern
+        return [UInt8(bits & 0xFF), UInt8(bits >> 8 & 0xFF), UInt8(bits >> 16 & 0xFF), UInt8(bits >> 24)]
+    }
+
+    static func f32(_ v: [UInt8], at i: Int) -> Float {
+        Float(bitPattern: UInt32(v[i]) | UInt32(v[i + 1]) << 8 | UInt32(v[i + 2]) << 16 | UInt32(v[i + 3]) << 24)
+    }
+
+    /// 0x3446: `ch op NN target cat len name`; ff where a field doesn't apply.
+    static func toneAction(_ op: ToneAction, channel: Int, tone: Int, target: UInt8 = 0xFF,
+                           category: UInt8 = 0xFF, name: String = "") -> Data {
+        let n = Array(name.utf8.prefix(255))
+        return set(Property.toneAction, [UInt8(channel), op.rawValue, UInt8(tone), target, category, UInt8(n.count)] + n)
+    }
 
     static func frame(_ type: MessageType, _ payload: [UInt8]) -> Data {
         Data([0x00, 0xDD] + le16(type.rawValue) + [0x01, 0x00] + le16(UInt16(payload.count)) + payload)
@@ -250,8 +276,9 @@ enum BandBoxProtocol {
         guard i + 5 <= v.count else { return nil }
         let end = i + 5 + Int(v[i + 4]) * 5
         guard end <= v.count else { return nil }
+        let params = stride(from: i + 5, to: end, by: 5).map { EffectParam(id: v[$0], value: f32(v, at: $0 + 1)) }
         return EffectBlock(slot: Int(v[i]), model: UInt16(v[i + 1]) | UInt16(v[i + 2]) << 8,
-                           bypassed: v[i + 3] != 0, paramCount: v[i + 4], params: Array(v[i + 5 ..< end]))
+                           bypassed: v[i + 3] != 0, params: params)
     }
 
     /// 0x3444: `NN cat len name… cnt` then `cnt` effect blocks.
@@ -271,10 +298,7 @@ enum BandBoxProtocol {
     /// 0x3106: frequency f32 | string u8 | offset f32 in half-cents | signal u8.
     static func tunerReading(_ v: [UInt8]) -> TunerReading? {
         guard v.count >= 10 else { return nil }
-        func f32(_ at: Int) -> Float {
-            Float(bitPattern: UInt32(v[at]) | UInt32(v[at + 1]) << 8 | UInt32(v[at + 2]) << 16 | UInt32(v[at + 3]) << 24)
-        }
-        return TunerReading(frequency: f32(0), string: Int(v[4]), cents: f32(5) * 2, hasSignal: v[9] == 1)
+        return TunerReading(frequency: f32(v, at: 0), string: Int(v[4]), cents: f32(v, at: 5) * 2, hasSignal: v[9] == 1)
     }
 
     static func hex(_ bytes: [UInt8]) -> String {
