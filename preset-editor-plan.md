@@ -17,8 +17,8 @@ view (pick a tone, switch pedals on and off); the editor goes deeper. The JBL ap
 | Amp models and names | Mapped: 11 amps, op 03 between guitar amps, op 02 for Acoustic / Studio Bass |
 | Cab models and names | Mapped: 12 cabs, op 03, no params |
 | Gate (slot 0) | Mapped: Noise Gate (00), Gate (1c) |
-| Save as a new tone (target ID, name) | Not captured |
-| Discard edits (0x3446 op 08) | Probably; unconfirmed |
+| Save as, rename, delete, reset | Mapped: 0x3446 op 09 / 03 / 07 / 02 |
+| Discard edits (0x3446 op 08) | Heard from the Mac |
 
 ## Phase 0: protocol research
 1. Mac probe: resend a block with op 01 and one float changed; check the echo and that
@@ -36,8 +36,8 @@ speaker can't tell it what the knobs are at after an edit. Feathered Blues (0x0d
 gate on, model 0x1c, 2 params. **op 01 with new floats is not heard** (`capture-preset-edit.sh listen`, guitar on channel 1):
 op 01 applies only the bypass byte. **op 04 sets one parameter** (`ch NN 04 slot model ff 01
 param f32`, app-capture-6-delay), **verified by ear from the Mac**, and op 08 audibly discards.
-The delay models are mapped. Next: the other JBL app areas (gate, comp, dist, amp, cab, FX,
-reverb) and save as.
+**Phase 0 is done** (2026-10-18): every slot's models, knob names and ranges, and the tone
+actions (save, save as, rename, delete, reset, discard) are in protocol-notes.md.
 
 ## Phase 1: model layer (`Protocol.swift`)
 - `EffectBlock.params` becomes `[EffectParam]` (`id u8`, `value Float`); `bytes` builds from them.
@@ -54,8 +54,9 @@ reverb) and save as.
 - `savedDetails[channel]`, the last 0x3444, to show unsaved changes and which blocks differ.
   `toneDetails[channel]` stays the edited copy; a re-query of 0x3444 must not overwrite it
   while there are unsaved edits (it would put back the saved values).
-- `discardEdits(channel:)` (op 08) and `saveTone(as:channel:)`; refresh the library
-  (GET 0x3440) after a save as.
+- `discardEdits(channel:)` (op 08); `saveToneAs(name:category:channel:)` (op 09; the echo
+  gives the new ID); `renameTone` (op 03), `deleteTone` (op 07, user tones), `resetTone`
+  (op 02, back to factory). Refresh the library (GET 0x3440) after save as, rename and delete.
 
 ## Phase 3: editor UI (`PresetEditor.swift`)
 - **Its own page in the pager**, per guitar channel, so it can be reached by swiping
@@ -74,7 +75,9 @@ reverb) and save as.
   - detail panel: model chips (scrolling for FX's 9) and large knobs (vertical drag,
     value with unit, double-tap for default). Knob is a new component in `Pads.swift`.
 - Changing tone or leaving with unsaved edits asks: Save / Save as new… / Discard / Keep editing.
-- Save as asks for a name, then offers to put the new tone on a button.
+- Save as asks for a name (prefilled with the tone's) and a category (the 8 from 0x344a),
+  then offers to put the new tone on a button. Save as keeps the source tone unchanged.
+- The editor's tone menu: Rename and Delete for user tones, Reset to factory for factory tones.
 
 ## Phase 4: wrap-up
 README section, protocol notes, check on the iPhone and the Mac.

@@ -1,0 +1,14 @@
+[19:18:08.327] >>> Select the Feathered Blues tone and open its preset page
+[19:18:24.764] >>> Turn the delay time all the way up
+[19:18:39.701] >>> Save as a new tone named Test One
+[19:18:54.942] >>> Take a screenshot of each step if there is a dialog
+[19:19:10.892] >>> Select another tone
+[19:19:25.398] >>> Select Test One
+[19:19:39.768] >>> Open the preset page, turn the reverb off
+[19:19:55.807] >>> Save as another new tone named Test Two
+[19:20:11.270] >>> Rename Test Two to Test Three, if the app allows it
+[19:20:27.556] >>> Delete Test Three, if the app allows it
+[19:20:43.094] >>> Delete Test One, if the app allows it
+[19:20:58.704] >>> Select Feathered Blues
+[19:21:13.309] >>> Open the preset page
+[19:21:28.024] >>> Change the delay time, then leave the page and choose not to save
