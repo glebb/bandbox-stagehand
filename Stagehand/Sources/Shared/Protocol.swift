@@ -276,7 +276,11 @@ enum BandBoxProtocol {
         guard i + 5 <= v.count else { return nil }
         let end = i + 5 + Int(v[i + 4]) * 5
         guard end <= v.count else { return nil }
-        let params = stride(from: i + 5, to: end, by: 5).map { EffectParam(id: v[$0], value: f32(v, at: $0 + 1)) }
+        // A value that isn't a number would crash the knobs' Int conversions; show it as 0.
+        let params = stride(from: i + 5, to: end, by: 5).map { j in
+            let value = f32(v, at: j + 1)
+            return EffectParam(id: v[j], value: value.isFinite ? value : 0)
+        }
         return EffectBlock(slot: Int(v[i]), model: UInt16(v[i + 1]) | UInt16(v[i + 2]) << 8,
                            bypassed: v[i + 3] != 0, params: params)
     }
@@ -298,7 +302,10 @@ enum BandBoxProtocol {
     /// 0x3106: frequency f32 | string u8 | offset f32 in half-cents | signal u8.
     static func tunerReading(_ v: [UInt8]) -> TunerReading? {
         guard v.count >= 10 else { return nil }
-        return TunerReading(frequency: f32(v, at: 0), string: Int(v[4]), cents: f32(v, at: 5) * 2, hasSignal: v[9] == 1)
+        let frequency = f32(v, at: 0), cents = f32(v, at: 5) * 2
+        guard frequency.isFinite, cents.isFinite else { return nil }
+        return TunerReading(frequency: frequency, string: Int(v[4]), cents: min(max(cents, -1000), 1000),
+                            hasSignal: v[9] == 1)
     }
 
     static func hex(_ bytes: [UInt8]) -> String {

@@ -322,7 +322,8 @@ struct Knob: View {
             .simultaneousGesture(TapGesture().onEnded {
                 guard let choices = spec.choices else { return }
                 Haptics.tap()
-                change(Float((Int(value) + 1) % choices.count))
+                let i = Int(exactly: value.rounded(.towardZero)).flatMap { choices.indices.contains($0) ? $0 : nil } ?? -1
+                change(Float((i + 1) % choices.count))
             })
             Text(spec.name)
                 .font(.system(size: 11, weight: .medium))

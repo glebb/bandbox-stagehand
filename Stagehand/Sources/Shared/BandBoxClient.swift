@@ -311,6 +311,8 @@ final class BandBoxClient: NSObject, ObservableObject {
         }
         var payload = msg.payload
         if msg.fragmentTotal > 1 {
+            // A first fragment starts over, so a message cut off earlier isn't glued to this one.
+            if msg.fragmentIndex == 0 { fragments[msg.type] = nil }
             fragments[msg.type, default: []] += payload
             guard msg.fragmentIndex + 1 == msg.fragmentTotal else { return }
             payload = fragments.removeValue(forKey: msg.type) ?? payload

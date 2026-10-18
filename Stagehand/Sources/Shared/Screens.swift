@@ -345,7 +345,7 @@ struct TunerPad: View {
                         .padding(.top, 6)
                 } else {
                     let reading = client.tuner.flatMap { $0.hasSignal ? $0 : nil }
-                    let cents = reading.map { Int($0.cents.rounded()) }
+                    let cents = reading.map { Int($0.cents.rounded()) }   // finite, ±1000 at most (tunerReading)
                     let inTune = cents.map { abs($0) < 5 } ?? false
                     Text(reading?.noteName ?? "–")
                         .font(.system(size: 56, weight: .medium))

@@ -142,9 +142,13 @@ struct ParamSpec: Identifiable {
     }
 
     func format(_ v: Float) -> String {
-        if let choices { return choices.indices.contains(Int(v)) ? choices[Int(v)] : "\(Int(v))" }
+        if let choices {
+            let i = Int(exactly: v.rounded(.towardZero))
+            if let i, choices.indices.contains(i) { return choices[i] }
+            return i.map(String.init) ?? "–"
+        }
         if let zeroLabel, v <= range.lowerBound { return zeroLabel }
-        let number = step < 1 ? String(format: "%.1f", v) : "\(Int(v.rounded()))"
+        let number = step < 1 ? String(format: "%.1f", v) : Int(exactly: v.rounded()).map(String.init) ?? "–"
         return unit.map { "\(number) \($0)" } ?? number
     }
 }
