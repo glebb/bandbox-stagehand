@@ -6,6 +6,7 @@ import SwiftUI
 /// Tones and pedals of one guitar channel (1 or 3).
 struct TonesScreen: View {
     let channel: Int
+    var edit: (Int) -> Void = { _ in }   // opens a tone in the preset editor
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
     @State private var assigning: Int?
@@ -86,6 +87,7 @@ struct TonesScreen: View {
         // Right-click as well as hold; on the iPhone a long press already opens the picker.
         .contextMenu {
             Button("Rename…") { assigning = slot.id }
+            Button("Edit \(toneName(toneID))…") { edit(toneID) }
             Button("Save Pedals to \(toneName(toneID))") { client.saveTone(channel: channel) }
                 .disabled(!selected || client.toneDetails[channel]?.id != toneID)
             Divider()
@@ -100,6 +102,8 @@ struct TonesScreen: View {
                 assigning = nil
             } header: {
                 nameField(slot)
+                Divider()
+                editRow(toneID)
                 Divider()
                 saveRow(toneID)
             }
@@ -120,6 +124,23 @@ struct TonesScreen: View {
                 .onSubmit { assigning = nil }
         }
         .padding(12)
+    }
+
+    /// Opens the button's tone in the preset editor (and plays it).
+    private func editRow(_ toneID: Int) -> some View {
+        Button {
+            assigning = nil
+            edit(toneID)
+        } label: {
+            HStack {
+                Text("Edit \(toneName(toneID))…")
+                Spacer()
+                Image(systemName: "slider.horizontal.3").foregroundStyle(.secondary)
+            }
+            .padding(12)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     /// Saves the pedals as they are now into the button's tone on the speaker.

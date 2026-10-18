@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The controller screens, side by side: a tones page for each guitar channel with a guitar
-/// plugged in (channel 3 when there's none), then mix and STEM AI. Swipe (touch, trackpad or drag),
+/// plugged in (channel 3 when there's none), then mix, STEM AI and the preset editor. Swipe (touch, trackpad or drag),
 /// tap the dots, or use ← / → to change screen; 1–4 select the tone buttons and 5–9 switch the
 /// pedals of the primary guitar channel, Shift+1–9 those of channel 1.
 struct ContentView: View {
@@ -12,10 +12,15 @@ struct ContentView: View {
     #endif
     @State private var page = 0
     @State private var channel = 3
+    @State private var editorChannel: Int?   // the guitar channel the preset editor edits; nil = the primary one
     @State private var showLog = false
 
     private var guitarPages: [Int] { client.activeGuitarChannels }
-    private var pageCount: Int { guitarPages.count + 2 }
+    private var pageCount: Int { guitarPages.count + 3 }
+    private var editorPage: Int { guitarPages.count + 2 }
+    private var editedChannel: Int {
+        editorChannel.flatMap { guitarPages.contains($0) ? $0 : nil } ?? client.primaryGuitarChannel
+    }
     private var connected: Bool { client.link == .connected }
 
     var body: some View {
@@ -25,11 +30,19 @@ struct ContentView: View {
             VStack(spacing: 8) {
                 Pager(page: $page, count: pageCount) { index in
                     if index < guitarPages.count {
-                        TonesScreen(channel: guitarPages[index])
+                        TonesScreen(channel: guitarPages[index]) { tone in
+                            // "Edit Tone…" on a tone button: play it and open it in the editor.
+                            let ch = guitarPages[index]
+                            if client.presets[ch] != tone { client.setPreset(tone, channel: ch) }
+                            editorChannel = ch
+                            page = editorPage
+                        }
                     } else if index == guitarPages.count {
                         MixScreen(channel: $channel)
-                    } else {
+                    } else if index == guitarPages.count + 1 {
                         StemScreen()
+                    } else {
+                        PresetEditorScreen(channel: $editorChannel)
                     }
                 }
                 // The mix screen starts on the guitar's channel, and follows it when guitars come or go.
@@ -83,8 +96,8 @@ struct ContentView: View {
             }
             // Which guitar channel a tones page controls, just left of the dots so they stay centred.
             .overlay(alignment: .leading) {
-                if page < guitarPages.count {
-                    Text("CH \(guitarPages[page])")
+                if let ch = page < guitarPages.count ? guitarPages[page] : (page == editorPage ? editedChannel : nil) {
+                    Text("CH \(ch)")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(Stage.secondaryText)
                         .fixedSize()
@@ -194,9 +207,14 @@ struct Pager<Content: View>: View {
             .animation(.easeOut(duration: 0.25), value: page)
             .simultaneousGesture(
                 DragGesture(minimumDistance: 30)
-                    .updating($drag) { value, state, _ in state = value.translation.width / 3 }
+                    .updating($drag) { value, state, _ in
+                        let t = value.translation
+                        state = abs(t.width) > abs(t.height) ? t.width / 3 : 0
+                    }
                     .onEnded { value in
-                        if abs(value.translation.width) > 60 { turn(value.translation.width < 0 ? 1 : -1) }
+                        // Mostly sideways only, so turning a knob (up and down) doesn't change page.
+                        let t = value.translation
+                        if abs(t.width) > 60, abs(t.width) > abs(t.height) * 1.5 { turn(t.width < 0 ? 1 : -1) }
                     })
         }
         .clipped()

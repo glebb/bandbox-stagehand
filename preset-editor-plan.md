@@ -61,12 +61,16 @@ IDs); not yet against the speaker, which needs the editor UI.
   gives the new ID); `renameTone` (op 03), `deleteTone` (op 07, user tones), `resetTone`
   (op 02, back to factory). Refresh the library (GET 0x3440) after save as, rename and delete.
 
-## Phase 3: editor UI (`PresetEditor.swift`)
-- **Its own page in the pager**, per guitar channel, so it can be reached by swiping
-  like the other screens.
+## Phase 3: editor UI (`PresetEditor.swift`) — done
+Tried on the Mac with the speaker (2026-10-18): knobs, models, bypass and save as work.
+Not yet tried on the iPhone.
+
+- **Its own page in the pager**, the last one (after the tones pages, mix and STEM AI),
+  so it can be reached by swiping like the other screens.
 - **Opened from a tone button's long-press popover (iOS) or right-click menu (macOS)**
   with "Edit Tone…": jumps to the editor with that button's tone selected.
-- **Reached by swiping**: no tone is chosen yet; the page asks to select one first.
+- **Reached by swiping**: opens on the tone the channel plays; the tone name's drop-down
+  changes it. (A first version asked for a tone first; dropped after trying it, 2026-10-18.)
 - **Changing the tone inside the editor**: a tone picker listing every tone in the library
   (by category, like the existing tone picker), not only the four buttons.
 - Selecting a tone in the editor plays it on the channel (0x3442), since 0x3445 edits
@@ -76,10 +80,12 @@ IDs); not yet against the speaker, which needs the editor UI.
   - chain strip: the 8 slots in a row joined by a signal line, JBL order; bypassed slots
     dimmed, on ones amber; tap to select, a power control to bypass;
   - detail panel: model chips (scrolling for FX's 9) and large knobs (vertical drag,
-    value with unit, double-tap for default). Knob is a new component in `Pads.swift`.
-- Changing tone or leaving with unsaved edits asks: Save / Save as new… / Discard / Keep editing.
+    value with unit). Knob is a new component in `Pads.swift`. No double-tap for the
+    default yet: the catalog has no defaults (the op 02 replies carry them).
+- Changing tone in the editor with unsaved edits asks: Save / Save as new… / Discard / Keep
+  editing. Leaving the page doesn't: the edits stay on the speaker until the tone changes.
 - Save as asks for a name (prefilled with the tone's) and a category (the 8 from 0x344a),
-  then offers to put the new tone on a button. Save as keeps the source tone unchanged.
+  then offers the channel's four tone buttons (or none) for the new tone. Save as keeps the source tone unchanged.
 - The editor's tone menu: Rename and Delete for user tones, Reset to factory for factory tones.
 
 ## Phase 4: wrap-up
@@ -88,4 +94,5 @@ README section, protocol notes, check on the iPhone and the Mac.
 ## Decisions
 - Factory tones can be overwritten, as in the JBL app (capture 4 saved Brit Crunch into itself).
 - The editor edits one guitar channel: the channel of the tones page it was opened from,
-  or a channel picker when reached by swiping with both guitars plugged in.
+  or the primary guitar channel when reached by swiping; with both guitars plugged in, a
+  CH 1 / CH 3 picker in the editor's header switches.

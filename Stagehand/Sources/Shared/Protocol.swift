@@ -112,7 +112,7 @@ enum ToneAction: UInt8 {
 }
 
 /// A tone made by save as, and the guitar channel it was saved from.
-struct CreatedTone: Equatable {
+struct CreatedTone: Equatable, Identifiable {
     let channel: Int
     let id: Int
 }

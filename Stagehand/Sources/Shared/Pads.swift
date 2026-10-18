@@ -275,3 +275,60 @@ final class ToneAssignments: ObservableObject {
                 set: { self.names[channel]?[slot.id] = $0 })
     }
 }
+
+/// A knob for one effect parameter: drag up or down to turn it (a full turn is about 180 points),
+/// value inside, name below. A selector (Tremolo's Shape) steps on tap as well.
+struct Knob: View {
+    let spec: ParamSpec
+    let value: Float
+    var size: CGFloat = 76
+    let change: (Float) -> Void
+    @State private var dragStart: Float?
+
+    var body: some View {
+        let span = spec.range.upperBound - spec.range.lowerBound
+        let fraction = CGFloat(span > 0 ? (value - spec.range.lowerBound) / span : 0)
+        VStack(spacing: 6) {
+            ZStack {
+                Circle().fill(Stage.tile)
+                Circle().strokeBorder(Stage.tileBorder, lineWidth: 1)
+                // 270° of travel, from the bottom left round to the bottom right.
+                Circle().trim(from: 0, to: 0.75)
+                    .stroke(Stage.meterTrack, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                    .rotationEffect(.degrees(135))
+                    .padding(6)
+                Circle().trim(from: 0, to: 0.75 * fraction)
+                    .stroke(Stage.amber, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                    .rotationEffect(.degrees(135))
+                    .padding(6)
+                Text(spec.format(value))
+                    .font(.system(size: size * 0.2, weight: .medium))
+                    .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .foregroundStyle(Stage.text)
+                    .padding(.horizontal, 10)
+            }
+            .frame(width: size, height: size)
+            .contentShape(Circle())
+            .gesture(
+                DragGesture(minimumDistance: 2)
+                    .onChanged { g in
+                        let start = dragStart ?? value
+                        dragStart = start
+                        change(spec.clamp(start - Float(g.translation.height) / 180 * span))
+                    }
+                    .onEnded { _ in dragStart = nil })
+            .simultaneousGesture(TapGesture().onEnded {
+                guard let choices = spec.choices else { return }
+                Haptics.tap()
+                change(Float((Int(value) + 1) % choices.count))
+            })
+            Text(spec.name)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(Stage.secondaryText)
+                .lineLimit(1)
+        }
+        .animation(.easeOut(duration: 0.08), value: value)
+    }
+}
