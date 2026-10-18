@@ -1,0 +1,59 @@
+[18:04:51.977] >>> Select the Feathered Blues tone and open its preset page
+[18:05:04.421] >>> Open the delay pedal, Pure Echo
+[18:05:15.674] >>> Take a screenshot
+[18:05:26.051] >>> Knob 1 all the way down, skip it if there is none
+[18:05:38.188] >>> Knob 1 all the way up
+[18:05:48.666] >>> Knob 1 back to the middle
+[18:05:59.245] >>> Knob 2 all the way down, skip it if there is none
+[18:06:11.363] >>> Knob 2 all the way up
+[18:06:21.819] >>> Knob 2 back to the middle
+[18:06:32.378] >>> Knob 3 all the way down, skip it if there is none
+[18:06:44.517] >>> Knob 3 all the way up
+[18:06:54.998] >>> Knob 3 back to the middle
+[18:07:05.596] >>> Switch the model to Analog Echo
+[18:07:16.736] >>> Take a screenshot
+[18:07:27.114] >>> Knob 1 all the way down, skip it if there is none
+[18:07:39.245] >>> Knob 1 all the way up
+[18:07:49.714] >>> Knob 1 back to the middle
+[18:08:00.294] >>> Knob 2 all the way down, skip it if there is none
+[18:08:12.397] >>> Knob 2 all the way up
+[18:08:22.830] >>> Knob 2 back to the middle
+[18:08:33.396] >>> Knob 3 all the way down, skip it if there is none
+[18:08:45.534] >>> Knob 3 all the way up
+[18:08:56.023] >>> Knob 3 back to the middle
+[18:09:06.627] >>> Switch the model to Echopress 900
+[18:09:18.110] >>> Take a screenshot
+[18:09:28.468] >>> Knob 1 all the way down, skip it if there is none
+[18:09:40.600] >>> Knob 1 all the way up
+[18:09:51.076] >>> Knob 1 back to the middle
+[18:10:01.710] >>> Knob 2 all the way down, skip it if there is none
+[18:10:13.831] >>> Knob 2 all the way up
+[18:10:24.302] >>> Knob 2 back to the middle
+[18:10:34.868] >>> Knob 3 all the way down, skip it if there is none
+[18:10:47.005] >>> Knob 3 all the way up
+[18:10:57.480] >>> Knob 3 back to the middle
+[18:11:08.094] >>> Switch the model to Sweep Echo
+[18:11:19.081] >>> Take a screenshot
+[18:11:29.457] >>> Knob 1 all the way down, skip it if there is none
+[18:11:41.605] >>> Knob 1 all the way up
+[18:11:52.098] >>> Knob 1 back to the middle
+[18:12:02.672] >>> Knob 2 all the way down, skip it if there is none
+[18:12:14.783] >>> Knob 2 all the way up
+[18:12:25.239] >>> Knob 2 back to the middle
+[18:12:35.836] >>> Knob 3 all the way down, skip it if there is none
+[18:12:47.992] >>> Knob 3 all the way up
+[18:12:58.506] >>> Knob 3 back to the middle
+[18:13:09.139] >>> Switch the model to Sweet Echo
+[18:13:20.105] >>> Take a screenshot
+[18:13:30.470] >>> Knob 1 all the way down, skip it if there is none
+[18:13:42.618] >>> Knob 1 all the way up
+[18:13:53.106] >>> Knob 1 back to the middle
+[18:14:03.683] >>> Knob 2 all the way down, skip it if there is none
+[18:14:15.810] >>> Knob 2 all the way up
+[18:14:26.258] >>> Knob 2 back to the middle
+[18:14:36.812] >>> Knob 3 all the way down, skip it if there is none
+[18:14:48.949] >>> Knob 3 all the way up
+[18:14:59.454] >>> Knob 3 back to the middle
+[18:15:10.072] >>> Switch back to Pure Echo
+[18:15:20.773] >>> If there is a tap tempo or a sync switch, use it now
+[18:15:33.257] >>> Leave the preset page without saving, discard the changes

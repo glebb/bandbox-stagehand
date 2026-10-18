@@ -1,0 +1,50 @@
+>>> probing 718B16CE-02FA-8C76-1C16-9E2B6173621A …
+[18:19:18.293] connected to JBL BandBox Trio
+[18:19:18.893] found JBL BandBox Trio [718B16CE-02FA-8C76-1C16-9E2B6173621A]
+[18:19:19.072] subscribed com/0001 (notifying=true)
+[18:19:19.073] listening for 78s — use the speaker and the app now
+18:19:19.074  spk->mac  EVENT  hello=00 01
+18:19:20.122  mac->spk  SET    0x3441=01
+18:19:20.183  spk->mac  SET-reply  
+18:19:20.184  spk->mac  EVENT  preset=01 0d
+18:19:21.173  mac->spk  SET    preset=01 0d
+18:19:21.234  spk->mac  SET-reply  
+18:19:21.234  spk->mac  EVENT  preset=01 0d
+18:19:33.482  mac->spk  SET    effect_block=01 0d 04 06 14 00 ff 01 00 00 00 48 42
+18:19:33.483  mac->spk  SET    effect_block=01 0d 04 06 14 00 ff 01 01 00 00 48 44
+18:19:33.535  spk->mac  SET-reply  
+18:19:33.535  spk->mac  EVENT  effect_block=01 0d 04 06 14 00 ff 01 00 00 00 48 42
+18:19:33.579  spk->mac  SET-reply  
+18:19:33.579  spk->mac  EVENT  effect_block=01 0d 04 06 14 00 ff 01 01 00 00 48 44
+18:19:44.266  mac->spk  SET    effect_block=01 0d 04 06 14 00 ff 01 01 00 00 c8 42
+18:19:44.266  mac->spk  SET    effect_block=01 0d 04 06 14 00 ff 01 02 00 00 70 42
+18:19:44.306  spk->mac  SET-reply  
+18:19:44.306  spk->mac  EVENT  effect_block=01 0d 04 06 14 00 ff 01 01 00 00 c8 42
+18:19:44.334  spk->mac  SET-reply  
+18:19:44.335  spk->mac  EVENT  effect_block=01 0d 04 06 14 00 ff 01 02 00 00 70 42
+18:19:54.766  mac->spk  SET    tone_action=01 08 0d ff ff 00
+18:19:54.806  spk->mac  SET-reply  
+18:19:54.807  spk->mac  EVENT  tone_action=01 08 0d ff ff 00
+18:19:54.821  spk->mac  EVENT  preset=01 0d
+18:20:04.658  spk->mac  EVENT  battery%=24
+              (… repeated 1 more times)
+18:20:05.266  mac->spk  SET    effect_block=01 0d 04 03 06 05 ff 01 00 00 00 c8 42
+18:20:05.290  spk->mac  SET-reply  
+18:20:05.304  spk->mac  EVENT  effect_block=01 0d 04 03 06 05 ff 01 00 00 00 c8 42
+18:20:10.853  spk->mac  EVENT  battery%=24
+              (… repeated 1 more times)
+18:20:15.766  mac->spk  SET    effect_block=01 0d 04 03 06 05 ff 01 00 00 00 00 00
+18:20:15.805  spk->mac  SET-reply  
+18:20:15.805  spk->mac  EVENT  effect_block=01 0d 04 03 06 05 ff 01 00 00 00 00 00
+18:20:26.266  mac->spk  SET    tone_action=01 08 0d ff ff 00
+18:20:26.320  spk->mac  SET-reply  
+18:20:26.321  spk->mac  EVENT  tone_action=01 08 0d ff ff 00
+18:20:26.335  spk->mac  EVENT  preset=01 0d
+18:20:32.858  spk->mac  EVENT  battery%=24
+              (… repeated 1 more times)
+18:20:34.666  mac->spk  SET    preset=01 0d
+18:20:34.690  spk->mac  SET-reply  
+18:20:34.706  spk->mac  EVENT  preset=01 0d
+18:20:40.073  spk->mac  EVENT  battery%=24
+[18:20:40.966] done listening
+              (… repeated 1 more times)

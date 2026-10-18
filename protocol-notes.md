@@ -65,8 +65,8 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3442 | 2 | `ch NN` | **Current tone** of guitar channel ch (01 or 03, each has its own): SET 0x3442 = 01 NN switched channel 1 audibly and left channel 3 alone (`captures/ch1-guitar.decoded.txt`). The speaker also sends it unprompted for channel 01 (01 33 when its preset button was pressed), so a client must check the channel byte. NN = tone ID from the 0x3440 library (not a 1–3 slot; the speaker's preset buttons step through the library). SET selects a tone. GET returns nothing; use 0x3441. The leading byte is the channel | listen + app capture 2 + Mac test |
 | 0x3443 | 1 | `NN` | **Query tone details**: SET 0x3443 = NN → EVENT 0x3444. The app sends it after every tone change | app capture 2 |
 | 0x3444 | ~160 | `NN cat len name… cnt blocks…` | **Tone details**: ID, category, name length, name, then `cnt` (8) **effect blocks**, each `slot u8 · model u16 · bypass u8 · k u8 · k × (param u8, float32)`. bypass 1 = off, 0 = on. Slots: 0 gate?, **1 compressor, 2 distortion**, 3 amp (5 params), 4 cab (no params), **5 FX, 6 delay, 7 reverb**. Example Brit Crunch: delay params (1, 450.0)=time ms? | app capture 2 + 3 |
-| 0x3445 | var | `ch NN op slot …` | **Edit one effect block** of tone NN on channel ch (01 works too: channel 1's delay went on and off audibly, echoed as `01 1b 01 06 ff ff 00 00`; an edit to a tone that is no longer current is still accepted and echoed). The edit lasts until the tone changes; 0x3446 op 04 saves it. **op 01 = replace the block**: `03 NN 01 slot model bypass k params…`, the slot's whole block from 0x3444 with the new bypass byte; to toggle a pedal, copy the block and flip bypass. Speaker replies EVENT `03 NN 01 slot ff ff bypass 00`. **op 02 = change model**: `03 NN 02 slot model(u16) ff 00` (ff = leave bypass alone); speaker replies EVENT op 00 `03 NN 00 slot model ff k params…`, the new model with its default parameters. See *Effect models* below | app capture 3 + 4 |
-| 0x3446 | 6 | `03 op NN target ff 00` | **Tone action**. **op 04 = save** tone NN's pedal and model edits into the tone, target ff = into itself; the echo fills the target (`03 04 0f 0f ff 00`), then the app re-queries 0x3443. A target other than NN is probably *save as* (user tones 0x33, 0x34); not captured. **op 08**: sent when leaving the pedal page after unsaved edits in capture 3, echoed unchanged and followed by EVENT 0x3442 with the same tone: probably *discard edits* (reload the saved tone) | app capture 3 + 4 |
+| 0x3445 | var | `ch NN op slot …` | **Edit one effect block** of tone NN on channel ch (01 works too: channel 1's delay went on and off audibly, echoed as `01 1b 01 06 ff ff 00 00`; an edit to a tone that is no longer current is still accepted and echoed). The edit lasts until the tone changes; 0x3446 op 04 saves it. **op 01 = replace the block**: `03 NN 01 slot model bypass k params…`, the slot's whole block from 0x3444 with the new bypass byte; to toggle a pedal, copy the block and flip bypass. **op 01 does not change parameter values**: a block with new floats is accepted and echoed like a bypass change, but nothing changes in the sound (delay time 250 → 800 → 100 ms, amp knob 0 → 100 → 0 on channel 1 with a guitar playing, 18:00, 2026-10-18; that run's log was overwritten by the op 04 run). op 01 applies only the bypass byte. **op 04 = set one parameter**: `ch NN 04 slot model(u16) ff 01 param f32`, a block with bypass ff (unchanged) and one param; the speaker echoes it unchanged. While a knob is dragged the JBL app sends one every 60–120 ms (`captures/app-capture-6-delay.decoded.txt`). **Verified from the Mac by ear**: delay mix, time and feedback and amp param 0 (0 and 100) all changed the sound on channel 1, one SET per param (`captures/preset-edit-listen.*`). **0x3444 does not show unsaved edits**: queried right after the edit it still has the saved values, so a client has to keep its own copy of the edited blocks. Speaker replies EVENT `03 NN 01 slot ff ff bypass 00`. **op 02 = change model**: `03 NN 02 slot model(u16) ff 00` (ff = leave bypass alone); speaker replies EVENT op 00 `03 NN 00 slot model ff k params…`, the new model with its default parameters. See *Effect models* below | app capture 3 + 4 |
+| 0x3446 | 6 | `03 op NN target ff 00` | **Tone action**. **op 04 = save** tone NN's pedal and model edits into the tone, target ff = into itself; the echo fills the target (`03 04 0f 0f ff 00`), then the app re-queries 0x3443. A target other than NN is probably *save as* (user tones 0x33, 0x34); not captured. **op 08**: sent when leaving the pedal page after unsaved edits in capture 3, echoed unchanged and followed by EVENT 0x3442 with the same tone: **discard edits**. From the Mac, `01 08 0d ff ff 00` is echoed and followed by EVENT 0x3442 = 01 0d, and the tone audibly goes back to its saved settings (`captures/preset-edit-listen.*`) | app capture 3 + 4, Mac probe |
 | 0x3448 / 0x3449 | 1 / 6 | `03` / `03 04 01 09 0e 16` | SET 0x3448 = 03 → EVENT 0x3449: `03`, count 4, then 4 tone IDs. Probably the tones on the speaker's preset buttons | app capture 3 |
 | 0x3406 | 3 | `a b VV` | **Level table** (the app SETs `a b VV` + 7 zero bytes; 3 bytes also work), keyed by (a,b). VV is **0–32** (32 knob clicks, verified end to end). `(00 00)` = **master volume**; SET 0x3406 = 00 00 VV sets it. Otherwise the key is **(channel, input type)** from 0x3401, so each channel keeps one volume per input type: (01 01) ch 1 mic (its Volume knob, 0–32), (01 02) ch 1 guitar, (02 01) ch 2 mic, (02 03) ch 2 line, (03 02) ch 3 guitar. Plugging a jack in sends an EVENT with that input's volume. The speaker sends an EVENT on every knob click. (04 04)=24 is something else (see 0x2d42) | `captures/speaker-controls.listen.log`, `captures/inputs.decoded.txt` |
 | 0x2d42 | 1 | `07` | **Channel 4 volume** (USB / Bluetooth audio; channel 4 has no input jack). Not in the 0x3406 table: EVENT on every knob click with channel 4 selected, GET and SET from the Mac work (7→8→7). Range 0–32 like the other channels (32 confirmed as the speaker's maximum). (04 04) in 0x3406 is something else: SETs to it are accepted but don't change channel 4 | Mac app log 2026-10-17 |
@@ -97,14 +97,27 @@ The JBL app's model lists (app capture 4, changing models on Brit Crunch):
 
 | Slot | Pedal | Model IDs | Notes |
 |---|---|---|---|
-| 0 | gate? | 00 | always off in factory tones |
+| 0 | Gate | 00, 1c | Off in most factory tones, model 00. Feathered Blues (0x0d) has it on as model 0x1c with 2 params (0 = 45, 1 = 62); the JBL app draws it as a pedal with 2 knobs |
 | 1 | Compressor | 01 | one model |
 | 2 | Distortion | 02 Auto-Wah, 03 Touch-Wah, 04 Precision Drive | Wahs and the drive share this slot. 04 = Precision Drive for sure (Soulful Verb's 40/25/36 = Drive, Bright, Level); 02 vs 03 from tap order only |
-| 3 | Amp | 0x0006, 0x0106, 0x0206, 0x0306, 0x0506 seen | not switched yet |
-| 4 | Cab | 0x0008, 0x0208, 0x0308, 0x0608, 0x0b08 seen | not switched yet |
+| 3 | Amp | 0x0006, 0x0106, 0x0206, 0x0306, 0x0506 seen | not switched yet. 0x0506 = Yellow Tweed (Feathered Blues, matched with the JBL app's preset page) |
+| 4 | Cab | 0x0008, 0x0208, 0x0308, 0x0608, 0x0b08 seen | not switched yet. 0x0608 = UK 1960 4x12 (Feathered Blues) |
 | 5 | FX | 0e Echo Phase, 0f Green Phaser, 11 Notch Phaser, 12 Minivibe, 13 Tremolo, 0b Chorus, 0c Retro Shiver, 0d Jetter Flanger, 09 Grand Vibrato | App order. 9 models; 0a and 10 not offered. Matched by tap order and knob count; Echo Phase's one knob = Speed |
-| 6 | Delay | 14 Pure Echo, 15 Analog Echo, 16 Echopress 900, 17 Sweep Echo, 18 Sweet Echo | Pure Echo params: 1 Time (ms), 2 Fdbk, 0 Mix |
+| 6 | Delay | 14 Pure Echo, 15 Analog Echo, 16 Echopress 900, 17 Sweep Echo, 18 Sweet Echo | See *Delay parameters* |
 | 7 | Reverb | 1b | one model |
+
+### Delay parameters
+The same for every delay model (`captures/app-capture-6-delay.*`, swept min → max in the JBL app, names from its pedal pages):
+
+| Param | Name | Range | Models |
+|---|---|---|---|
+| 0 | Mix | 0–100 | all (Sweep Echo's not swept: the script prompted 3 of its 5 knobs; assumed the same) |
+| 1 | Time | 20–1000 ms | all (Sweep Echo's assumed, as Mix). Tap tempo in the app sends the tapped time with a fraction (890.35); the speaker has no tap command |
+| 2 | Fdbk | 0–100 | all |
+| 3 | Speed | 0–100 | Sweep Echo |
+| 4 | Depth | 0–100 | Sweep Echo |
+
+The app sends whole numbers. Page layout: Fdbk, (Speed, Depth,) Mix in a row, Time as the big knob. Defaults (op 02 reply): Pure Echo 250 ms / 34 / 9, Analog Echo 438 / 32 / 39, Echopress 900 255 / 83 / 96, Sweep Echo 821 / 53 / 43 / 64 / 97, Sweet Echo 280 / 59 / 39 (time / fdbk / (speed / depth /) mix).
 
 The names come from the JBL app's pedal pages (screenshots, 2026-10-17); the speaker sends only IDs.
 Each parameter is `(param id u8, float32)`; parameter IDs are per model, not per slot.
@@ -113,10 +126,10 @@ The ranges aren't mapped yet; known values look like 0–100 knobs, and delay pa
 ## Not mapped yet
 Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:
 - **Pitch shifter**: probably 0x30c1 (above); confirm and check the ±5 ends.
-- **Pedal parameters** (gain, delay time…): the change is probably 0x3445 op 01 with new param floats; not captured.
+- **Pedal parameters**: set with 0x3445 op 04; delay mapped, the other slots' names and ranges: `capture-preset-edit.sh`.
 - **Amp and cab models**.
 - **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
-- **Save as** a new user tone (0x3446 with another target?).
+- **Save as** a new user tone (0x3446 with another target?), rename, delete: `capture-preset-edit.sh save`.
 
 ## Still unknown
 - ~~SET commands for preset and STEM AI~~ **Verified from the Mac** (`captures/preset-stem-test-1.log`).
@@ -130,10 +143,13 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Channel 1's level key~~ (channel, input type), see 0x3401 (`captures/inputs.decoded.txt`).
 - The app shows no percentages either; approximate 50% gave 16 and 100% gave 32, so percent = raw / 32.
 - Slot 0. ~~Whether 0x3445 edits are saved into the tone~~: not until SET 0x3446 = 03 04 NN ff ff 00 (app capture 4).
-- 0x3446 op 08 (discard edits?).
+- ~~0x3446 op 08 (discard edits?)~~ Discard, heard from the Mac (`captures/preset-edit-listen.*`).
 - ~~Whether SET works from the Mac without the app's connect sequence~~ **It does** (2026-10-16 20:39, `captures/tuner-test-1.log`): no datetime/handshake needed, no ACKs needed.
 
 ## Logs
+- `captures/app-capture-6-delay.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: each delay model's knobs swept min → max → middle, tap tempo, then discard (18:04–18:15, 2026-10-18). Script: `capture-preset-edit.sh delay`
+- `captures/preset-edit-listen.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): guitar in channel 1 on Feathered Blues; the Mac sends op 04 params: delay mix 50 + time 800, time 100 + feedback 60, discard, amp param 0 at 100 then 0, discard (18:19–18:20, 2026-10-18). **All heard.** Script: `capture-preset-edit.sh listen` with CH=1 ORIG=0d. An earlier run (18:00) sent the same edits as op 01 blocks and none was heard
+- `captures/probe-param-edit-0.log`, `captures/probe-param-edit-1.log`: current tones (channel 1 on Feathered Blues 0x0d, channel 3 on 0x0f), Feathered Blues' blocks, then from the Mac its delay time 250 → 800 ms with 0x3445 op 01, 0x3444 re-read (still 250), op 08 discard, re-read (17:56–17:58, 2026-10-18). No guitar was playing
 - `captures/tuner.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): tuner kept on from the Mac while one guitar plays low E in channel 3, then A in channel 1, with the speaker's channel selection switched at each step (17:34–17:37, 2026-10-18). Script: `capture-tuner.sh`
 - `captures/ch1-guitar.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): the Mac switches channel 1's tone 0x1b → 01 → 0x1b, turns its delay on and off, runs the tuner, polling 0x3441 = 01/03 every 3 s (17:10–17:12, 2026-10-18). Tone and delay changes were heard; no guitar was plugged in, so the tuner saw nothing. Script: `capture-ch1-guitar.sh`
 - `captures/probe-ch1-tone.log`: SET 0x3441 = 01/03, tone details of 0x1b ("Bypassed") and SET 0x3402 = 01 (17:10, 2026-10-18)
