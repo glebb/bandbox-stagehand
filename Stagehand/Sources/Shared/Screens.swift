@@ -3,7 +3,9 @@ import SwiftUI
 // The controller's three screens, laid out for a landscape window or phone:
 // 1. tones and pedals, 2. tuner and mix, 3. STEM AI.
 
+/// Tones and pedals of one guitar channel (1 or 3).
 struct TonesScreen: View {
+    let channel: Int
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
     @State private var assigning: Int?
@@ -24,11 +26,11 @@ struct TonesScreen: View {
 
     /// Tap switches the pedal on or off; long-press (or right-click) picks its model.
     private func pedalButton(_ pedal: Pedal) -> some View {
-        let on = client.isOn(pedal)
+        let on = client.isOn(pedal, channel: channel)
         let switchable = pedal.models.count > 1 && on != nil
         return SwitchPad(on: on == true,
                          longPress: switchable ? { choosingModel = pedal } : nil,
-                         action: { if let on { client.setPedal(pedal, on: !on) } }) {
+                         action: { if let on { client.setPedal(pedal, on: !on, channel: channel) } }) {
             Text(pedal.name).font(.system(size: 13, weight: .medium))
         }
         .opacity(on == nil ? 0.4 : 1)
@@ -36,8 +38,8 @@ struct TonesScreen: View {
         .contextMenu {
             if switchable {
                 ForEach(pedal.models) { model in
-                    Button { client.setModel(pedal, model) } label: {
-                        if client.model(pedal) == model.id { Label(model.name, systemImage: "checkmark") } else { Text(model.name) }
+                    Button { client.setModel(pedal, model, channel: channel) } label: {
+                        if client.model(pedal, channel: channel) == model.id { Label(model.name, systemImage: "checkmark") } else { Text(model.name) }
                     }
                 }
             }
@@ -45,8 +47,8 @@ struct TonesScreen: View {
         #endif
         .popover(isPresented: Binding(get: { choosingModel == pedal },
                                       set: { if !$0 { choosingModel = nil } })) {
-            ModelPicker(pedal: pedal, current: client.model(pedal)) {
-                client.setModel(pedal, $0)
+            ModelPicker(pedal: pedal, current: client.model(pedal, channel: channel)) {
+                client.setModel(pedal, $0, channel: channel)
                 choosingModel = nil
             }
             .presentationCompactAdaptation(.popover)
@@ -54,15 +56,15 @@ struct TonesScreen: View {
     }
 
     private func toneButton(_ slot: ToneSlot) -> some View {
-        let toneID = assignments.tones[slot.id]
-        let selected = client.preset == toneID
+        let toneID = assignments.tone(slot, channel: channel)
+        let selected = client.presets[channel] == toneID
         return Pad(fill: selected ? slot.tint : Stage.toneTile,
                    border: selected ? slot.color : Stage.toneBorder,
                    borderWidth: selected ? 1.5 : 1,
                    longPress: { assigning = slot.id },
-                   action: { client.setPreset(toneID) }) {
+                   action: { client.setPreset(toneID, channel: channel) }) {
             VStack(spacing: 10) {
-                Text(assignments.name(slot))
+                Text(assignments.name(slot, channel: channel))
                     .font(.system(size: 22, weight: .semibold))
                     .foregroundStyle(selected ? slot.color : Stage.text)
                     .lineLimit(1)
@@ -84,17 +86,17 @@ struct TonesScreen: View {
         // Right-click as well as hold; on the iPhone a long press already opens the picker.
         .contextMenu {
             Button("Rename…") { assigning = slot.id }
-            Button("Save Pedals to \(toneName(toneID))") { client.saveTone() }
-                .disabled(!selected || client.toneDetails?.id != toneID)
+            Button("Save Pedals to \(toneName(toneID))") { client.saveTone(channel: channel) }
+                .disabled(!selected || client.toneDetails[channel]?.id != toneID)
             Divider()
-            toneMenu { assignments.assign($0, to: slot.id) }
+            toneMenu { assignments.assign($0, to: slot.id, channel: channel) }
         }
         #endif
         .popover(isPresented: Binding(get: { assigning == slot.id },
                                       set: { if !$0 { assigning = nil } })) {
-            TonePicker(title: "\(assignments.name(slot)) button", current: toneID) {
-                assignments.assign($0, to: slot.id)
-                client.setPreset($0)
+            TonePicker(title: "\(assignments.name(slot, channel: channel)) button", current: toneID) {
+                assignments.assign($0, to: slot.id, channel: channel)
+                client.setPreset($0, channel: channel)
                 assigning = nil
             } header: {
                 nameField(slot)
@@ -113,7 +115,7 @@ struct TonesScreen: View {
     private func nameField(_ slot: ToneSlot) -> some View {
         HStack {
             Text("Name").foregroundStyle(.secondary)
-            TextField(slot.name, text: $assignments.names[slot.id])
+            TextField(slot.name, text: assignments.customName(slot, channel: channel))
                 .textFieldStyle(.roundedBorder)
                 .onSubmit { assigning = nil }
         }
@@ -123,10 +125,10 @@ struct TonesScreen: View {
     /// Saves the pedals as they are now into the button's tone on the speaker.
     /// Only for the playing tone: the pedal states are the speaker's, for that tone.
     private func saveRow(_ toneID: Int) -> some View {
-        let ready = client.preset == toneID && client.toneDetails?.id == toneID
-        let on = Pedal.allCases.filter { client.isOn($0) == true }.map(\.name)
+        let ready = client.presets[channel] == toneID && client.toneDetails[channel]?.id == toneID
+        let on = Pedal.allCases.filter { client.isOn($0, channel: channel) == true }.map(\.name)
         return Button {
-            client.saveTone()
+            client.saveTone(channel: channel)
             assigning = nil
         } label: {
             HStack {
@@ -237,6 +239,8 @@ struct TonePicker<Header: View>: View {
     }
 }
 
+/// The selected channel's pickup type (guitar inputs only), tuner and volume, with master volume
+/// on the right. The channel picker spans everything that follows it.
 struct MixScreen: View {
     @EnvironmentObject private var client: BandBoxClient
     @Binding var channel: Int
@@ -244,29 +248,56 @@ struct MixScreen: View {
     var body: some View {
         HStack(spacing: 10) {
             VStack(spacing: 8) {
-                // Same height as the volume columns' headers, so the rows line up.
-                Segmented(options: Pickup.allCases.map { Int($0.rawValue) },
-                          selected: client.pickup.map { Int($0.rawValue) } ?? -1,
-                          label: { Pickup(rawValue: UInt8($0))?.name ?? "" },
-                          enabled: { _ in client.pickup != nil }) {
-                    if let type = Pickup(rawValue: UInt8($0)) { client.setPickup(type) }
-                }
-                .frame(height: 26)
-                TunerPad()
-            }
-            .frame(maxWidth: .infinity)
-            .layoutPriority(1)
-            VolumeColumn(level: client.channelVolume(channel)) {
-                client.changeChannelVolume(channel, by: $0)
-            } header: {
+                // Same height as the master column's title, so the rows line up.
                 Segmented(options: Array(BandBoxClient.channels), selected: channel,
+                          label: channelLabel,
                           enabled: { client.channelVolume($0) != nil }) { channel = $0 }
+                    .frame(height: 26)
+                HStack(spacing: 10) {
+                    VStack(spacing: 8) {
+                        if hasPickup {
+                            pickupPicker.frame(height: 26)
+                        }
+                        TunerPad()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .layoutPriority(1)
+                    VolumeColumn(level: client.channelVolume(channel)) {
+                        client.changeChannelVolume(channel, by: $0)
+                    }
+                    .frame(width: 160)
+                }
             }
-            .frame(width: 160)
             VolumeColumn(title: "Master", level: client.masterVolume) {
                 client.changeMasterVolume(by: $0)
             }
             .frame(width: 160)
+        }
+    }
+
+    /// Channel 3 is always a guitar input; channel 1 is one with its switch on guitar.
+    private var hasPickup: Bool {
+        channel == 3 || (channel == 1 && client.inputs[1]?.type == .guitar)
+    }
+
+    private var pickupPicker: some View {
+        let pickup = client.pickups[channel]
+        return Segmented(options: Pickup.allCases.map { Int($0.rawValue) },
+                         selected: pickup.map { Int($0.rawValue) } ?? -1,
+                         label: { Pickup(rawValue: UInt8($0))?.name ?? "" },
+                         enabled: { _ in pickup != nil }) {
+            if let type = Pickup(rawValue: UInt8($0)) { client.setPickup(type, channel: channel) }
+        }
+    }
+
+    /// "1 Guitar", "2 Line", …: what each channel's switch is set to.
+    private func channelLabel(_ n: Int) -> String {
+        if n == BandBoxClient.streamChannel { return "\(n) USB/BT" }
+        switch client.inputs[n]?.type {
+        case .mic: return "\(n) Mic"
+        case .guitar: return "\(n) Guitar"
+        case .line: return "\(n) Line"
+        case nil: return "\(n)"
         }
     }
 }

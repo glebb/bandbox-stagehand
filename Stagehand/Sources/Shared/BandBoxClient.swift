@@ -15,20 +15,25 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var link: Link = .searching
     @Published private(set) var deviceName: String?
     @Published private(set) var battery: Int?
-    @Published private(set) var preset: Int?            // current tone id
+    /// Guitar channel (1 or 3) → its current tone id; each guitar input has its own tone.
+    @Published private(set) var presets: [Int: Int] = [:]
     @Published private(set) var tones: [Tone] = []
     @Published private(set) var categories: [Int: String] = [:]
     @Published private(set) var stemAI: Bool?
-    @Published private(set) var pickup: Pickup?
+    @Published private(set) var pickups: [Int: Pickup] = [:]   // guitar channel → pickup type
     @Published private(set) var tunerOn = false
     @Published private(set) var tuner: TunerReading?
     @Published private(set) var tunerReference: Double?
-    @Published private(set) var toneDetails: ToneDetails?   // effect blocks of the current tone
+    /// Guitar channel → the effect blocks of its current tone, with that channel's unsaved edits.
+    @Published private(set) var toneDetails: [Int: ToneDetails] = [:]
+    /// Channel 1–3 → what is plugged into it, from channelInfo events.
+    @Published private(set) var inputs: [Int: ChannelInput] = [:]
     /// Level table (0x3406) keyed by `a << 8 | b`; master volume is key 0.
     @Published private(set) var levels: [UInt16: Int] = [:]
     /// Channel 4 is the USB / Bluetooth audio; its volume is its own property, not in the level table.
     @Published private(set) var streamVolume: Int?
-    /// Channel n's volume (n = 1-3) is level (n, channelKeys[n]); learned from channelInfo events.
+    /// Channel n's volume (n = 1-3) is level (n, channelKeys[n]), the key being its input type;
+    /// learned from channelInfo events.
     @Published private(set) var channelKeys: [Int: UInt8] = [3: 0x02, 2: 0x03]
     @Published private(set) var stemTypes: [Int: StemType] = [:]   // stem channels 1-2
     @Published private(set) var stemLevels: [Int: Int] = [:]       // stem channels 1-3 (3 = Others)
@@ -37,6 +42,16 @@ final class BandBoxClient: NSObject, ObservableObject {
     static let levelRange = 0...32       // the volume knob has 32 clicks: 0 to 32
     static let channels = 1...4
     static let stemChannels = 1...3
+    static let guitarChannels = [1, 3]   // the inputs with tones, pedals and a pickup setting
+
+    /// The guitar channels with a guitar plugged in, or channel 3 alone when there's none.
+    var activeGuitarChannels: [Int] {
+        let plugged = Self.guitarChannels.filter { inputs[$0]?.hasGuitar == true }
+        return plugged.isEmpty ? [3] : plugged
+    }
+
+    /// The channel plain keys 1–9 control: channel 3, unless the only guitar is in channel 1.
+    var primaryGuitarChannel: Int { activeGuitarChannels.contains(3) ? 3 : activeGuitarChannels[0] }
 
     private static let commandService = CBUUID(string: "65786365-6C70-6F69-6E74-2E636F6D0000")
     private static let notifyChar = CBUUID(string: "65786365-6C70-6F69-6E74-2E636F6D0001")
@@ -62,28 +77,15 @@ final class BandBoxClient: NSObject, ObservableObject {
 
     // MARK: Controls
 
-    var currentTone: Tone? { tones.first { $0.id == preset } }
-
-    func nextPreset() { stepPreset(by: 1) }
-    func previousPreset() { stepPreset(by: -1) }
-
-    /// Steps through the speaker's tone library in its own order, wrapping around.
-    private func stepPreset(by step: Int) {
-        guard !tones.isEmpty else { return }
-        let index = tones.firstIndex { $0.id == preset } ?? (step > 0 ? -1 : 0)
-        setPreset(tones[(index + step + tones.count) % tones.count].id)
-    }
-
-    /// The leading 03 mirrors the JBL app; its meaning is unknown (maybe the input channel).
-    func setPreset(_ toneID: Int) {
+    /// The leading byte is the guitar channel; each has its own current tone.
+    func setPreset(_ toneID: Int, channel: Int) {
         let name = tones.first { $0.id == toneID }?.name ?? "#\(toneID)"
-        send(BandBoxProtocol.set(Property.preset, [0x03, UInt8(toneID)]), "preset \(name)")
+        send(BandBoxProtocol.set(Property.preset, [UInt8(channel), UInt8(toneID)]), "channel \(channel) preset \(name)")
     }
 
-    /// The leading 03 is the guitar input, as in the tone messages.
-    func setPickup(_ type: Pickup) {
-        pickup = type
-        send(BandBoxProtocol.set(Property.pickup, [0x03, type.rawValue]), "pickup \(type.name)")
+    func setPickup(_ type: Pickup, channel: Int) {
+        pickups[channel] = type
+        send(BandBoxProtocol.set(Property.pickup, [UInt8(channel), type.rawValue]), "channel \(channel) pickup \(type.name)")
     }
 
     func setStemAI(_ on: Bool) {
@@ -108,40 +110,41 @@ final class BandBoxClient: NSObject, ObservableObject {
         }
     }
 
-    func isOn(_ pedal: Pedal) -> Bool? {
-        toneDetails?.blocks.first { $0.slot == pedal.rawValue }.map { !$0.bypassed }
+    func isOn(_ pedal: Pedal, channel: Int) -> Bool? {
+        toneDetails[channel]?.blocks.first { $0.slot == pedal.rawValue }.map { !$0.bypassed }
     }
 
-    /// Resends the pedal's effect block from the current tone with the bypass byte flipped.
-    func setPedal(_ pedal: Pedal, on: Bool) {
-        guard var details = toneDetails, details.id == preset,
+    /// Resends the pedal's effect block from the channel's current tone with the bypass byte flipped.
+    func setPedal(_ pedal: Pedal, on: Bool, channel: Int) {
+        guard var details = toneDetails[channel], details.id == presets[channel],
               let i = details.blocks.firstIndex(where: { $0.slot == pedal.rawValue }) else { return }
         details.blocks[i].bypassed = !on
-        toneDetails = details
-        send(BandBoxProtocol.set(Property.effectBlock, [0x03, UInt8(details.id), 0x01] + details.blocks[i].bytes),
-             "\(pedal.name) \(on ? "on" : "off")")
+        toneDetails[channel] = details
+        send(BandBoxProtocol.set(Property.effectBlock, [UInt8(channel), UInt8(details.id), 0x01] + details.blocks[i].bytes),
+             "channel \(channel) \(pedal.name) \(on ? "on" : "off")")
     }
 
-    /// Saves the current tone's pedal and model edits into the tone on the speaker, as the JBL app does.
-    /// Without it, the edits are lost when the speaker changes tone.
-    func saveTone() {
-        guard let preset else { return }
+    /// Saves the channel's pedal and model edits into its current tone on the speaker, as the JBL app
+    /// does. Without it, the edits are lost when the speaker changes tone. Only seen for channel 3.
+    func saveTone(channel: Int) {
+        guard let preset = presets[channel] else { return }
         let name = tones.first { $0.id == preset }?.name ?? "#\(preset)"
-        send(BandBoxProtocol.set(Property.toneAction, [0x03, 0x04, UInt8(preset), 0xFF, 0xFF, 0x00]), "save tone \(name)")
+        send(BandBoxProtocol.set(Property.toneAction, [UInt8(channel), 0x04, UInt8(preset), 0xFF, 0xFF, 0x00]),
+             "channel \(channel) save tone \(name)")
         send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(preset)]))
     }
 
-    func model(_ pedal: Pedal) -> UInt16? {
-        toneDetails?.blocks.first { $0.slot == pedal.rawValue }?.model
+    func model(_ pedal: Pedal, channel: Int) -> UInt16? {
+        toneDetails[channel]?.blocks.first { $0.slot == pedal.rawValue }?.model
     }
 
     /// Swaps the pedal's model in the current tone; the speaker answers with the new block
     /// and its default parameters, keeping the on/off state.
-    func setModel(_ pedal: Pedal, _ model: PedalModel) {
-        guard let details = toneDetails, details.id == preset else { return }
+    func setModel(_ pedal: Pedal, _ model: PedalModel, channel: Int) {
+        guard let details = toneDetails[channel], details.id == presets[channel] else { return }
         send(BandBoxProtocol.set(Property.effectBlock,
-                                 [0x03, UInt8(details.id), 0x02, UInt8(pedal.rawValue)] + BandBoxProtocol.le16(model.id) + [0xFF, 0x00]),
-             "\(pedal.name) model \(model.name)")
+                                 [UInt8(channel), UInt8(details.id), 0x02, UInt8(pedal.rawValue)] + BandBoxProtocol.le16(model.id) + [0xFF, 0x00]),
+             "channel \(channel) \(pedal.name) model \(model.name)")
     }
 
     var masterVolume: Int? { levels[0] }
@@ -247,20 +250,26 @@ final class BandBoxClient: NSObject, ObservableObject {
     private func apply(_ r: PropertyRecord) {
         switch r.id {
         case Property.preset where r.value.count >= 2:
-            preset = Int(r.value[1])
-            if toneDetails?.id != preset {
+            // ch NN; the speaker also sends these on its own, e.g. for its preset button.
+            let channel = Int(r.value[0])
+            presets[channel] = Int(r.value[1])
+            if toneDetails[channel]?.id != presets[channel] {
                 send(BandBoxProtocol.set(Property.toneDetailsQuery, [r.value[1]]))
             }
         case Property.toneDetails:
+            // The query and its answer name only the tone, so it goes to every channel playing it.
             if let details = BandBoxProtocol.toneDetails(r.value) {
-                toneDetails = details
+                for channel in Self.guitarChannels where presets[channel] == details.id {
+                    toneDetails[channel] = details
+                }
                 record("← tone \(details.name): \(details.blocks.count) effect blocks")
                 return
             }
         case Property.effectBlock where r.value.count >= 7:
-            // 03 NN 01 slot ff ff bypass 00: the speaker confirming a bypass change;
-            // 03 NN 00 slot model ff k params…: a new model with its default parameters.
-            if var details = toneDetails, details.id == Int(r.value[1]),
+            // ch NN 01 slot ff ff bypass 00: the speaker confirming a bypass change;
+            // ch NN 00 slot model ff k params…: a new model with its default parameters.
+            let channel = Int(r.value[0])
+            if var details = toneDetails[channel], details.id == Int(r.value[1]),
                let i = details.blocks.firstIndex(where: { $0.slot == Int(r.value[3]) }) {
                 if r.value[2] == 0x00, var block = BandBoxProtocol.effectBlock(r.value, at: 3) {
                     block.bypassed = r.value[6] == 0xFF ? details.blocks[i].bypassed : r.value[6] != 0
@@ -268,16 +277,18 @@ final class BandBoxClient: NSObject, ObservableObject {
                 } else {
                     details.blocks[i].bypassed = r.value[6] != 0
                 }
-                toneDetails = details
+                toneDetails[channel] = details
             }
         case Property.channelInfo where r.value.count >= 3:
+            // n plugged type: the input type also keys the channel's volume, (n, type).
             let channel = Int(r.value[0])
+            inputs[channel] = ChannelInput(plugged: r.value[1] == 1, type: InputType(rawValue: r.value[2]))
             if channelKeys[channel] != r.value[2] {
                 channelKeys[channel] = r.value[2]
                 send(BandBoxProtocol.set(Property.levelQuery, [r.value[0], r.value[2]]))
             }
-        case Property.pickup where r.value.count >= 2 && r.value[0] == 0x03:
-            pickup = Pickup(rawValue: r.value[1])
+        case Property.pickup where r.value.count >= 2:
+            pickups[Int(r.value[0])] = Pickup(rawValue: r.value[1])
         case Property.streamVolume where !r.value.isEmpty:
             streamVolume = Int(r.value[0])
         case Property.stemType where r.value.count >= 2:
@@ -333,8 +344,9 @@ final class BandBoxClient: NSObject, ObservableObject {
         send(BandBoxProtocol.set(Self.stemChannels.map { PropertyRecord(id: Property.stemLevelQuery, value: [UInt8($0)]) }))
         send(BandBoxProtocol.get([Property.presetCategories]))
         send(BandBoxProtocol.get([Property.presetLibrary]))      // big reply, sent in fragments
-        send(BandBoxProtocol.set(Property.presetQuery, [0x03]))  // speaker answers with the preset event
-        send(BandBoxProtocol.set(Property.pickupQuery, [0x03]))  // and with the pickup event
+        // The speaker answers with each guitar channel's preset and pickup events.
+        send(BandBoxProtocol.set(Self.guitarChannels.map { PropertyRecord(id: Property.presetQuery, value: [UInt8($0)]) }))
+        send(BandBoxProtocol.set(Self.guitarChannels.map { PropertyRecord(id: Property.pickupQuery, value: [UInt8($0)]) }))
     }
 
     // MARK: Discovery
@@ -435,7 +447,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
         tuner = nil
         tunerKeepAlive?.invalidate()
         tunerKeepAlive = nil
-        toneDetails = nil
+        toneDetails = [:]
         startSearching()
     }
 }

@@ -35,18 +35,18 @@ enum Property {
     static let tunerReference: UInt16 = 0x3103
     static let tunerFeed: UInt16 = 0x3106
     static let channelQuery: UInt16 = 0x3400      // SET n: speaker answers with a channelInfo event
-    static let channelInfo: UInt16 = 0x3401       // n selected k: channel n's volume is level (n, k)
-    static let pickupQuery: UInt16 = 0x3402       // SET 03: speaker answers with a pickup event
-    static let pickup: UInt16 = 0x3403            // 03 type: the guitar input's pickup type (Pickup)
+    static let channelInfo: UInt16 = 0x3401       // n plugged type: what is in channel n; its volume is level (n, type)
+    static let pickupQuery: UInt16 = 0x3402       // SET ch: speaker answers with a pickup event
+    static let pickup: UInt16 = 0x3403            // ch type: guitar channel ch's pickup type (Pickup)
     static let levelQuery: UInt16 = 0x3405
     static let level: UInt16 = 0x3406
     static let presetLibrary: UInt16 = 0x3440     // GET: all tones (id, category, name); 2 fragments
-    static let presetQuery: UInt16 = 0x3441       // SET 03: speaker answers with a preset event
-    static let preset: UInt16 = 0x3442            // value 03 NN, NN = tone id from the library
+    static let presetQuery: UInt16 = 0x3441       // SET ch: speaker answers with a preset event
+    static let preset: UInt16 = 0x3442            // ch NN: guitar channel ch (1 or 3) plays tone NN from the library
     static let toneDetailsQuery: UInt16 = 0x3443  // SET NN: speaker answers with a toneDetails event
     static let toneDetails: UInt16 = 0x3444       // tone NN's name and effect blocks
-    static let effectBlock: UInt16 = 0x3445       // SET 03 NN op …: 01 + block replaces a block, 02 slot model ff 00 swaps its model
-    static let toneAction: UInt16 = 0x3446        // 03 op NN target ff 00: op 04 saves tone NN's edits (target ff = itself), 08 discards them?
+    static let effectBlock: UInt16 = 0x3445       // SET ch NN op …: 01 + block replaces a block, 02 slot model ff 00 swaps its model
+    static let toneAction: UInt16 = 0x3446        // ch op NN target ff 00: op 04 saves tone NN's edits (target ff = itself), 08 discards them?
     static let presetCategories: UInt16 = 0x344A  // GET: category names
     static let uiMode: UInt16 = 0x3804
 }
@@ -117,7 +117,20 @@ struct PedalModel: Identifiable, Hashable {
     let name: String
 }
 
-/// The guitar input's pickup setting, in the order the controller shows them.
+/// What a channel's switch is set to (channel 3 is always guitar).
+enum InputType: UInt8 {
+    case mic = 1, guitar = 2, line = 3
+}
+
+/// One input channel's state, from 0x3401.
+struct ChannelInput: Equatable {
+    let plugged: Bool
+    let type: InputType?
+
+    var hasGuitar: Bool { plugged && type == .guitar }
+}
+
+/// A guitar input's pickup setting, in the order the controller shows them.
 enum Pickup: UInt8, CaseIterable, Identifiable {
     case active = 1, passiveHumbucker = 2, singleCoil = 0
 

@@ -2,7 +2,8 @@ import Carbon.HIToolbox
 import Combine
 
 /// System-wide keys for playing with one hand while another app is in front: 1–4 select the
-/// tone buttons, 5–9 switch Comp, Dist, FX, Delay and Reverb. Plain keys, so they're only
+/// tone buttons, 5–9 switch Comp, Dist, FX, Delay and Reverb, of the primary guitar channel;
+/// with Shift, of channel 1. Plain keys, so they're only
 /// taken while `enabled` (the Keys switch in the footer); otherwise typing works as usual.
 /// Carbon hot keys need no Accessibility permission, and the keys don't reach the app in front.
 final class GlobalHotKeys: ObservableObject {
@@ -24,15 +25,21 @@ final class GlobalHotKeys: ObservableObject {
 
     func start(client: BandBoxClient, assignments: ToneAssignments) {
         guard handler == nil else { return }
-        actions = ToneSlot.all.map { slot in
-            { [weak client, weak assignments] in
-                guard let client, let assignments, client.link == .connected else { return }
-                client.setPreset(assignments.tones[slot.id])
+        // Ids 0–8: plain keys, primary guitar channel; 9–17: Shift, channel 1.
+        for shifted in [false, true] {
+            let channel = { [weak client] in shifted ? 1 : client?.primaryGuitarChannel ?? 3 }
+            actions += ToneSlot.all.map { slot in
+                { [weak client, weak assignments] in
+                    guard let client, let assignments, client.link == .connected else { return }
+                    let ch = channel()
+                    client.setPreset(assignments.tone(slot, channel: ch), channel: ch)
+                }
             }
-        }
-        actions += Pedal.allCases.map { pedal in
-            { [weak client] in
-                if let client, let on = client.isOn(pedal) { client.setPedal(pedal, on: !on) }
+            actions += Pedal.allCases.map { pedal in
+                { [weak client] in
+                    let ch = channel()
+                    if let client, let on = client.isOn(pedal, channel: ch) { client.setPedal(pedal, on: !on, channel: ch) }
+                }
             }
         }
 
@@ -52,12 +59,14 @@ final class GlobalHotKeys: ObservableObject {
 
     private func register() {
         guard handler != nil, refs.isEmpty else { return }
-        for (i, key) in Self.digitKeys.prefix(actions.count).enumerated() {
-            var ref: EventHotKeyRef?
-            let id = EventHotKeyID(signature: Self.signature, id: UInt32(i))
-            // Fails if another app already holds the key; the in-app keys still work then.
-            if RegisterEventHotKey(UInt32(key), 0, id, GetApplicationEventTarget(), 0, &ref) == noErr, let ref {
-                refs.append(ref)
+        for (row, modifiers) in [0, shiftKey].enumerated() {
+            for (i, key) in Self.digitKeys.enumerated() {
+                var ref: EventHotKeyRef?
+                let id = EventHotKeyID(signature: Self.signature, id: UInt32(row * Self.digitKeys.count + i))
+                // Fails if another app already holds the key; the in-app keys still work then.
+                if RegisterEventHotKey(UInt32(key), UInt32(modifiers), id, GetApplicationEventTarget(), 0, &ref) == noErr, let ref {
+                    refs.append(ref)
+                }
             }
         }
     }

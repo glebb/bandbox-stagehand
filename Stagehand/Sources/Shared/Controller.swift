@@ -1,7 +1,9 @@
 import SwiftUI
 
-/// The three controller screens, side by side. Swipe (touch, trackpad or drag), tap the dots,
-/// or use ← / → to change screen; 1–4 select the tone buttons and 5–9 switch the pedals.
+/// The controller screens, side by side: a tones page for each guitar channel with a guitar
+/// plugged in (channel 3 when there's none), then mix and STEM AI. Swipe (touch, trackpad or drag),
+/// tap the dots, or use ← / → to change screen; 1–4 select the tone buttons and 5–9 switch the
+/// pedals of the primary guitar channel, Shift+1–9 those of channel 1.
 struct ContentView: View {
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
@@ -12,7 +14,8 @@ struct ContentView: View {
     @State private var channel = 3
     @State private var showLog = false
 
-    private static let pageCount = 3
+    private var guitarPages: [Int] { client.activeGuitarChannels }
+    private var pageCount: Int { guitarPages.count + 2 }
     private var connected: Bool { client.link == .connected }
 
     var body: some View {
@@ -20,11 +23,23 @@ struct ContentView: View {
             Stage.background.ignoresSafeArea()
 
             VStack(spacing: 8) {
-                Pager(page: $page, count: Self.pageCount) { index in
-                    switch index {
-                    case 0: TonesScreen()
-                    case 1: MixScreen(channel: $channel)
-                    default: StemScreen()
+                Pager(page: $page, count: pageCount) { index in
+                    if index < guitarPages.count {
+                        TonesScreen(channel: guitarPages[index])
+                    } else if index == guitarPages.count {
+                        MixScreen(channel: $channel)
+                    } else {
+                        StemScreen()
+                    }
+                }
+                // Keep showing the same screen when a guitar page comes or goes before it.
+                .onChange(of: guitarPages) { old, new in
+                    if page >= old.count {
+                        page += new.count - old.count
+                    } else if let i = new.firstIndex(of: old[page]) {
+                        page = i
+                    } else {
+                        page = 0
                     }
                 }
                 .allowsHitTesting(connected)
@@ -55,13 +70,24 @@ struct ContentView: View {
     private var footer: some View {
         ZStack {
             HStack(spacing: 6) {
-                ForEach(0 ..< Self.pageCount, id: \.self) { i in
+                ForEach(0 ..< pageCount, id: \.self) { i in
                     Circle()
                         .fill(i == page ? Stage.text : Stage.dot)
                         .frame(width: 6, height: 6)
                         .padding(4)
                         .contentShape(Rectangle())
                         .onTapGesture { page = i }
+                }
+            }
+            // Which guitar channel a tones page controls, just left of the dots so they stay centred.
+            .overlay(alignment: .leading) {
+                if page < guitarPages.count {
+                    Text("CH \(guitarPages[page])")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Stage.secondaryText)
+                        .fixedSize()
+                        .padding(.trailing, 10)
+                        .frame(width: 0, alignment: .trailing)   // grows leftwards from the dots
                 }
             }
             HStack(spacing: 6) {
@@ -79,7 +105,7 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.leading, 10)
-                .help("When on, 1–4 select tones and 5–9 switch pedals while other apps are in front.")
+                .help("When on, 1–4 select tones and 5–9 switch pedals while other apps are in front (Shift for channel 1).")
                 #endif
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)
@@ -96,18 +122,28 @@ struct ContentView: View {
     private var shortcuts: some View {
         ZStack {
             Button("") { page = max(page - 1, 0) }.keyboardShortcut(.leftArrow, modifiers: [])
-            Button("") { page = min(page + 1, Self.pageCount - 1) }.keyboardShortcut(.rightArrow, modifiers: [])
-            ForEach(ToneSlot.all) { slot in
-                Button("") { if connected { client.setPreset(assignments.tones[slot.id]) } }
-                    .keyboardShortcut(KeyEquivalent(Character("\(slot.id + 1)")), modifiers: [])
-            }
-            ForEach(Array(Pedal.allCases.enumerated()), id: \.element) { i, pedal in
-                Button("") { if let on = client.isOn(pedal) { client.setPedal(pedal, on: !on) } }
-                    .keyboardShortcut(KeyEquivalent(Character("\(ToneSlot.all.count + i + 1)")), modifiers: [])
-            }
+            Button("") { page = min(page + 1, pageCount - 1) }.keyboardShortcut(.rightArrow, modifiers: [])
+            channelKeys([], channel: client.primaryGuitarChannel)
+            channelKeys(.shift, channel: 1)
         }
         .opacity(0)
         .accessibilityHidden(true)
+    }
+
+    /// 1–4 select the channel's tone buttons and 5–9 switch its pedals.
+    private func channelKeys(_ modifiers: EventModifiers, channel: Int) -> some View {
+        ZStack {
+            ForEach(ToneSlot.all) { slot in
+                Button("") { if connected { client.setPreset(assignments.tone(slot, channel: channel), channel: channel) } }
+                    .keyboardShortcut(KeyEquivalent(Character("\(slot.id + 1)")), modifiers: modifiers)
+            }
+            ForEach(Array(Pedal.allCases.enumerated()), id: \.element) { i, pedal in
+                Button("") {
+                    if let on = client.isOn(pedal, channel: channel) { client.setPedal(pedal, on: !on, channel: channel) }
+                }
+                .keyboardShortcut(KeyEquivalent(Character("\(ToneSlot.all.count + i + 1)")), modifiers: modifiers)
+            }
+        }
     }
 
     private var statusText: String {

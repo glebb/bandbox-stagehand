@@ -10,20 +10,26 @@ Not affiliated with or endorsed by JBL or Harman. JBL and BandBox are their trad
 
 ## Bandbox Stagehand
 
-`Stagehand/` is a SwiftUI app for the Mac and the iPhone: three landscape screens
-with big buttons, meant to be used while holding a guitar. Swipe between them (touch,
-trackpad or drag), tap the dots, or use ← / →.
+`Stagehand/` is a SwiftUI app for the Mac and the iPhone: landscape screens with big
+buttons, meant to be used while holding a guitar. Swipe between them (touch, trackpad or
+drag), tap the dots, or use ← / →.
 
-1. **Tones and pedals**: four tone buttons (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac).
+1. **Tones and pedals**, one screen per guitar input: channel 1 (with its switch on guitar)
+   and channel 3 each have their own tone and pedals. A screen shows for each channel with a
+   guitar plugged in (channel 3 when none is), and the footer shows which channel it
+   controls (CH 1 / CH 3) next to the page dots. Each channel has its own four tone buttons
+   (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac); channel 1 starts as a copy of channel 3's.
    Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
    selects, or to save the pedals into that tone on the speaker (only while it's
    playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
    tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
-2. **Tuner and mix**: the guitar input's pickup type (Active, Humbucker, Single coil)
-   above the tuner (string, cents and frequency), the volume of the selected channel
-   (1–4, channel 3 by default) and master volume.
+2. **Tuner and mix**: a channel picker across the top (1–4, each labelled with what its
+   switch is set to: Guitar, Mic, Line, USB/BT) chooses the channel the rest of the screen
+   shows: its pickup type (Active, Humbucker, Single coil; only for channel 3, or channel 1
+   with its switch on guitar), the tuner (string, cents and frequency) and its volume.
+   Master volume is on the right.
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
    and the volumes of both plus Others.
 
@@ -33,7 +39,8 @@ A white splash screen with the logo shows while the app connects to the speaker
 Volumes step one knob click (1/32) at a time and show as 0–100%. The display stays
 awake while the app is open. The traffic log is behind the Log button.
 
-On the Mac, 1–4 select the tone buttons and 5–9 switch Comp, Dist, FX, Delay and Reverb.
+On the Mac, 1–4 select the tone buttons and 5–9 switch Comp, Dist, FX, Delay and Reverb of
+channel 3 (or of channel 1 when only it has a guitar); with Shift, of channel 1.
 The **Keys 1–9** switch in the footer makes them work from any app, so you can keep
 another app in front and play with one free finger. While it's on (amber), those keys
 don't type digits anywhere else; turn it off to type normally. It stays as you left it.

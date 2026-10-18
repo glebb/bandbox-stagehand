@@ -106,12 +106,16 @@ struct VolumeColumn<Header: View>: View {
 
     var body: some View {
         GeometryReader { geo in
-            // header, then + / level / − sharing the rest 1 : 1.25 : 1
-            let headerHeight: CGFloat = 26, spacing: CGFloat = 8
-            let unit = max(geo.size.height - headerHeight - spacing * 3, 0) / 3.25
+            // header, then + / level / − sharing the rest 1 : 1.25 : 1. Without a header the
+            // column is that much shorter, so it lines up with a headed one beside a header row.
+            let hasHeader = Header.self != EmptyView.self
+            let headerHeight: CGFloat = hasHeader ? 26 : 0, spacing: CGFloat = 8
+            let unit = max(geo.size.height - headerHeight - spacing * (hasHeader ? 3 : 2), 0) / 3.25
             VStack(spacing: spacing) {
-                header()
-                    .frame(height: headerHeight)
+                if hasHeader {
+                    header()
+                        .frame(height: headerHeight)
+                }
                 Pad(action: { change(1) }) {
                     Image(systemName: "plus").font(.system(size: 20, weight: .light)).foregroundStyle(Stage.control)
                 }
@@ -124,6 +128,12 @@ struct VolumeColumn<Header: View>: View {
                 .frame(height: unit)
             }
         }
+    }
+}
+
+extension VolumeColumn where Header == EmptyView {
+    init(level: Int?, change: @escaping (Int) -> Void) {
+        self.init(level: level, change: change) { EmptyView() }
     }
 }
 
@@ -221,31 +231,47 @@ struct ToneSlot: Identifiable {
     ]
 }
 
-/// Each button's tone and the name the user gave it ("" = the slot's own name).
+/// Each guitar channel's button tones and the names the user gave them ("" = the slot's own name).
+/// Channel 3 keeps the settings saved before there were channels; channel 1 starts as a copy.
 final class ToneAssignments: ObservableObject {
-    private static let key = "toneSlots"
-    private static let namesKey = "toneSlotNames"
-
-    @Published private(set) var tones: [Int] {
-        didSet { UserDefaults.standard.set(tones, forKey: Self.key) }
+    @Published private var tones: [Int: [Int]] {
+        didSet { for (channel, t) in tones { UserDefaults.standard.set(t, forKey: Self.key("toneSlots", channel)) } }
     }
 
-    @Published var names: [String] {
-        didSet { UserDefaults.standard.set(names, forKey: Self.namesKey) }
+    @Published private var names: [Int: [String]] {
+        didSet { for (channel, n) in names { UserDefaults.standard.set(n, forKey: Self.key("toneSlotNames", channel)) } }
+    }
+
+    private static func key(_ base: String, _ channel: Int) -> String {
+        channel == 3 ? base : "\(base).ch\(channel)"
     }
 
     init() {
         let count = ToneSlot.all.count
-        let saved = UserDefaults.standard.array(forKey: Self.key) as? [Int]
-        tones = saved?.count == count ? saved! : ToneSlot.all.map(\.defaultTone)
-        let savedNames = UserDefaults.standard.stringArray(forKey: Self.namesKey)
-        names = savedNames?.count == count ? savedNames! : Array(repeating: "", count: count)
+        func savedTones(_ channel: Int) -> [Int]? {
+            (UserDefaults.standard.array(forKey: Self.key("toneSlots", channel)) as? [Int]).flatMap { $0.count == count ? $0 : nil }
+        }
+        func savedNames(_ channel: Int) -> [String]? {
+            UserDefaults.standard.stringArray(forKey: Self.key("toneSlotNames", channel)).flatMap { $0.count == count ? $0 : nil }
+        }
+        let tones3 = savedTones(3) ?? ToneSlot.all.map(\.defaultTone)
+        let names3 = savedNames(3) ?? Array(repeating: "", count: count)
+        tones = [3: tones3, 1: savedTones(1) ?? tones3]
+        names = [3: names3, 1: savedNames(1) ?? names3]
     }
 
-    func assign(_ tone: Int, to slot: Int) { tones[slot] = tone }
+    func tone(_ slot: ToneSlot, channel: Int) -> Int { tones[channel]?[slot.id] ?? slot.defaultTone }
 
-    func name(_ slot: ToneSlot) -> String {
-        let custom = names[slot.id].trimmingCharacters(in: .whitespaces)
+    func assign(_ tone: Int, to slot: Int, channel: Int) { tones[channel]?[slot] = tone }
+
+    func name(_ slot: ToneSlot, channel: Int) -> String {
+        let custom = (names[channel]?[slot.id] ?? "").trimmingCharacters(in: .whitespaces)
         return custom.isEmpty ? slot.name : custom
+    }
+
+    /// The custom name as typed, for the rename field.
+    func customName(_ slot: ToneSlot, channel: Int) -> Binding<String> {
+        Binding(get: { self.names[channel]?[slot.id] ?? "" },
+                set: { self.names[channel]?[slot.id] = $0 })
     }
 }
