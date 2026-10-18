@@ -138,27 +138,16 @@ struct ContentView: View {
         ZStack {
             Button("") { page = max(page - 1, 0) }.keyboardShortcut(.leftArrow, modifiers: [])
             Button("") { page = min(page + 1, pageCount - 1) }.keyboardShortcut(.rightArrow, modifiers: [])
-            channelKeys([], channel: client.primaryGuitarChannel)
-            channelKeys(.shift, channel: 1)
+            // 1–4 select the tone buttons and 5–9 switch the pedals; Shift for channel 1.
+            ForEach(Array(StageAction.all.enumerated()), id: \.element) { i, action in
+                let perChannel = ToneSlot.all.count + Pedal.allCases.count
+                Button("") { client.perform(action, assignments: assignments) }
+                    .keyboardShortcut(KeyEquivalent(Character("\(i % perChannel + 1)")),
+                                      modifiers: i < perChannel ? [] : .shift)
+            }
         }
         .opacity(0)
         .accessibilityHidden(true)
-    }
-
-    /// 1–4 select the channel's tone buttons and 5–9 switch its pedals.
-    private func channelKeys(_ modifiers: EventModifiers, channel: Int) -> some View {
-        ZStack {
-            ForEach(ToneSlot.all) { slot in
-                Button("") { if connected { client.setPreset(assignments.tone(slot, channel: channel), channel: channel) } }
-                    .keyboardShortcut(KeyEquivalent(Character("\(slot.id + 1)")), modifiers: modifiers)
-            }
-            ForEach(Array(Pedal.allCases.enumerated()), id: \.element) { i, pedal in
-                Button("") {
-                    if let on = client.isOn(pedal, channel: channel) { client.setPedal(pedal, on: !on, channel: channel) }
-                }
-                .keyboardShortcut(KeyEquivalent(Character("\(ToneSlot.all.count + i + 1)")), modifiers: modifiers)
-            }
-        }
     }
 
     private var statusText: String {

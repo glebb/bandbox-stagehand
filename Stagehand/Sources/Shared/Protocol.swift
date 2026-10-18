@@ -118,7 +118,7 @@ struct CreatedTone: Equatable, Identifiable {
 }
 
 /// The pedals the tones screen switches, by their slot in a tone's chain.
-enum Pedal: Int, CaseIterable, Identifiable {
+enum Pedal: Int, CaseIterable, Identifiable, Codable {
     case compressor = 1, distortion = 2, fx = 5, delay = 6, reverb = 7
 
     var id: Int { rawValue }

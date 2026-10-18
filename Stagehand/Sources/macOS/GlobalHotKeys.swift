@@ -26,20 +26,9 @@ final class GlobalHotKeys: ObservableObject {
     func start(client: BandBoxClient, assignments: ToneAssignments) {
         guard handler == nil else { return }
         // Ids 0–8: plain keys, primary guitar channel; 9–17: Shift, channel 1.
-        for shifted in [false, true] {
-            let channel = { [weak client] in shifted ? 1 : client?.primaryGuitarChannel ?? 3 }
-            actions += ToneSlot.all.map { slot in
-                { [weak client, weak assignments] in
-                    guard let client, let assignments, client.link == .connected else { return }
-                    let ch = channel()
-                    client.setPreset(assignments.tone(slot, channel: ch), channel: ch)
-                }
-            }
-            actions += Pedal.allCases.map { pedal in
-                { [weak client] in
-                    let ch = channel()
-                    if let client, let on = client.isOn(pedal, channel: ch) { client.setPedal(pedal, on: !on, channel: ch) }
-                }
+        actions = StageAction.all.map { action in
+            { [weak client, weak assignments] in
+                if let client, let assignments { client.perform(action, assignments: assignments) }
             }
         }
 
