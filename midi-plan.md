@@ -58,6 +58,9 @@ momentary CC presses, unbound notes ignored).
   incoming messages.
 - The MIDI sheet: on / off, connected sources, the 18 actions with their bindings
   (`PC 2`, `CC 81 · ch 1`), Learn, Auto / Follow for pedals, Reset to defaults.
+- Two columns, like plain and Shift keys: "Guitar channel (CH 3, or CH 1 if it's the only
+  guitar)" and "Channel 1". While only channel 1 has a guitar, a note says both columns
+  control it.
 
 Done 2026-10-18 and tried in the app with `midi-send.swift`: Learn (the learning press and
 its release don't act; the old binding is replaced), saving across a relaunch, MIDI off,

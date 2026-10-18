@@ -8,7 +8,36 @@ reverse engineer the speaker's control protocol.
 
 Not affiliated with or endorsed by JBL or Harman. JBL and BandBox are their trademarks.
 
-## Bandbox Stagehand
+Most of this project, the app as well as the protocol research, was done with AI: written
+by an AI coding assistant, steered and tested by hand against the speaker.
+
+## Why
+
+The JBL One app does a lot: dozens of tones, pedals and amps, a full preset editor,
+STEM AI. But it's a pain to use when you play songs that need different sounds. Going
+from a clean verse to a distorted chorus, or switching a delay on for a solo, means
+putting the guitar down and working through the app's screens on a phone.
+
+Stagehand puts the sounds a song needs one press away: four big tone buttons per guitar,
+the pedals right above them, and the same controls on the Mac keyboard or a MIDI
+footswitch, so you can change sound without taking your hands off the guitar for long.
+
+## What it does
+
+- **Switch tones** with four big buttons per guitar input (Clean, Crunch, Heavy, Lead by
+  default), each set to any of the speaker's tones and named as you like.
+- **Turn pedals on and off** (compressor, distortion, FX, delay, reverb) and pick their
+  models, then save the result into the tone.
+- **Edit tones in depth** in a preset editor: the whole chain from gate to reverb, every
+  model and knob, with save, save as, rename, delete and factory reset.
+- **Tune and mix**: tuner, pickup type, channel and master volumes.
+- **STEM AI**: on/off, what the two stem channels hold, and their volumes.
+- **Hands-free on the Mac**: number keys that work from any app, and MIDI control from a
+  footswitch, keyboard or another app, with MIDI Learn.
+- Runs on the **Mac and the iPhone**, talking to the speaker over Bluetooth; no JBL app or
+  network needed.
+
+## The screens
 
 `Stagehand/` is a SwiftUI app for the Mac and the iPhone: landscape screens with big
 buttons, meant to be used while holding a guitar. Swipe between them (touch, trackpad or
@@ -50,6 +79,8 @@ A white splash screen with the logo shows while the app connects to the speaker
 Volumes step one knob click (1/32) at a time and show as 0–100%. The display stays
 awake while the app is open. The traffic log is behind the Log button.
 
+## Hands-free control (Mac)
+
 On the Mac, 1–4 select the tone buttons and 5–9 switch Comp, Dist, FX, Delay and Reverb of
 channel 3 (or of channel 1 when only it has a guitar); with Shift, of channel 1.
 The **Keys 1–9** switch in the footer makes them work from any app, so you can keep
@@ -67,7 +98,13 @@ binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it m
 latching switch. Each message Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
-Build and run (no Xcode project needed):
+## Getting it
+
+### Mac
+
+Ready-made zips go on [Releases](https://github.com/glebb/bandbox-stagehand/releases)
+(none published yet); their notes explain how to open an app that isn't notarized. Or
+build and run it yourself (no Xcode project needed):
 
 ```bash
 cd Stagehand && ./build.sh --run
@@ -76,7 +113,7 @@ cd Stagehand && ./build.sh --run
 macOS asks for Bluetooth permission on first launch, and again after each rebuild,
 because every ad-hoc signed build counts as a new app.
 
-#### Releases
+#### Making a release
 
 `./release.sh X.Y.Z` builds a universal app (Apple silicon and Intel) with that version,
 and puts the zip, its SHA-256 and draft release notes in `Stagehand/build/release/`. It
@@ -152,10 +189,11 @@ once a week. It's still a free 7-day signature, renewed for you.
 Build and add a new `.ipa` only when the app changes. With free signing, AltStore itself
 takes one of the three sideloaded-app slots.
 
-### Code and artwork
+## Code and artwork
 
 The code is shared: `Sources/Shared` holds the protocol, client and screens, and
-`Sources/macOS` / `Sources/iOS` each hold an app's entry point. `project.yml` describes
+`Sources/macOS` / `Sources/iOS` each hold an app's entry point; the Mac's also holds the
+global keys and the MIDI input and sheet. `project.yml` describes
 the iPhone project for XcodeGen.
 
 The logo is set in [Yellowtail](https://fonts.google.com/specimen/Yellowtail)
