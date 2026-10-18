@@ -15,6 +15,18 @@ enum StageAction: Hashable, Codable {
     static let all: [StageAction] = ChannelTarget.allCases.flatMap { target in
         ToneSlot.all.map { .tone(slot: $0.id, target) } + Pedal.allCases.map { .pedal($0, target) }
     }
+
+    /// "Tone 2", "Dist", with "(CH 1)" for channel 1.
+    var label: String {
+        switch self {
+        case let .tone(slot, target): "Tone \(slot + 1)" + target.suffix
+        case let .pedal(pedal, target): pedal.name + target.suffix
+        }
+    }
+}
+
+private extension ChannelTarget {
+    var suffix: String { self == .channel1 ? " (CH 1)" : "" }
 }
 
 extension BandBoxClient {

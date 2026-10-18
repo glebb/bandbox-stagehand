@@ -7,6 +7,7 @@ struct StagehandApp: App {
     @StateObject private var assignments = ToneAssignments()
     private let keepAwake = KeepAwake()
     @StateObject private var hotKeys = GlobalHotKeys()
+    @StateObject private var midi = MIDIInput()
 
     var body: some Scene {
         WindowGroup("Bandbox Stagehand") {
@@ -14,8 +15,12 @@ struct StagehandApp: App {
                 .environmentObject(client)
                 .environmentObject(assignments)
                 .environmentObject(hotKeys)
+                .environmentObject(midi)
                 .preferredColorScheme(.dark)
-                .onAppear { hotKeys.start(client: client, assignments: assignments) }
+                .onAppear {
+                    hotKeys.start(client: client, assignments: assignments)
+                    midi.start(client: client, assignments: assignments)
+                }
         }
         .windowResizability(.contentMinSize)
     }

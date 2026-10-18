@@ -512,7 +512,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         probeNext()
     }
 
-    private func record(_ line: String) {
+    func record(_ line: String) {
         let f = DateFormatter()
         f.dateFormat = "HH:mm:ss.SSS"
         let stamped = "[\(f.string(from: Date()))] \(line)"

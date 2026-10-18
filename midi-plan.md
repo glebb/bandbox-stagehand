@@ -16,29 +16,37 @@ boards, keyboards and DAWs, and MIDI Learn covers the rest.
 - Not now (each fits on top of `StageAction` later): an expression pedal for volume,
   next / previous tone, cycling a pedal's model, LED feedback back to the controller.
 
-## Step 1: one action list for keys and MIDI (`Shared/Commands.swift`)
+## Step 1: one action list for keys and MIDI (`Shared/Commands.swift`) — done
 `StageAction` (`.tone(slot, target)`, `.pedal(pedal, target)`, target `.primary` or
 `.channel1`) and `BandBoxClient.perform(_:assignments:on:)`. The in-app keys
 (`channelKeys`) and `GlobalHotKeys` both call it instead of repeating the logic. No change
 in behaviour.
 
-## Step 2: MIDI input (`macOS/MIDIInput.swift`)
+## Step 2: MIDI input (`macOS/MIDIInput.swift`, `MIDIMessage.swift`) — done
 - `MIDIClientCreateWithBlock`, an input port with the MIDI 1.0 protocol, connected to every
   source; the notify block reconnects when devices come or go.
 - Parses Program Change, Control Change and Note On (velocity 0 = Note Off, ignored).
 - Hops from CoreMIDI's thread to the main actor before acting.
 - Publishes source names and the last message, for the UI.
 - Parsing and the switch logic are pure functions, checkable without hardware.
+- Each acted-on message shows in the Log (`MIDI CC 81 = 127 · ch 1 → Dist`).
 
-## Step 3: mapping
+Done 2026-10-18 with the default map and both pedal modes from step 3 wired in: parser
+and switch logic checked offline; the whole path checked against the speaker with
+`midi-send.swift` (a source appearing and going away, PC tones on both channels,
+momentary CC presses, unbound notes ignored).
+
+## Step 3: mapping — defaults and modes done; Learn and saving left
 - Default map, omni:
   - PC 0–3: tone buttons of the primary channel; PC 4–7: of channel 1.
   - CC 80–84: Comp, Dist, FX, Delay, Reverb of the primary channel; CC 85–89: of channel 1.
   - (Note On 60–67 / 72–81 the same way? Decide when building the sheet.)
 - Pedal modes, per binding:
   - **Auto** (default), works with momentary and latching switches alike: a value ≥ 64
-    toggles; a value < 64 toggles too, unless it comes within 400 ms of a ≥ 64 one from
-    the same binding (then it's a momentary switch letting go). Note On always toggles.
+    toggles; a value < 64 toggles too, unless it's a momentary switch letting go. Each
+    controller's kind is learned from timing (high to low under 0.5 s: momentary; over
+    2 s: latching); until then, low within 1 s of high is a release. Note On and PC
+    always toggle.
   - **Follow**: value ≥ 64 on, < 64 off; for latching switches that should never drift
     out of sync with the pedal.
 - MIDI Learn: tap an action, press the switch; the next PC / CC / Note binds to it, and
