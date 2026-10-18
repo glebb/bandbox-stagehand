@@ -70,9 +70,9 @@ case "$AREA" in
   cab)
     K+=("Open the cabinet, UK 1960 4 by 12" "Take a screenshot" "Open the cabinet model list" "Take a screenshot of the list")
     for n in 1 2 3 4 5 6 7 8 9 10; do
-      K+=("Select cabinet number $n in the list, skip it if there is none")
+      K+=("Select cabinet number $n in the list, skip it if there is none" "Take a screenshot")
     done
-    K+=("If the cabinet has any knobs, turn the first all the way down" "And all the way up")
+    # Cabs have no knobs (no params in 0x3444, none in the JBL app).
     app "${K[@]}" ;;
   fx)
     K+=("Open the F X pedal, Echo Phase" "Take a screenshot")

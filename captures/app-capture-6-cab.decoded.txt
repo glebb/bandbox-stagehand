@@ -1,0 +1,130 @@
+18:37:35.698  spk->phone  EVENT  keepalive=-
+18:37:35.703  phone->spk  ACK    02 00 00 00
+18:37:40.738  spk->phone  EVENT  keepalive=-
+18:37:40.743  phone->spk  ACK    02 00 00 00
+18:37:45.778  spk->phone  EVENT  keepalive=-
+18:37:45.783  phone->spk  ACK    02 00 00 00
+18:37:50.817  spk->phone  EVENT  keepalive=-
+18:37:50.822  phone->spk  ACK    02 00 00 00
+18:37:55.858  spk->phone  EVENT  keepalive=-
+18:37:55.864  phone->spk  ACK    02 00 00 00
+18:38:00.913  spk->phone  EVENT  keepalive=-
+18:38:00.918  phone->spk  ACK    02 00 00 00
+18:38:05.953  spk->phone  EVENT  keepalive=-
+18:38:05.958  phone->spk  ACK    02 00 00 00
+18:38:10.993  spk->phone  EVENT  keepalive=-
+18:38:10.997  phone->spk  ACK    02 00 00 00
+18:38:16.033  spk->phone  EVENT  keepalive=-
+18:38:16.038  phone->spk  ACK    02 00 00 00
+18:38:19.812  spk->phone  EVENT  battery%=22
+18:38:19.817  phone->spk  ACK    02 00 00 00
+18:38:19.903  spk->phone  EVENT  battery%=22
+18:38:19.907  phone->spk  ACK    02 00 00 00
+18:38:25.018  spk->phone  EVENT  keepalive=-
+18:38:25.023  phone->spk  ACK    02 00 00 00
+18:38:26.008  spk->phone  EVENT  battery%=22
+18:38:26.012  phone->spk  ACK    02 00 00 00
+18:38:26.098  spk->phone  EVENT  battery%=22
+18:38:26.102  phone->spk  ACK    02 00 00 00
+18:38:31.211  spk->phone  EVENT  keepalive=-
+18:38:31.217  phone->spk  ACK    02 00 00 00
+18:38:36.253  spk->phone  EVENT  keepalive=-
+18:38:36.259  phone->spk  ACK    02 00 00 00
+18:38:41.293  spk->phone  EVENT  keepalive=-
+18:38:41.299  phone->spk  ACK    02 00 00 00
+18:38:41.578  phone->spk  SET    effect_block=01 0d 03 04 08 00 ff 00
+18:38:41.623  spk->phone  SET-reply  
+18:38:41.638  spk->phone  EVENT  effect_block=01 0d 00 04 08 00 ff 00
+18:38:41.651  phone->spk  ACK    02 00 00 00
+18:38:46.693  spk->phone  EVENT  keepalive=-
+18:38:46.699  phone->spk  ACK    02 00 00 00
+18:38:51.732  spk->phone  EVENT  keepalive=-
+18:38:51.737  phone->spk  ACK    02 00 00 00
+18:38:56.773  spk->phone  EVENT  keepalive=-
+18:38:56.781  phone->spk  ACK    02 00 00 00
+18:39:01.813  spk->phone  EVENT  keepalive=-
+18:39:01.818  phone->spk  ACK    02 00 00 00
+18:39:06.612  spk->phone  EVENT  battery%=22
+18:39:06.616  phone->spk  ACK    02 00 00 00
+18:39:06.687  spk->phone  EVENT  battery%=22
+18:39:06.690  phone->spk  ACK    02 00 00 00
+18:39:11.788  spk->phone  EVENT  keepalive=-
+18:39:11.790  phone->spk  ACK    02 00 00 00
+18:39:12.424  phone->spk  SET    effect_block=01 0d 03 04 08 01 ff 00
+18:39:12.463  spk->phone  SET-reply  
+18:39:12.463  spk->phone  EVENT  effect_block=01 0d 00 04 08 01 ff 00
+18:39:12.481  phone->spk  ACK    02 00 00 00
+18:39:14.938  spk->phone  EVENT  battery%=22
+18:39:14.942  phone->spk  ACK    02 00 00 00
+18:39:15.028  spk->phone  EVENT  battery%=22
+18:39:15.030  phone->spk  ACK    02 00 00 00
+18:39:15.404  phone->spk  SET    effect_block=01 0d 03 04 08 02 ff 00
+18:39:15.449  spk->phone  SET-reply  
+18:39:15.449  spk->phone  EVENT  effect_block=01 0d 00 04 08 02 ff 00
+18:39:15.467  phone->spk  ACK    02 00 00 00
+18:39:20.502  spk->phone  EVENT  keepalive=-
+18:39:20.507  phone->spk  ACK    02 00 00 00
+18:39:23.895  phone->spk  SET    effect_block=01 0d 03 04 08 03 ff 00
+18:39:23.938  spk->phone  SET-reply  
+18:39:23.938  spk->phone  EVENT  effect_block=01 0d 00 04 08 03 ff 00
+18:39:23.959  phone->spk  ACK    02 00 00 00
+18:39:24.477  spk->phone  EVENT  battery%=22
+18:39:24.481  phone->spk  ACK    02 00 00 00
+18:39:24.552  spk->phone  EVENT  battery%=22
+18:39:24.555  phone->spk  ACK    02 00 00 00
+18:39:29.519  phone->spk  SET    effect_block=01 0d 03 04 08 04 ff 00
+18:39:29.548  spk->phone  SET-reply  
+18:39:29.563  spk->phone  EVENT  effect_block=01 0d 00 04 08 04 ff 00
+18:39:29.576  phone->spk  ACK    02 00 00 00
+18:39:32.802  spk->phone  EVENT  battery%=22
+18:39:32.811  phone->spk  ACK    02 00 00 00
+18:39:32.908  spk->phone  EVENT  battery%=22
+18:39:32.911  phone->spk  ACK    02 00 00 00
+18:39:34.332  phone->spk  SET    effect_block=01 0d 03 04 08 05 ff 00
+18:39:34.378  spk->phone  SET-reply  
+18:39:34.378  spk->phone  EVENT  effect_block=01 0d 00 04 08 05 ff 00
+18:39:34.397  phone->spk  ACK    02 00 00 00
+18:39:37.465  phone->spk  SET    effect_block=01 0d 03 04 08 06 ff 00
+18:39:37.513  spk->phone  SET-reply  
+18:39:37.513  spk->phone  EVENT  effect_block=01 0d 00 04 08 06 ff 00
+18:39:37.536  phone->spk  ACK    02 00 00 00
+18:39:40.438  phone->spk  SET    effect_block=01 0d 03 04 08 07 ff 00
+18:39:40.498  spk->phone  SET-reply  
+18:39:40.513  spk->phone  EVENT  effect_block=01 0d 00 04 08 07 ff 00
+18:39:40.529  phone->spk  ACK    02 00 00 00
+18:39:42.162  spk->phone  EVENT  battery%=22
+18:39:42.164  phone->spk  ACK    02 00 00 00
+18:39:42.236  spk->phone  EVENT  battery%=22
+18:39:42.239  phone->spk  ACK    02 00 00 00
+18:39:44.288  phone->spk  SET    effect_block=01 0d 03 04 08 08 ff 00
+18:39:44.323  spk->phone  SET-reply  
+18:39:44.323  spk->phone  EVENT  effect_block=01 0d 00 04 08 08 ff 00
+18:39:44.345  phone->spk  ACK    02 00 00 00
+18:39:48.650  phone->spk  SET    effect_block=01 0d 03 04 08 09 ff 00
+18:39:48.688  spk->phone  SET-reply  
+18:39:48.688  spk->phone  EVENT  effect_block=01 0d 00 04 08 09 ff 00
+18:39:48.709  phone->spk  ACK    02 00 00 00
+18:39:50.563  spk->phone  EVENT  battery%=22
+18:39:50.565  phone->spk  ACK    02 00 00 00
+18:39:50.638  spk->phone  EVENT  battery%=22
+18:39:50.641  phone->spk  ACK    02 00 00 00
+18:39:51.892  phone->spk  SET    effect_block=01 0d 03 04 08 0a ff 00
+18:39:51.913  spk->phone  SET-reply  
+18:39:51.928  spk->phone  EVENT  effect_block=01 0d 00 04 08 0a ff 00
+18:39:51.944  phone->spk  ACK    02 00 00 00
+18:39:55.958  phone->spk  SET    effect_block=01 0d 03 04 08 0b ff 00
+18:39:55.978  spk->phone  SET-reply  
+18:39:56.007  spk->phone  EVENT  effect_block=01 0d 00 04 08 0b ff 00
+18:39:56.016  phone->spk  ACK    02 00 00 00
+18:40:01.046  spk->phone  EVENT  keepalive=-
+18:40:01.049  phone->spk  ACK    02 00 00 00
+18:40:05.358  phone->spk  SET    tone_action=01 08 0d ff ff 00
+18:40:05.383  spk->phone  EVENT  battery%=22
+18:40:05.386  phone->spk  ACK    02 00 00 00
+18:40:05.458  spk->phone  EVENT  battery%=22
+18:40:05.462  phone->spk  ACK    02 00 00 00
+18:40:05.563  spk->phone  SET-reply  
+18:40:05.578  spk->phone  EVENT  tone_action=01 08 0d ff ff 00
+18:40:05.578  spk->phone  EVENT  preset=01 0d
+18:40:05.583  phone->spk  ACK    02 00 00 00
+18:40:05.624  phone->spk  ACK    02 00 00 00

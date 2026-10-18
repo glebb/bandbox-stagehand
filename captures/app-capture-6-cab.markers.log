@@ -1,0 +1,8 @@
+[18:37:40.558] >>> Select the Feathered Blues tone and open its preset page
+[18:37:52.998] >>> Open the cabinet, UK 1960 4 by 12
+[18:38:05.721] >>> Take a screenshot
+[18:38:16.083] >>> Open the cabinet model list
+[18:38:27.026] >>> Take a screenshot of the list
+[18:38:37.896] >>> Select cabinet number 1 in the list, skip it if there is none
+[18:38:50.728] >>> Take a screenshot
+[18:39:01.111] >>> Select cabinet number 2 in the list, skip it if there is none

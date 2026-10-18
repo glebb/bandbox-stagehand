@@ -1,0 +1,41 @@
+[18:23:51.184] >>> Select the Feathered Blues tone and open its preset page
+[18:24:03.603] >>> Open the amp, Yellow Tweed
+[18:24:14.759] >>> Take a screenshot
+[18:24:25.139] >>> Knob 1 all the way down, skip it if there is none
+[18:24:37.271] >>> Knob 1 all the way up
+[18:24:47.836] >>> Knob 1 back to the middle
+[18:24:58.530] >>> Knob 2 all the way down, skip it if there is none
+[18:25:10.647] >>> Knob 2 all the way up
+[18:25:21.119] >>> Knob 2 back to the middle
+[18:25:31.679] >>> Knob 3 all the way down, skip it if there is none
+[18:25:43.816] >>> Knob 3 all the way up
+[18:25:54.308] >>> Knob 3 back to the middle
+[18:26:04.917] >>> Knob 4 all the way down, skip it if there is none
+[18:26:17.069] >>> Knob 4 all the way up
+[18:26:27.587] >>> Knob 4 back to the middle
+[18:26:38.183] >>> Knob 5 all the way down, skip it if there is none
+[18:26:50.393] >>> Knob 5 all the way up
+[18:27:00.916] >>> Knob 5 back to the middle
+[18:27:11.568] >>> Open the amp model list
+[18:27:22.299] >>> Take a screenshot of the list
+[18:27:33.132] >>> Select amp number 1 in the list, skip it if there is none
+[18:27:45.712] >>> Take a screenshot
+[18:27:56.094] >>> Select amp number 2 in the list, skip it if there is none
+[18:28:08.773] >>> Take a screenshot
+[18:28:19.160] >>> Select amp number 3 in the list, skip it if there is none
+[18:28:31.781] >>> Take a screenshot
+[18:28:42.170] >>> Select amp number 4 in the list, skip it if there is none
+[18:28:54.836] >>> Take a screenshot
+[18:29:05.218] >>> Select amp number 5 in the list, skip it if there is none
+[18:29:17.912] >>> Take a screenshot
+[18:29:28.292] >>> Select amp number 6 in the list, skip it if there is none
+[18:29:40.982] >>> Take a screenshot
+[18:29:51.380] >>> Select amp number 7 in the list, skip it if there is none
+[18:30:04.098] >>> Take a screenshot
+[18:30:14.458] >>> Select amp number 8 in the list, skip it if there is none
+[18:30:27.054] >>> Take a screenshot
+[18:30:37.418] >>> Select amp number 9 in the list, skip it if there is none
+[18:30:50.065] >>> Take a screenshot
+[18:31:00.426] >>> Select amp number 10 in the list, skip it if there is none
+[18:31:13.061] >>> Take a screenshot
+[18:31:23.434] >>> Leave the preset page without saving, discard the changes
