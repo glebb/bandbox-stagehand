@@ -74,6 +74,10 @@ needs a clean working tree. Read the notes, then `./release.sh X.Y.Z --publish` 
 `vX.Y.Z`, pushes the tag and creates the GitHub release with the zip (needs
 [gh](https://cli.github.com), signed in).
 
+The Mac and iPhone apps share their version (`version.sh`): the latest `v*` tag, so
+builds after a release keep its number until the next one, and a build number that is
+the commit count.
+
 The app is ad-hoc signed, not notarized, so macOS blocks it the first time it opens
 after downloading; the release notes explain **Open Anyway** in Privacy & Security.
 

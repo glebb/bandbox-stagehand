@@ -17,8 +17,8 @@ targets:
       path: iOS/Info.plist
       properties:
         CFBundleDisplayName: Stagehand
-        CFBundleShortVersionString: "0.1"
-        CFBundleVersion: "1"
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen:
           UIColorName: LaunchBackground
         UISupportedInterfaceOrientations:
@@ -37,4 +37,6 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: 0.0.0          # ios-build.sh sets both from version.sh
+        CURRENT_PROJECT_VERSION: "1"
         CODE_SIGN_STYLE: Automatic   # team from signing.env, passed by ios-build.sh

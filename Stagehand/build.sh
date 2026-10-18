@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Builds Stagehand.app (no Xcode project needed). Usage: ./build.sh [--run] [--universal]
 #   --universal  Apple silicon and Intel in one app (release.sh uses it); otherwise this Mac's only.
-# The version comes from VERSION, else the latest v* git tag, else 0.0.0.
+# The version comes from version.sh.
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -14,9 +14,7 @@ for arg in "$@"; do
   esac
 done
 
-VERSION=${VERSION:-$(git describe --tags --match 'v[0-9]*' --abbrev=0 2>/dev/null | sed 's/^v//' || true)}
-VERSION=${VERSION:-0.0.0}
-BUILD_NUMBER=$(git rev-list --count HEAD 2>/dev/null || echo 1)   # grows with every commit
+source version.sh
 
 APP=build/Stagehand.app
 rm -rf "$APP"
