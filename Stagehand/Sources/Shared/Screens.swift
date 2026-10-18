@@ -303,8 +303,10 @@ struct MixScreen: View {
 }
 
 /// Tap to turn the tuner on or off. Shows the note it hears and how far off it is.
+/// The speaker's tuner isn't per channel: it hears a guitar in channel 1 or 3.
 struct TunerPad: View {
     @EnvironmentObject private var client: BandBoxClient
+    private static let inputs = "Any guitar input"
 
     var body: some View {
         Pad(border: client.tunerOn ? Stage.tunerBorder : Stage.tileBorder,
@@ -314,6 +316,8 @@ struct TunerPad: View {
                     Text("Tuner").font(.system(size: 20, weight: .medium)).foregroundStyle(Stage.text)
                     Text("Tap to turn on").font(.system(size: 12)).foregroundStyle(Stage.secondaryText)
                         .padding(.top, 10)
+                    Text(Self.inputs).font(.system(size: 12)).foregroundStyle(Stage.faintText)
+                        .padding(.top, 6)
                 } else {
                     let reading = client.tuner.flatMap { $0.hasSignal ? $0 : nil }
                     let cents = reading.map { Int($0.cents.rounded()) }
@@ -330,7 +334,7 @@ struct TunerPad: View {
                         .monospacedDigit()
                         .foregroundStyle(Stage.secondaryText)
                         .padding(.top, 10)
-                    Text(client.tunerReference.map { String(format: "%.0f Hz", $0) } ?? "440 Hz")
+                    Text("\(client.tunerReference.map { String(format: "%.0f Hz", $0) } ?? "440 Hz") · \(Self.inputs)")
                         .font(.system(size: 12))
                         .foregroundStyle(Stage.faintText)
                         .padding(.top, 6)

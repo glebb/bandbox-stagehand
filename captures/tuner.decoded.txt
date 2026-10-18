@@ -1,0 +1,1070 @@
+>>> probing 510B2917-C2A0-9380-5FCD-4D60D1384664 …
+[17:34:17.516] connected to JBL BandBox Trio
+[17:34:18.057] found JBL BandBox Trio [510B2917-C2A0-9380-5FCD-4D60D1384664]
+[17:34:18.235] subscribed com/0001 (notifying=true)
+[17:34:18.236] listening for 152s — use the speaker and the app now
+17:34:18.268  spk->mac  EVENT  hello=00 01
+17:34:19.284  mac->spk  SET    TUNER=01
+17:34:19.347  spk->mac  SET-reply  
+17:34:19.601  mac->spk  SET    ui_mode?=01 02
+17:34:19.646  spk->mac  SET-reply  
+17:34:20.856  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:20.906  spk->mac  SET-reply  
+17:34:20.935  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02
+17:34:24.007  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:24.045  spk->mac  SET-reply  
+17:34:24.059  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02
+17:34:24.534  mac->spk  SET    TUNER=01
+17:34:24.583  spk->mac  SET-reply  
+17:34:26.922  spk->mac  EVENT  chan_info=03 01 02
+17:34:26.923  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:26.938  spk->mac  EVENT  volume=03 02 08
+17:34:27.027  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:34:27.157  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:27.193  spk->mac  SET-reply  
+17:34:27.208  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:27.223  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:34:27.612  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:29.784  mac->spk  SET    TUNER=01
+17:34:29.784  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:29.819  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:34:29.877  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:29.952  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:30.042  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 5 more times)
+17:34:30.658  spk->mac  EVENT  tuner_feed=63 40 a4 43 01 07 4d 3d c0 01
+17:34:30.747  spk->mac  EVENT  tuner_feed=05 1f a4 43 01 cf 48 69 c0 01
+17:34:30.852  spk->mac  EVENT  tuner_feed=09 1e a4 43 01 2e 94 6a c0 01
+17:34:30.957  spk->mac  EVENT  tuner_feed=09 32 a4 43 01 12 37 50 c0 01
+17:34:31.062  spk->mac  EVENT  tuner_feed=2d 1c a4 43 01 1a 09 6d c0 01
+17:34:31.152  spk->mac  EVENT  tuner_feed=04 36 a4 43 01 4e f5 4a c0 01
+17:34:31.257  spk->mac  EVENT  tuner_feed=ea 25 a4 43 01 77 32 60 c0 01
+17:34:31.362  spk->mac  EVENT  tuner_feed=60 40 a4 43 01 ca 53 3d c0 01
+17:34:31.497  spk->mac  EVENT  tuner_feed=5c e6 a3 43 01 87 05 9a c0 01
+17:34:31.557  spk->mac  EVENT  tuner_feed=d4 da a3 43 01 2b a1 a1 c0 01
+17:34:31.662  spk->mac  EVENT  tuner_feed=63 3a a4 43 01 0e 33 45 c0 01
+17:34:31.767  spk->mac  EVENT  tuner_feed=61 58 a3 43 01 4f eb f7 c0 01
+17:34:31.857  spk->mac  EVENT  tuner_feed=01 57 a4 43 01 c7 80 1f c0 01
+17:34:31.962  spk->mac  EVENT  tuner_feed=1f 37 a3 43 01 ac f9 06 c1 01
+17:34:32.067  spk->mac  EVENT  tuner_feed=40 db a3 43 01 29 5a a1 c0 01
+17:34:32.157  spk->mac  EVENT  tuner_feed=66 42 a4 43 01 c3 a8 3a c0 01
+17:34:32.262  spk->mac  EVENT  tuner_feed=d8 87 a3 43 01 c6 7b d8 c0 01
+17:34:32.367  spk->mac  EVENT  tuner_feed=ad b6 a4 43 01 6d b9 06 bf 01
+17:34:32.472  spk->mac  EVENT  tuner_feed=0f de a3 43 01 c7 80 9f c0 01
+17:34:32.562  spk->mac  EVENT  tuner_feed=fb c0 a3 43 01 36 b5 b2 c0 01
+17:34:32.667  spk->mac  EVENT  tuner_feed=4f 02 a4 43 01 37 95 87 c0 01
+17:34:32.772  spk->mac  EVENT  tuner_feed=d2 db a4 43 01 9d c3 71 3e 01
+17:34:32.877  spk->mac  EVENT  tuner_feed=c1 ed a4 43 01 ed 96 1a 3f 01
+17:34:32.968  spk->mac  EVENT  tuner_feed=55 4c a4 43 01 7f 8e 2d c0 01
+17:34:33.072  spk->mac  EVENT  tuner_feed=c3 3c a5 43 01 41 33 0e 40 01
+17:34:33.177  spk->mac  EVENT  tuner_feed=25 bb a4 43 01 6c 88 de be 01
+17:34:33.267  spk->mac  EVENT  tuner_feed=fd 07 a2 43 01 05 d2 6b c1 01
+17:34:33.372  spk->mac  EVENT  tuner_feed=61 be a3 43 01 c8 6c b4 c0 01
+17:34:33.457  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:33.478  spk->mac  EVENT  tuner_feed=8f 2d a4 43 01 24 1b 56 c0 01
+17:34:33.479  spk->mac  SET-reply  
+17:34:33.494  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:33.582  spk->mac  EVENT  tuner_feed=b0 5c a7 43 01 00 82 54 41 01
+17:34:33.672  spk->mac  EVENT  tuner_feed=5e fd a5 43 01 cf f2 c4 40 01
+17:34:33.777  spk->mac  EVENT  tuner_feed=94 04 a4 43 01 be 13 86 c0 01
+17:34:33.882  spk->mac  EVENT  tuner_feed=33 6f a6 43 01 ff 85 07 41 01
+17:34:33.972  spk->mac  EVENT  tuner_feed=b8 22 a6 43 01 31 47 dd 40 01
+17:34:34.077  spk->mac  EVENT  tuner_feed=e4 a0 a5 43 01 93 99 88 40 01
+17:34:34.182  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:34:34.677  spk->mac  EVENT  tuner_feed=38 dd a7 42 06 b6 fe 7d 41 01
+17:34:34.782  spk->mac  EVENT  tuner_feed=df be a7 42 06 28 35 74 41 01
+17:34:34.887  spk->mac  EVENT  tuner_feed=8d b5 a7 42 06 e8 33 71 41 01
+17:34:34.976  spk->mac  EVENT  tuner_feed=46 8d a7 42 06 b1 34 64 41 01
+17:34:35.034  mac->spk  SET    TUNER=01
+17:34:35.067  spk->mac  SET-reply  
+17:34:35.083  spk->mac  EVENT  tuner_feed=bc 72 a7 42 06 38 a2 5b 41 01
+17:34:35.202  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:35.292  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:34:35.397  spk->mac  EVENT  tuner_feed=87 4f a7 42 06 37 41 50 41 01
+17:34:35.503  spk->mac  EVENT  tuner_feed=9b 3b a7 42 06 22 cf 49 41 01
+17:34:35.593  spk->mac  EVENT  tuner_feed=1a 37 a7 42 06 7f 59 48 41 01
+17:34:35.697  spk->mac  EVENT  tuner_feed=a3 2b a7 42 06 59 a3 44 41 01
+17:34:35.802  spk->mac  EVENT  tuner_feed=47 24 a7 42 06 b6 42 42 41 01
+17:34:35.907  spk->mac  EVENT  tuner_feed=dd 10 a7 42 06 34 f9 3b 41 01
+17:34:35.997  spk->mac  EVENT  tuner_feed=38 18 a7 42 06 88 5b 3e 41 01
+17:34:36.102  spk->mac  EVENT  tuner_feed=77 0d a7 42 06 dd de 3a 41 01
+17:34:36.207  spk->mac  EVENT  tuner_feed=c5 05 a7 42 06 7c 61 38 41 01
+17:34:36.312  spk->mac  EVENT  tuner_feed=ce 02 a7 42 06 57 6c 37 41 01
+17:34:36.402  spk->mac  EVENT  tuner_feed=6b f9 a6 42 06 f2 60 34 41 01
+17:34:36.507  spk->mac  EVENT  tuner_feed=dc f5 a6 42 06 c6 3a 33 41 01
+17:34:36.601  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:36.614  spk->mac  EVENT  tuner_feed=d6 e5 a6 42 06 3a 08 2e 41 01
+17:34:36.643  spk->mac  SET-reply  
+17:34:36.658  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:36.702  spk->mac  EVENT  tuner_feed=07 e0 a6 42 06 63 26 2c 41 01
+17:34:36.807  spk->mac  EVENT  tuner_feed=39 d1 a6 42 06 47 59 27 41 01
+17:34:36.912  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:34:37.302  spk->mac  EVENT  tuner_feed=b7 3c a7 42 06 6e 2a 4a 41 01
+17:34:37.407  spk->mac  EVENT  tuner_feed=91 2e a7 42 06 ce 96 45 41 01
+17:34:37.512  spk->mac  EVENT  tuner_feed=f3 1c a7 42 06 c4 e3 3f 41 01
+17:34:37.617  spk->mac  EVENT  tuner_feed=56 20 a7 42 06 6a fc 40 41 01
+17:34:37.722  spk->mac  EVENT  tuner_feed=ba 14 a7 42 06 bd 38 3d 41 01
+17:34:37.812  spk->mac  EVENT  tuner_feed=41 0e a7 42 06 cd 20 3b 41 01
+17:34:37.917  spk->mac  EVENT  tuner_feed=08 05 a7 42 06 9f 24 38 41 01
+17:34:38.022  spk->mac  EVENT  tuner_feed=40 e7 a6 42 06 92 7e 2e 41 01
+17:34:38.127  spk->mac  EVENT  tuner_feed=65 e4 a6 42 06 30 90 2d 41 01
+17:34:38.217  spk->mac  EVENT  tuner_feed=5e c1 a6 42 06 41 34 22 41 01
+17:34:38.322  spk->mac  EVENT  tuner_feed=f0 ab a6 42 06 fe 3f 1b 41 01
+17:34:38.412  spk->mac  EVENT  tuner_feed=06 91 a6 42 06 40 83 12 41 01
+17:34:38.518  spk->mac  EVENT  tuner_feed=5e 7b a6 42 06 b4 7a 0b 41 01
+17:34:38.622  spk->mac  EVENT  tuner_feed=1f 6c a6 42 06 05 85 06 41 01
+17:34:38.727  spk->mac  EVENT  tuner_feed=17 6b a6 42 06 7c 30 06 41 01
+17:34:38.832  spk->mac  EVENT  tuner_feed=48 9d a6 42 06 b8 7e 16 41 01
+17:34:38.922  spk->mac  EVENT  tuner_feed=f4 e2 a6 42 06 d8 19 2d 41 01
+17:34:39.027  spk->mac  EVENT  tuner_feed=36 ed a6 42 06 3e 6c 30 41 01
+17:34:39.117  spk->mac  EVENT  tuner_feed=1d e5 a6 42 06 0d cd 2d 41 01
+17:34:39.222  spk->mac  EVENT  tuner_feed=5a ec a6 42 06 3c 25 30 41 01
+17:34:39.327  spk->mac  EVENT  tuner_feed=28 ea a6 42 06 a5 6e 2f 41 01
+17:34:39.432  spk->mac  EVENT  tuner_feed=bc e6 a6 42 06 9d 52 2e 41 01
+17:34:39.521  spk->mac  EVENT  tuner_feed=34 dd a6 42 06 63 3b 2b 41 01
+17:34:39.627  spk->mac  EVENT  tuner_feed=71 de a6 42 06 84 a2 2b 41 01
+17:34:39.731  spk->mac  EVENT  tuner_feed=4d d4 a6 42 06 91 58 28 41 01
+17:34:39.759  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:39.760  mac->spk  SET    TUNER=01
+17:34:39.808  spk->mac  SET-reply  
+17:34:39.822  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:39.824  spk->mac  EVENT  tuner_feed=aa d8 a6 42 06 0f c4 29 41 01
+17:34:39.837  spk->mac  SET-reply  
+17:34:39.927  spk->mac  EVENT  tuner_feed=c7 d8 a6 42 06 83 cc 29 41 01
+17:34:39.957  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:40.046  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 28 more times)
+17:34:42.911  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:42.958  spk->mac  SET-reply  
+17:34:42.973  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:42.973  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:34:43.482  spk->mac  EVENT  tuner_feed=86 c3 f6 42 05 92 c0 c6 42 01
+17:34:43.586  spk->mac  EVENT  tuner_feed=d5 3d f8 42 05 e0 16 d1 42 01
+17:34:43.677  spk->mac  EVENT  tuner_feed=8e 83 f7 42 05 b4 01 cc 42 01
+17:34:43.783  spk->mac  EVENT  tuner_feed=ca 1e f9 42 05 d9 34 d7 42 01
+17:34:43.887  spk->mac  EVENT  tuner_feed=f3 a4 f7 42 05 39 eb cc 42 01
+17:34:43.977  spk->mac  EVENT  tuner_feed=ad 10 f9 42 05 ca d2 d6 42 01
+17:34:44.082  spk->mac  EVENT  tuner_feed=f1 dd f8 42 05 12 72 d5 42 01
+17:34:44.187  spk->mac  EVENT  tuner_feed=bc 7c f7 42 05 26 d2 cb 42 01
+17:34:44.276  spk->mac  EVENT  tuner_feed=11 ce f8 42 05 8b 03 d5 42 01
+17:34:44.442  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:45.535  mac->spk  SET    TUNER=01
+17:34:45.535  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:45.569  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:34:45.613  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:45.702  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:45.792  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:34:45.897  spk->mac  EVENT  tuner_feed=5b 00 a7 42 06 c5 9f 36 41 01
+17:34:46.002  spk->mac  EVENT  tuner_feed=6b fd a6 42 06 51 ac 35 41 01
+17:34:46.092  spk->mac  EVENT  tuner_feed=b6 fa a6 42 06 26 cd 34 41 01
+17:34:46.197  spk->mac  EVENT  tuner_feed=d7 eb a6 42 06 f8 fa 2f 41 01
+17:34:46.302  spk->mac  EVENT  tuner_feed=a9 e8 a6 42 06 3a f3 2e 41 01
+17:34:46.407  spk->mac  EVENT  tuner_feed=ef d9 a6 42 06 e1 2c 2a 41 01
+17:34:46.497  spk->mac  EVENT  tuner_feed=45 dc a6 42 06 4e ef 2a 41 01
+17:34:46.602  spk->mac  EVENT  tuner_feed=61 d8 a6 42 06 64 ac 29 41 01
+17:34:46.707  spk->mac  EVENT  tuner_feed=7b db a6 42 06 5e ad 2a 41 01
+17:34:46.797  spk->mac  EVENT  tuner_feed=8a d4 a6 42 06 db 6c 28 41 01
+17:34:46.902  spk->mac  EVENT  tuner_feed=ff cf a6 42 06 d6 f3 26 41 01
+17:34:47.007  spk->mac  EVENT  tuner_feed=e6 d2 a6 42 06 ea e3 27 41 01
+17:34:47.112  spk->mac  EVENT  tuner_feed=97 c8 a6 42 06 70 8c 24 41 01
+17:34:47.217  spk->mac  EVENT  tuner_feed=86 e1 a7 42 06 c1 61 7f 41 01
+17:34:47.307  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:34:47.801  spk->mac  EVENT  tuner_feed=e3 55 a7 42 06 02 4f 52 41 01
+17:34:47.907  spk->mac  EVENT  tuner_feed=ea 4c a7 42 06 cf 68 4f 41 01
+17:34:48.012  spk->mac  EVENT  tuner_feed=65 42 a7 42 06 6f 00 4c 41 01
+17:34:48.117  spk->mac  EVENT  tuner_feed=ae 38 a7 42 06 5e dd 48 41 01
+17:34:48.207  spk->mac  EVENT  tuner_feed=fa 2f a7 42 06 75 0b 46 41 01
+17:34:48.312  spk->mac  EVENT  tuner_feed=c0 19 a7 42 06 55 da 3e 41 01
+17:34:48.417  spk->mac  EVENT  tuner_feed=6b 19 a7 42 06 97 bd 3e 41 01
+17:34:48.522  spk->mac  EVENT  tuner_feed=f6 09 a7 42 06 c3 bd 39 41 01
+17:34:48.612  spk->mac  EVENT  tuner_feed=55 0c a7 42 06 e1 81 3a 41 01
+17:34:48.717  spk->mac  EVENT  tuner_feed=31 fe a6 42 06 90 ec 35 41 01
+17:34:48.822  spk->mac  EVENT  tuner_feed=41 00 a7 42 06 51 97 36 41 01
+17:34:48.912  spk->mac  EVENT  tuner_feed=14 03 a7 42 06 52 82 37 41 01
+17:34:49.017  spk->mac  EVENT  tuner_feed=18 f9 a6 42 06 e5 45 34 41 01
+17:34:49.122  spk->mac  EVENT  tuner_feed=eb f7 a6 42 06 87 e5 33 41 01
+17:34:49.169  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:49.213  spk->mac  SET-reply  
+17:34:49.214  spk->mac  EVENT  tuner_feed=53 ee a6 42 06 3b c9 30 41 01
+17:34:49.243  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:49.317  spk->mac  EVENT  tuner_feed=58 e9 a6 42 06 04 2b 2f 41 01
+17:34:49.422  spk->mac  EVENT  tuner_feed=03 d9 a6 42 06 cd e0 29 41 01
+17:34:49.512  spk->mac  EVENT  tuner_feed=ca e3 a6 42 06 28 5f 2d 41 01
+17:34:49.617  spk->mac  EVENT  tuner_feed=bd e9 ad 42 06 4c 12 3a 42 01
+17:34:49.723  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:34:50.217  spk->mac  EVENT  tuner_feed=77 ef a6 42 06 e8 27 31 41 01
+17:34:50.322  spk->mac  EVENT  tuner_feed=81 f1 a6 42 06 f9 d0 31 41 01
+17:34:50.427  spk->mac  EVENT  tuner_feed=fd eb a6 42 06 cd 06 30 41 01
+17:34:50.532  spk->mac  EVENT  tuner_feed=d4 e6 a6 42 06 11 5b 2e 41 01
+17:34:50.623  spk->mac  EVENT  tuner_feed=a0 e3 a6 42 06 a2 51 2d 41 01
+17:34:50.728  spk->mac  EVENT  tuner_feed=15 e1 a6 42 06 4d 7e 2c 41 01
+17:34:50.784  mac->spk  SET    TUNER=01
+17:34:50.785  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:50.834  spk->mac  EVENT  tuner_feed=bc e0 a6 42 06 8f 61 2c 41 01
+17:34:50.834  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:34:50.863  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:50.922  spk->mac  EVENT  tuner_feed=e8 d5 a6 42 06 21 de 28 41 01
+17:34:50.952  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:51.058  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:34:51.251  spk->mac  EVENT  tuner_feed=6e cf a6 42 06 80 c4 26 41 01
+17:34:51.357  spk->mac  EVENT  tuner_feed=f8 c2 a6 42 06 d2 b9 22 41 01
+17:34:51.462  spk->mac  EVENT  tuner_feed=cf b9 a6 42 06 06 c1 1f 41 01
+17:34:51.552  spk->mac  EVENT  tuner_feed=88 b5 a6 42 06 fc 5d 1e 41 01
+17:34:51.657  spk->mac  EVENT  tuner_feed=45 b5 a6 42 06 01 48 1e 41 01
+17:34:51.762  spk->mac  EVENT  tuner_feed=f2 b0 a6 42 06 e5 df 1c 41 01
+17:34:51.852  spk->mac  EVENT  tuner_feed=49 b0 a6 42 06 cb a9 1c 41 01
+17:34:51.957  spk->mac  EVENT  tuner_feed=ae c0 a7 42 06 f0 c9 74 41 01
+17:34:52.062  spk->mac  EVENT  tuner_feed=6f 82 b6 42 06 f5 8f b0 42 01
+17:34:52.167  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:34:52.557  spk->mac  EVENT  tuner_feed=1a 0a a7 42 06 e8 c7 39 41 01
+17:34:52.662  spk->mac  EVENT  tuner_feed=84 04 a7 42 06 aa f8 37 41 01
+17:34:52.767  spk->mac  EVENT  tuner_feed=84 00 a7 42 06 4c ad 36 41 01
+17:34:52.872  spk->mac  EVENT  tuner_feed=bb f8 a6 42 06 77 27 34 41 01
+17:34:52.962  spk->mac  EVENT  tuner_feed=3b f3 a6 42 06 ae 60 32 41 01
+17:34:53.067  spk->mac  EVENT  tuner_feed=0c ed a6 42 06 b8 5e 30 41 01
+17:34:53.173  spk->mac  EVENT  tuner_feed=95 ed a6 42 06 ad 8a 30 41 01
+17:34:53.262  spk->mac  EVENT  tuner_feed=41 e3 a6 42 06 83 31 2d 41 01
+17:34:53.382  spk->mac  EVENT  tuner_feed=95 e5 a6 42 06 f0 f3 2d 41 01
+17:34:53.472  spk->mac  EVENT  tuner_feed=50 de a6 42 06 5f 98 2b 41 01
+17:34:53.577  spk->mac  EVENT  tuner_feed=24 df a6 42 06 b1 dd 2b 41 01
+17:34:53.667  spk->mac  EVENT  tuner_feed=61 de a6 42 06 72 9d 2b 41 01
+17:34:53.773  spk->mac  EVENT  tuner_feed=84 d8 a6 42 06 88 b6 29 41 01
+17:34:53.877  spk->mac  EVENT  tuner_feed=4d d7 a6 42 06 c9 52 29 41 01
+17:34:53.967  spk->mac  EVENT  tuner_feed=16 d3 a6 42 06 d2 f4 27 41 01
+17:34:54.072  spk->mac  EVENT  tuner_feed=ac cc a6 42 06 43 e0 25 41 01
+17:34:54.177  spk->mac  EVENT  tuner_feed=aa c9 a6 42 06 0b e6 24 41 01
+17:34:54.282  spk->mac  EVENT  tuner_feed=b7 ca a6 42 06 f6 3d 25 41 01
+17:34:54.372  spk->mac  EVENT  tuner_feed=3f d3 a6 42 06 58 02 28 41 01
+17:34:54.477  spk->mac  EVENT  tuner_feed=d4 c6 a6 42 06 0b fb 23 41 01
+17:34:54.582  spk->mac  EVENT  tuner_feed=ad ba a6 42 06 b8 09 20 41 01
+17:34:54.672  spk->mac  EVENT  tuner_feed=9a b8 a6 42 06 46 5d 1f 41 01
+17:34:54.777  spk->mac  EVENT  tuner_feed=c9 b2 a6 42 06 bf 79 1d 41 01
+17:34:54.882  spk->mac  EVENT  tuner_feed=b7 6d ab 42 06 64 40 08 42 01
+17:34:54.972  spk->mac  EVENT  tuner_feed=e8 0b ba 42 06 b7 ca d1 42 01
+17:34:55.077  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:34:55.287  spk->mac  EVENT  tuner_feed=55 3f a7 42 06 d5 02 4b 41 01
+17:34:55.392  spk->mac  EVENT  tuner_feed=0d 2e a7 42 06 89 6c 45 41 01
+17:34:55.482  spk->mac  EVENT  tuner_feed=f7 10 a7 42 06 a8 01 3c 41 01
+17:34:55.507  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:55.507  mac->spk  SET    TUNER=01
+17:34:55.528  spk->mac  SET-reply  
+17:34:55.558  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:55.559  spk->mac  SET-reply  
+17:34:55.602  spk->mac  EVENT  tuner_feed=8b 09 a7 42 06 42 9a 39 41 01
+17:34:55.692  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:34:55.782  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:34:55.992  spk->mac  EVENT  tuner_feed=2f e0 a6 42 06 e9 33 2c 41 01
+17:34:56.097  spk->mac  EVENT  tuner_feed=58 df a6 42 06 e8 ec 2b 41 01
+17:34:56.202  spk->mac  EVENT  tuner_feed=d6 e1 a6 42 06 db bc 2c 41 01
+17:34:56.292  spk->mac  EVENT  tuner_feed=9b db a6 42 06 83 b7 2a 41 01
+17:34:56.398  spk->mac  EVENT  tuner_feed=54 ce a6 42 06 35 69 26 41 01
+17:34:56.502  spk->mac  EVENT  tuner_feed=02 cf a6 42 06 ff a0 26 41 01
+17:34:56.607  spk->mac  EVENT  tuner_feed=34 d0 a6 42 06 bf 04 27 41 01
+17:34:56.697  spk->mac  EVENT  tuner_feed=02 ce a6 42 06 28 4e 26 41 01
+17:34:56.802  spk->mac  EVENT  tuner_feed=ae c4 a6 42 06 d5 47 23 41 01
+17:34:56.907  spk->mac  EVENT  tuner_feed=e3 c9 a6 42 06 a4 f8 24 41 01
+17:34:56.997  spk->mac  EVENT  tuner_feed=69 c7 a6 42 06 62 2a 24 41 01
+17:34:57.102  spk->mac  EVENT  tuner_feed=2f c4 a6 42 06 42 1f 23 41 01
+17:34:57.207  spk->mac  EVENT  tuner_feed=f7 c3 a6 42 06 a9 0c 23 41 01
+17:34:57.312  spk->mac  EVENT  tuner_feed=25 ca a6 42 06 9f 0e 25 41 01
+17:34:57.402  spk->mac  EVENT  tuner_feed=5d bd a6 42 06 e3 e8 20 41 01
+17:34:57.507  spk->mac  EVENT  tuner_feed=9a b5 a6 42 06 0e 63 1e 41 01
+17:34:57.612  spk->mac  EVENT  tuner_feed=89 d1 aa 42 06 42 d0 f7 41 01
+17:34:57.717  spk->mac  EVENT  tuner_feed=e8 0b ba 42 06 b7 ca d1 42 01
+17:34:57.806  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:34:58.107  spk->mac  EVENT  tuner_feed=f6 ff a6 42 06 a6 7f 36 41 01
+17:34:58.211  spk->mac  EVENT  tuner_feed=7c fc a6 42 06 3c 60 35 41 01
+17:34:58.316  spk->mac  EVENT  tuner_feed=9e fa a6 42 06 b2 c4 34 41 01
+17:34:58.407  spk->mac  EVENT  tuner_feed=82 f6 a6 42 06 2f 6f 33 41 01
+17:34:58.512  spk->mac  EVENT  tuner_feed=43 f0 a6 42 06 d7 69 31 41 01
+17:34:58.618  spk->mac  EVENT  tuner_feed=60 ec a6 42 06 ed 26 30 41 01
+17:34:58.657  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:34:58.678  spk->mac  SET-reply  
+17:34:58.693  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:34:58.708  spk->mac  EVENT  tuner_feed=d4 e7 a6 42 06 e8 ad 2e 41 01
+17:34:58.812  spk->mac  EVENT  tuner_feed=75 e3 a6 42 06 6a 42 2d 41 01
+17:34:58.917  spk->mac  EVENT  tuner_feed=c4 e2 a6 42 06 f0 08 2d 41 01
+17:34:59.022  spk->mac  EVENT  tuner_feed=26 df a6 42 06 b1 dd 2b 41 01
+17:34:59.112  spk->mac  EVENT  tuner_feed=69 dc a6 42 06 73 f9 2a 41 01
+17:34:59.217  spk->mac  EVENT  tuner_feed=ff d6 a6 42 06 6d 39 29 41 01
+17:34:59.322  spk->mac  EVENT  tuner_feed=83 dc a6 42 06 e7 01 2b 41 01
+17:34:59.427  spk->mac  EVENT  tuner_feed=69 dd a6 42 06 fc 4d 2b 41 01
+17:34:59.517  spk->mac  EVENT  tuner_feed=0d d0 a6 42 06 e9 f8 26 41 01
+17:34:59.623  spk->mac  EVENT  tuner_feed=4b ca a6 42 06 74 1a 25 41 01
+17:34:59.727  spk->mac  EVENT  tuner_feed=0d c7 a6 42 06 a4 0d 24 41 01
+17:34:59.817  spk->mac  EVENT  tuner_feed=1c c7 b1 42 06 16 16 83 42 01
+17:34:59.922  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 13 more times)
+17:35:01.284  mac->spk  SET    TUNER=01
+17:35:01.285  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:01.333  spk->mac  SET-reply  
+17:35:01.334  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:01.348  spk->mac  SET-reply  
+17:35:01.363  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:01.437  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:01.453  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:01.557  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:01.767  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:04.957  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:04.958  mac->spk  SET    TUNER=01
+17:35:04.993  spk->mac  SET-reply  
+17:35:05.008  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:05.009  spk->mac  SET-reply  
+17:35:05.127  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:05.232  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:05.338  spk->mac  EVENT  tuner_feed=72 df a6 42 06 5c f5 2b 41 01
+17:35:05.442  spk->mac  EVENT  tuner_feed=46 e0 a6 42 06 ac 3a 2c 41 01
+17:35:05.532  spk->mac  EVENT  tuner_feed=b4 80 af 42 06 94 93 59 42 01
+17:35:05.637  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:35:06.042  spk->mac  EVENT  tuner_feed=80 0b a7 42 06 8f 3c 3a 41 01
+17:35:06.147  spk->mac  EVENT  tuner_feed=86 05 a7 42 06 33 4d 38 41 01
+17:35:06.252  spk->mac  EVENT  tuner_feed=2a 02 a7 42 06 3d 36 37 41 01
+17:35:06.343  spk->mac  EVENT  tuner_feed=53 fe a6 42 06 65 f8 35 41 01
+17:35:06.448  spk->mac  EVENT  tuner_feed=3e f8 a6 42 06 e3 fe 33 41 01
+17:35:06.552  spk->mac  EVENT  tuner_feed=d3 f5 a6 42 06 64 37 33 41 01
+17:35:06.657  spk->mac  EVENT  tuner_feed=c8 f2 a6 42 06 cb 39 32 41 01
+17:35:06.747  spk->mac  EVENT  tuner_feed=0e ec a6 42 06 e0 0b 30 41 01
+17:35:06.852  spk->mac  EVENT  tuner_feed=a9 e5 a6 42 06 b3 fa 2d 41 01
+17:35:06.957  spk->mac  EVENT  tuner_feed=29 e3 a6 42 06 c0 2a 2d 41 01
+17:35:07.047  spk->mac  EVENT  tuner_feed=dd de a6 42 06 05 c6 2b 41 01
+17:35:07.152  spk->mac  EVENT  tuner_feed=20 dd a6 42 06 50 36 2b 41 01
+17:35:07.257  spk->mac  EVENT  tuner_feed=3f d6 a6 42 06 df fa 28 41 01
+17:35:07.347  spk->mac  EVENT  tuner_feed=83 d1 a6 42 06 f3 70 27 41 01
+17:35:07.452  spk->mac  EVENT  tuner_feed=39 c6 a6 42 06 53 c8 23 41 01
+17:35:07.557  spk->mac  EVENT  tuner_feed=09 ca a6 42 06 7a 04 25 41 01
+17:35:07.662  spk->mac  EVENT  tuner_feed=48 20 a8 42 06 95 cb 89 41 01
+17:35:07.767  spk->mac  EVENT  tuner_feed=6e db b6 42 06 62 db b3 42 01
+17:35:07.857  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:35:08.107  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:08.128  spk->mac  SET-reply  
+17:35:08.157  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:08.159  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:08.262  spk->mac  EVENT  tuner_feed=8d 48 a7 42 06 02 ff 4d 41 01
+17:35:08.352  spk->mac  EVENT  tuner_feed=2b 43 a7 42 06 ae 40 4c 41 01
+17:35:08.457  spk->mac  EVENT  tuner_feed=ea 3d a7 42 06 2d 8e 4a 41 01
+17:35:08.563  spk->mac  EVENT  tuner_feed=ec 29 a7 42 06 55 15 44 41 01
+17:35:08.667  spk->mac  EVENT  tuner_feed=18 18 a7 42 06 63 51 3e 41 01
+17:35:08.772  spk->mac  EVENT  tuner_feed=83 0b a7 42 06 40 3e 3a 41 01
+17:35:08.862  spk->mac  EVENT  tuner_feed=e2 0c a7 42 06 86 af 3a 41 01
+17:35:08.968  spk->mac  EVENT  tuner_feed=b9 fb a6 42 06 fd 1f 35 41 01
+17:35:09.072  spk->mac  EVENT  tuner_feed=b0 fc a6 42 06 24 71 35 41 01
+17:35:09.162  spk->mac  EVENT  tuner_feed=8a f3 a6 42 06 09 7a 32 41 01
+17:35:09.267  spk->mac  EVENT  tuner_feed=47 ee a6 42 06 28 c4 30 41 01
+17:35:09.372  spk->mac  EVENT  tuner_feed=91 ea a6 42 06 75 90 2f 41 01
+17:35:09.477  spk->mac  EVENT  tuner_feed=44 e1 a6 42 06 84 8d 2c 41 01
+17:35:09.553  spk->mac  EVENT  battery%=29
+17:35:09.569  spk->mac  EVENT  tuner_feed=90 e0 a6 42 06 58 52 2c 41 01
+17:35:09.570  spk->mac  EVENT  battery%=29
+17:35:09.672  spk->mac  EVENT  tuner_feed=51 da a6 42 06 01 4d 2a 41 01
+17:35:09.777  spk->mac  EVENT  tuner_feed=df d7 a6 42 06 1f 82 29 41 01
+17:35:09.867  spk->mac  EVENT  tuner_feed=56 c8 a6 42 06 26 78 24 41 01
+17:35:09.972  spk->mac  EVENT  tuner_feed=d1 c8 a6 42 06 09 9f 24 41 01
+17:35:10.077  spk->mac  EVENT  tuner_feed=37 c4 a6 42 06 f2 20 23 41 01
+17:35:10.167  spk->mac  EVENT  tuner_feed=ce b7 a8 42 06 a8 21 a2 41 01
+17:35:10.287  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:35:10.678  spk->mac  EVENT  tuner_feed=9b e4 a6 42 06 c9 a2 2d 41 01
+17:35:10.782  spk->mac  EVENT  tuner_feed=2e ec a6 42 06 b5 17 30 41 01
+17:35:10.872  spk->mac  EVENT  tuner_feed=a3 e3 a6 42 06 a2 51 2d 41 01
+17:35:10.977  spk->mac  EVENT  tuner_feed=0e d9 a6 42 06 2e e4 29 41 01
+17:35:11.082  spk->mac  EVENT  tuner_feed=14 d3 a6 42 06 21 f3 27 41 01
+17:35:11.173  spk->mac  EVENT  tuner_feed=ac ca a6 42 06 e3 38 25 41 01
+17:35:11.257  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:11.258  mac->spk  SET    TUNER=01
+17:35:11.278  spk->mac  EVENT  tuner_feed=9c c6 a6 42 06 72 e8 23 41 01
+17:35:11.293  spk->mac  SET-reply  
+17:35:11.308  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:11.337  spk->mac  SET-reply  
+17:35:11.382  spk->mac  EVENT  tuner_feed=4b bf a6 42 06 cf 87 21 41 01
+17:35:11.442  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:11.547  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:11.638  spk->mac  EVENT  tuner_feed=f5 b4 a6 42 06 a5 2e 1e 41 01
+17:35:11.742  spk->mac  EVENT  tuner_feed=0a b4 a6 42 06 90 e2 1d 41 01
+17:35:11.847  spk->mac  EVENT  tuner_feed=ac b1 a6 42 06 c2 1c 1d 41 01
+17:35:11.952  spk->mac  EVENT  tuner_feed=10 b3 a6 42 06 6a 91 1d 41 01
+17:35:12.043  spk->mac  EVENT  tuner_feed=69 b2 a6 42 06 9f 59 1d 41 01
+17:35:12.147  spk->mac  EVENT  tuner_feed=1a af a6 42 06 bc 47 1c 41 01
+17:35:12.252  spk->mac  EVENT  tuner_feed=9e ae a6 42 06 29 1f 1c 41 01
+17:35:12.342  spk->mac  EVENT  tuner_feed=89 d1 aa 42 06 42 d0 f7 41 01
+17:35:12.447  spk->mac  EVENT  tuner_feed=04 54 b9 42 06 64 18 cb 42 01
+17:35:12.552  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:35:12.957  spk->mac  EVENT  tuner_feed=54 f4 a6 42 06 48 ba 32 41 01
+17:35:13.062  spk->mac  EVENT  tuner_feed=df f1 a6 42 06 67 ef 31 41 01
+17:35:13.152  spk->mac  EVENT  tuner_feed=8b ec a6 42 06 73 34 30 41 01
+17:35:13.257  spk->mac  EVENT  tuner_feed=6c df a6 42 06 ab f3 2b 41 01
+17:35:13.362  spk->mac  EVENT  tuner_feed=fa d8 a6 42 06 6b dd 29 41 01
+17:35:13.452  spk->mac  EVENT  tuner_feed=d4 de a6 42 06 a4 c2 2b 41 01
+17:35:13.557  spk->mac  EVENT  tuner_feed=e8 e1 a6 42 06 ee c1 2c 41 01
+17:35:13.662  spk->mac  EVENT  tuner_feed=f6 dd a6 42 06 a1 7b 2b 41 01
+17:35:13.752  spk->mac  EVENT  tuner_feed=38 d7 a6 42 06 06 4c 29 41 01
+17:35:13.857  spk->mac  EVENT  tuner_feed=c4 d0 a6 42 06 15 34 27 41 01
+17:35:13.962  spk->mac  EVENT  tuner_feed=3c cf a6 42 06 98 b3 26 41 01
+17:35:14.052  spk->mac  EVENT  tuner_feed=7d c7 a6 42 06 25 31 24 41 01
+17:35:14.172  spk->mac  EVENT  tuner_feed=2a c3 a6 42 06 ba ca 22 41 01
+17:35:14.262  spk->mac  EVENT  tuner_feed=4e c4 a6 42 06 66 29 23 41 01
+17:35:14.367  spk->mac  EVENT  tuner_feed=9d be a6 42 06 04 50 21 41 01
+17:35:14.407  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:14.408  mac->spk  SET    TUNER=01
+17:35:14.443  spk->mac  SET-reply  
+17:35:14.473  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:14.474  spk->mac  EVENT  tuner_feed=89 c2 a6 42 06 50 96 22 41 01
+17:35:14.474  spk->mac  SET-reply  
+17:35:14.562  spk->mac  EVENT  tuner_feed=db ee a6 42 06 30 f5 30 41 01
+17:35:14.592  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:14.697  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:35:15.207  spk->mac  EVENT  tuner_feed=5e e4 a6 42 06 7f 8e 2d 41 01
+17:35:15.297  spk->mac  EVENT  tuner_feed=cb e6 a6 42 06 b0 57 2e 41 01
+17:35:15.402  spk->mac  EVENT  tuner_feed=88 e0 a6 42 06 a7 50 2c 41 01
+17:35:15.521  spk->mac  EVENT  tuner_feed=83 da a6 42 06 38 5c 2a 41 01
+17:35:15.597  spk->mac  EVENT  tuner_feed=c2 d5 a6 42 06 4c d2 28 41 01
+17:35:15.702  spk->mac  EVENT  tuner_feed=cf ce a6 42 06 c8 91 26 41 01
+17:35:15.806  spk->mac  EVENT  tuner_feed=53 ca a6 42 06 25 1c 25 41 01
+17:35:15.912  spk->mac  EVENT  tuner_feed=98 c2 a6 42 06 63 9b 22 41 01
+17:35:16.002  spk->mac  EVENT  tuner_feed=ce bf a6 42 06 c4 b3 21 41 01
+17:35:16.107  spk->mac  EVENT  tuner_feed=9c ba a6 42 06 f5 02 20 41 01
+17:35:16.212  spk->mac  EVENT  tuner_feed=87 bb a6 42 06 0a 4f 20 41 01
+17:35:16.302  spk->mac  EVENT  tuner_feed=6f b9 a6 42 06 97 a2 1f 41 01
+17:35:16.407  spk->mac  EVENT  tuner_feed=77 b5 a6 42 06 e9 58 1e 41 01
+17:35:16.512  spk->mac  EVENT  tuner_feed=09 b5 a6 42 06 b7 33 1e 41 01
+17:35:16.602  spk->mac  EVENT  tuner_feed=b6 b3 a6 42 06 d3 c5 1d 41 01
+17:35:16.707  spk->mac  EVENT  tuner_feed=14 b3 a6 42 06 6a 91 1d 41 01
+17:35:16.812  spk->mac  EVENT  tuner_feed=49 b4 a6 42 06 da f6 1d 41 01
+17:35:16.917  spk->mac  EVENT  tuner_feed=55 a6 a6 42 06 10 6f 19 41 01
+17:35:17.007  spk->mac  EVENT  tuner_feed=94 af a6 42 06 9f 6e 1c 41 01
+17:35:17.112  spk->mac  EVENT  tuner_feed=ec ab a6 42 06 fe 3f 1b 41 01
+17:35:17.217  spk->mac  EVENT  tuner_feed=07 dd ae 42 06 ee f0 4c 42 01
+17:35:17.322  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:35:17.557  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:17.594  spk->mac  SET-reply  
+17:35:17.623  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02
+17:35:17.624  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 19 more times)
+17:35:19.647  spk->mac  EVENT  chan_info=03 00 02
+17:35:19.663  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:20.707  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:20.708  mac->spk  SET    TUNER=01
+17:35:20.743  spk->mac  SET-reply  
+17:35:20.773  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:20.774  spk->mac  SET-reply  
+17:35:23.337  spk->mac  EVENT  battery%=29
+              (… repeated 1 more times)
+17:35:23.857  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:35:23.893  spk->mac  SET-reply  
+17:35:23.923  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:23.924  spk->mac  SET-reply  
+17:35:23.938  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:24.763  spk->mac  EVENT  chan_info=01 01 02
+17:35:24.765  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:24.765  spk->mac  EVENT  volume=01 02 1f
+17:35:24.867  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:35:25.212  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:27.535  mac->spk  SET    TUNER=01
+17:35:27.536  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:27.584  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:35:27.613  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:27.717  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:27.807  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 5 more times)
+17:35:28.363  spk->mac  EVENT  preset=01 0d
+17:35:28.407  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:35:28.692  spk->mac  EVENT  preset=01 0d
+17:35:28.708  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 20 more times)
+17:35:30.837  spk->mac  EVENT  tuner_feed=2b 63 a6 43 01 21 9d 03 41 01
+17:35:30.942  spk->mac  EVENT  tuner_feed=f5 68 a6 43 01 f7 7e 05 41 01
+17:35:31.048  spk->mac  EVENT  tuner_feed=17 79 a6 43 01 59 bd 0a 41 01
+17:35:31.137  spk->mac  EVENT  tuner_feed=d2 78 a6 43 01 ad a5 0a 41 01
+17:35:31.258  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 15 more times)
+17:35:32.785  mac->spk  SET    TUNER=01
+17:35:32.785  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:35:32.833  spk->mac  SET-reply  
+17:35:32.848  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:32.863  spk->mac  SET-reply  
+17:35:32.878  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:32.878  spk->mac  SET-reply  
+17:35:32.893  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:32.952  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:33.043  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 18 more times)
+17:35:34.902  spk->mac  EVENT  battery%=29
+              (… repeated 1 more times)
+17:35:34.962  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 24 more times)
+17:35:37.482  spk->mac  EVENT  tuner_feed=e4 cb dd 42 05 5a 44 e1 40 01
+17:35:37.587  spk->mac  EVENT  tuner_feed=16 cc dd 42 05 06 5c e1 40 01
+17:35:37.692  spk->mac  EVENT  tuner_feed=88 ba dd 42 05 ee cc d8 40 01
+17:35:37.783  spk->mac  EVENT  tuner_feed=d1 aa dd 42 05 62 20 d1 40 01
+17:35:37.888  spk->mac  EVENT  tuner_feed=b5 a0 dd 42 05 c5 2f cc 40 01
+17:35:37.992  spk->mac  EVENT  tuner_feed=45 9e dd 42 05 73 ff ca 40 01
+17:35:38.035  mac->spk  SET    TUNER=01
+17:35:38.036  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:38.084  spk->mac  SET-reply  
+17:35:38.084  spk->mac  EVENT  tuner_feed=d0 9b dd 42 05 c1 cb c9 40 01
+17:35:38.099  spk->mac  SET-reply  
+17:35:38.113  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:38.203  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:38.203  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:35:38.412  spk->mac  EVENT  tuner_feed=9f 82 dd 42 05 bf 7f bd 40 01
+17:35:38.502  spk->mac  EVENT  tuner_feed=c1 7d dd 42 05 1c 1f bb 40 01
+17:35:38.607  spk->mac  EVENT  tuner_feed=c7 7d dd 42 05 7e 22 bb 40 01
+17:35:38.712  spk->mac  EVENT  tuner_feed=7f 74 dd 42 05 b3 9a b6 40 01
+17:35:38.817  spk->mac  EVENT  tuner_feed=46 6f dd 42 05 b9 0a b4 40 01
+17:35:38.908  spk->mac  EVENT  tuner_feed=12 77 dd 42 05 ec db b7 40 01
+17:35:39.013  spk->mac  EVENT  tuner_feed=bc 71 dd 42 05 6c 3e b5 40 01
+17:35:39.117  spk->mac  EVENT  tuner_feed=3f 71 dd 42 05 8f 01 b5 40 01
+17:35:39.222  spk->mac  EVENT  tuner_feed=d6 71 dd 42 05 f3 4b b5 40 01
+17:35:39.313  spk->mac  EVENT  tuner_feed=43 7d dd 42 05 3f e2 ba 40 01
+17:35:39.418  spk->mac  EVENT  tuner_feed=7d 76 dd 42 05 89 91 b7 40 01
+17:35:39.523  spk->mac  EVENT  tuner_feed=bd 6b dd 42 05 27 53 b2 40 01
+17:35:39.642  spk->mac  EVENT  tuner_feed=e9 69 dd 42 05 39 6d b1 40 01
+17:35:39.732  spk->mac  EVENT  tuner_feed=b5 58 dd 42 05 53 03 a9 40 01
+17:35:39.822  spk->mac  EVENT  tuner_feed=c5 60 dd 42 05 57 f6 ac 40 01
+17:35:39.927  spk->mac  EVENT  tuner_feed=bc 57 dd 42 05 99 89 a8 40 01
+17:35:40.032  spk->mac  EVENT  tuner_feed=26 4a dd 42 05 cb e4 a1 40 01
+17:35:40.122  spk->mac  EVENT  tuner_feed=2e 4d dd 42 05 e2 62 a3 40 01
+17:35:40.227  spk->mac  EVENT  tuner_feed=9c 40 dd 42 05 31 3b 9d 40 01
+17:35:40.332  spk->mac  EVENT  tuner_feed=ae 38 dd 42 05 77 5c 99 40 01
+17:35:40.422  spk->mac  EVENT  tuner_feed=69 48 dd 42 05 64 0c a1 40 01
+17:35:40.528  spk->mac  EVENT  tuner_feed=08 45 dd 42 05 ba 65 9f 40 01
+17:35:40.633  spk->mac  EVENT  tuner_feed=e5 47 dd 42 05 25 cc a0 40 01
+17:35:40.722  spk->mac  EVENT  tuner_feed=64 59 dd 42 05 3d 5b a9 40 01
+17:35:40.827  spk->mac  EVENT  tuner_feed=7f 62 dd 42 05 be ce ad 40 01
+17:35:40.932  spk->mac  EVENT  tuner_feed=07 66 dd 42 05 50 86 af 40 01
+17:35:41.037  spk->mac  EVENT  tuner_feed=ef 64 dd 42 05 0f ff ae 40 01
+17:35:41.127  spk->mac  EVENT  tuner_feed=43 66 dd 42 05 bf a4 af 40 01
+17:35:41.232  spk->mac  EVENT  tuner_feed=3e 61 dd 42 05 d2 2f ad 40 01
+17:35:41.337  spk->mac  EVENT  tuner_feed=67 61 dd 42 05 1b 44 ad 40 01
+17:35:41.427  spk->mac  EVENT  tuner_feed=10 5f dd 42 05 50 21 ac 40 01
+17:35:41.532  spk->mac  EVENT  tuner_feed=3b 58 dd 42 05 d8 c9 a8 40 01
+17:35:41.637  spk->mac  EVENT  tuner_feed=31 54 dd 42 05 a5 ce a6 40 01
+17:35:41.742  spk->mac  EVENT  tuner_feed=21 50 dd 42 05 72 d3 a4 40 01
+17:35:41.832  spk->mac  EVENT  tuner_feed=4d 55 dd 42 05 47 59 a7 40 01
+17:35:41.937  spk->mac  EVENT  tuner_feed=ce 44 dd 42 05 ad 4a 9f 40 01
+17:35:42.042  spk->mac  EVENT  tuner_feed=8b 38 dd 42 05 8f 4b 99 40 01
+17:35:42.132  spk->mac  EVENT  tuner_feed=da 2b dd 42 05 57 16 93 40 01
+17:35:42.237  spk->mac  EVENT  tuner_feed=9f 17 dd 42 05 5a 2e 89 40 01
+17:35:42.342  spk->mac  EVENT  tuner_feed=3d 23 dd 42 05 b3 df 8e 40 01
+17:35:42.447  spk->mac  EVENT  tuner_feed=e5 3a dd 42 05 bb 71 9a 40 01
+17:35:42.537  spk->mac  EVENT  tuner_feed=6e 57 dd 42 05 67 64 a8 40 01
+17:35:42.642  spk->mac  EVENT  tuner_feed=4b df eb 42 05 55 34 71 42 01
+17:35:42.747  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:42.760  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:42.760  mac->spk  SET    TUNER=01
+17:35:42.761  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:42.823  spk->mac  SET-reply  
+17:35:42.838  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:42.839  spk->mac  SET-reply  
+17:35:42.853  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:42.869  spk->mac  SET-reply  
+17:35:42.883  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:42.942  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:42.958  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:43.063  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:43.167  spk->mac  EVENT  tuner_feed=90 ad dd 42 05 e5 75 d2 40 01
+17:35:43.273  spk->mac  EVENT  tuner_feed=57 ad dd 42 05 d8 5a d2 40 01
+17:35:43.317  spk->mac  EVENT  battery%=29
+              (… repeated 1 more times)
+17:35:43.362  spk->mac  EVENT  tuner_feed=c3 a2 dd 42 05 bf 30 cd 40 01
+17:35:43.467  spk->mac  EVENT  tuner_feed=72 91 dd 42 05 b5 bc c4 40 01
+17:35:43.572  spk->mac  EVENT  tuner_feed=66 8c dd 42 05 c8 47 c2 40 01
+17:35:43.662  spk->mac  EVENT  tuner_feed=17 99 dd 42 05 9e 79 c8 40 01
+17:35:43.767  spk->mac  EVENT  tuner_feed=6a 94 dd 42 05 a7 30 c6 40 01
+17:35:43.872  spk->mac  EVENT  tuner_feed=10 8d dd 42 05 ef 98 c2 40 01
+17:35:43.977  spk->mac  EVENT  tuner_feed=6c 89 dd 42 05 d6 d3 c0 40 01
+17:35:44.067  spk->mac  EVENT  tuner_feed=2d 7f dd 42 05 51 d2 bb 40 01
+17:35:44.172  spk->mac  EVENT  tuner_feed=b2 82 dd 42 05 e4 89 bd 40 01
+17:35:44.277  spk->mac  EVENT  tuner_feed=6d 8c dd 42 05 2a 4b c2 40 01
+17:35:44.367  spk->mac  EVENT  tuner_feed=52 81 dd 42 05 71 dd bc 40 01
+17:35:44.472  spk->mac  EVENT  tuner_feed=af 80 dd 42 05 4b 8c bc 40 01
+17:35:44.577  spk->mac  EVENT  tuner_feed=8c 83 dd 42 05 b6 f2 bd 40 01
+17:35:44.668  spk->mac  EVENT  tuner_feed=fa 88 dd 42 05 5b 9a c0 40 01
+17:35:44.772  spk->mac  EVENT  tuner_feed=52 80 dd 42 05 56 60 bc 40 01
+17:35:44.892  spk->mac  EVENT  tuner_feed=21 82 dd 42 05 e2 42 bd 40 01
+17:35:44.982  spk->mac  EVENT  tuner_feed=e7 7c dd 42 05 e8 b2 ba 40 01
+17:35:45.072  spk->mac  EVENT  tuner_feed=f8 7e dd 42 05 44 b7 bb 40 01
+17:35:45.177  spk->mac  EVENT  tuner_feed=f8 81 dd 42 05 98 2e bd 40 01
+17:35:45.282  spk->mac  EVENT  tuner_feed=fe 86 dd 42 05 85 a3 bf 40 01
+17:35:45.387  spk->mac  EVENT  tuner_feed=65 67 dd 42 05 c2 32 b0 40 01
+17:35:45.478  spk->mac  EVENT  tuner_feed=04 5f dd 42 05 8d 1a ac 40 01
+17:35:45.583  spk->mac  EVENT  tuner_feed=fc 54 dd 42 05 15 34 a7 40 01
+17:35:45.687  spk->mac  EVENT  tuner_feed=0f 7b dd 42 05 fa cc b9 40 01
+17:35:45.777  spk->mac  EVENT  tuner_feed=30 6e dd 42 05 79 83 b3 40 01
+17:35:45.883  spk->mac  EVENT  tuner_feed=2c 57 dd 42 05 f8 45 a8 40 01
+17:35:45.987  spk->mac  EVENT  tuner_feed=79 5e dd 42 05 ed d6 ab 40 01
+17:35:46.077  spk->mac  EVENT  tuner_feed=ad 67 dd 42 05 93 54 b0 40 01
+17:35:46.183  spk->mac  EVENT  tuner_feed=61 6e dd 42 05 24 9b b3 40 01
+17:35:46.287  spk->mac  EVENT  tuner_feed=2b 72 dd 42 05 86 74 b5 40 01
+17:35:46.392  spk->mac  EVENT  tuner_feed=ad 7a dd 42 05 a4 9d b9 40 01
+17:35:46.483  spk->mac  EVENT  tuner_feed=7e 63 dd 42 05 78 48 ae 40 01
+17:35:46.587  spk->mac  EVENT  tuner_feed=9d 8a dd 42 05 9e 68 c1 40 01
+17:35:46.692  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 18 more times)
+17:35:48.535  mac->spk  SET    TUNER=01
+17:35:48.536  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:35:48.569  spk->mac  SET-reply  
+17:35:48.599  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:48.615  spk->mac  SET-reply  
+17:35:48.629  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:48.629  spk->mac  SET-reply  
+17:35:48.645  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:48.702  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:48.793  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:48.898  spk->mac  EVENT  tuner_feed=54 98 dd 42 05 f1 1a c8 40 01
+17:35:49.003  spk->mac  EVENT  tuner_feed=f0 92 dd 42 05 ae 76 c5 40 01
+17:35:49.107  spk->mac  EVENT  tuner_feed=93 98 dd 42 05 60 39 c8 40 01
+17:35:49.198  spk->mac  EVENT  tuner_feed=b5 95 dd 42 05 f5 d2 c6 40 01
+17:35:49.303  spk->mac  EVENT  tuner_feed=35 94 dd 42 05 9a 15 c6 40 01
+17:35:49.407  spk->mac  EVENT  tuner_feed=bd 8a dd 42 05 24 76 c1 40 01
+17:35:49.512  spk->mac  EVENT  tuner_feed=26 80 dd 42 05 0c 4c bc 40 01
+17:35:49.602  spk->mac  EVENT  tuner_feed=12 6a dd 42 05 83 81 b1 40 01
+17:35:49.707  spk->mac  EVENT  tuner_feed=c5 67 dd 42 05 19 62 b0 40 01
+17:35:49.813  spk->mac  EVENT  tuner_feed=08 66 dd 42 05 50 86 af 40 01
+17:35:49.918  spk->mac  EVENT  tuner_feed=89 6b dd 42 05 1a 38 b2 40 01
+17:35:50.023  spk->mac  EVENT  tuner_feed=2a 80 dd 42 05 0c 4c bc 40 01
+17:35:50.127  spk->mac  EVENT  tuner_feed=5c 84 dd 42 05 26 58 be 40 01
+17:35:50.217  spk->mac  EVENT  tuner_feed=c4 8d dd 42 05 d9 f0 c2 40 01
+17:35:50.322  spk->mac  EVENT  tuner_feed=51 98 dd 42 05 8f 17 c8 40 01
+17:35:50.412  spk->mac  EVENT  tuner_feed=bb 90 dd 42 05 cb 64 c4 40 01
+17:35:50.517  spk->mac  EVENT  tuner_feed=47 8b dd 42 05 c5 b9 c1 40 01
+17:35:50.623  spk->mac  EVENT  tuner_feed=61 89 dd 42 05 13 cd c0 40 01
+17:35:50.712  spk->mac  EVENT  tuner_feed=ba 92 dd 42 05 03 5f c5 40 01
+17:35:50.817  spk->mac  EVENT  tuner_feed=f0 86 dd 42 05 c1 9c bf 40 01
+17:35:50.922  spk->mac  EVENT  tuner_feed=14 87 dd 42 05 aa ad bf 40 01
+17:35:51.013  spk->mac  EVENT  tuner_feed=d1 f8 db 42 05 56 8c e2 bd 01
+17:35:51.118  spk->mac  EVENT  tuner_feed=a2 a7 f3 42 05 3e cd b0 42 01
+17:35:51.222  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 3 more times)
+17:35:51.627  spk->mac  EVENT  tuner_feed=7f e1 dd 42 05 a3 ce eb 40 01
+17:35:51.732  spk->mac  EVENT  tuner_feed=a0 d1 dd 42 05 30 11 e4 40 01
+17:35:51.822  spk->mac  EVENT  tuner_feed=60 cf dd 42 05 8a f8 e2 40 01
+17:35:51.928  spk->mac  EVENT  tuner_feed=32 d6 dd 42 05 a2 4c e6 40 01
+17:35:52.032  spk->mac  EVENT  tuner_feed=2c b8 dd 42 05 c0 a6 d7 40 01
+17:35:52.122  spk->mac  EVENT  tuner_feed=a9 b5 dd 42 05 4b 6c d6 40 01
+17:35:52.227  spk->mac  EVENT  tuner_feed=a3 b4 dd 42 05 cd eb d5 40 01
+17:35:52.332  spk->mac  EVENT  tuner_feed=d7 b7 dd 42 05 cb 7a d7 40 01
+17:35:52.422  spk->mac  EVENT  tuner_feed=db ae dd 42 05 33 18 d3 40 01
+17:35:52.528  spk->mac  EVENT  tuner_feed=91 aa dd 42 05 f3 01 d1 40 01
+17:35:52.633  spk->mac  EVENT  tuner_feed=3c a7 dd 42 05 0d 62 cf 40 01
+17:35:52.737  spk->mac  EVENT  tuner_feed=8f a6 dd 42 05 84 0d cf 40 01
+17:35:52.827  spk->mac  EVENT  tuner_feed=33 a6 dd 42 05 2e de ce 40 01
+17:35:52.933  spk->mac  EVENT  battery%=29
+17:35:52.933  spk->mac  EVENT  tuner_feed=01 a7 dd 42 05 9e 43 cf 40 01
+17:35:52.948  spk->mac  EVENT  battery%=29
+17:35:53.037  spk->mac  EVENT  tuner_feed=c4 a7 dd 42 05 4a a2 cf 40 01
+17:35:53.127  spk->mac  EVENT  tuner_feed=96 a5 dd 42 05 ca 93 ce 40 01
+17:35:53.232  spk->mac  EVENT  tuner_feed=77 a7 dd 42 05 19 7d cf 40 01
+17:35:53.337  spk->mac  EVENT  tuner_feed=c6 a3 dd 42 05 3d b1 cd 40 01
+17:35:53.442  spk->mac  EVENT  tuner_feed=e4 a1 dd 42 05 8d c4 cc 40 01
+17:35:53.532  spk->mac  EVENT  tuner_feed=a6 a3 dd 42 05 55 a0 cd 40 01
+17:35:53.639  spk->mac  EVENT  tuner_feed=48 a0 dd 42 05 0d fd cb 40 01
+17:35:53.742  spk->mac  EVENT  tuner_feed=16 99 dd 42 05 9e 79 c8 40 01
+17:35:53.785  mac->spk  SET    TUNER=01
+17:35:53.786  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:35:53.834  spk->mac  SET-reply  
+17:35:53.834  spk->mac  EVENT  tuner_feed=56 91 dd 42 05 2e af c4 40 01
+17:35:53.849  spk->mac  SET-reply  
+17:35:53.878  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:53.894  spk->mac  SET-reply  
+17:35:53.908  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:53.952  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:54.057  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:54.147  spk->mac  EVENT  tuner_feed=af 76 dd 42 05 34 a9 b7 40 01
+17:35:54.252  spk->mac  EVENT  tuner_feed=45 6d dd 42 05 82 10 b3 40 01
+17:35:54.357  spk->mac  EVENT  tuner_feed=f8 76 dd 42 05 66 ce b7 40 01
+17:35:54.462  spk->mac  EVENT  tuner_feed=a0 8a dd 42 05 9e 68 c1 40 01
+17:35:54.568  spk->mac  EVENT  tuner_feed=8e c4 dd 42 05 04 b0 dd 40 01
+17:35:54.658  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 12 more times)
+17:35:56.052  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:59.035  mac->spk  SET    TUNER=01
+17:35:59.036  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:35:59.084  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:35:59.113  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:35:59.203  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:35:59.307  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:35:59.398  spk->mac  EVENT  tuner_feed=7e 80 dd 42 05 9f 74 bc 40 01
+17:35:59.502  spk->mac  EVENT  tuner_feed=28 75 dd 42 05 da eb b6 40 01
+17:35:59.622  spk->mac  EVENT  tuner_feed=94 5a dd 42 05 04 f0 a9 40 01
+17:35:59.712  spk->mac  EVENT  tuner_feed=d6 4f dd 42 05 40 ae a4 40 01
+17:35:59.802  spk->mac  EVENT  tuner_feed=81 17 e1 42 05 45 72 9e 41 01
+17:35:59.908  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:36:00.207  spk->mac  EVENT  tuner_feed=81 b5 dd 42 05 01 58 d6 40 01
+17:36:00.312  spk->mac  EVENT  tuner_feed=a7 d1 dd 42 05 91 14 e4 40 01
+17:36:00.417  spk->mac  EVENT  tuner_feed=ed cb dd 42 05 bc 47 e1 40 01
+17:36:00.508  spk->mac  EVENT  tuner_feed=b0 b4 dd 42 05 90 f2 d5 40 01
+17:36:00.614  spk->mac  EVENT  tuner_feed=5d a8 dd 42 05 ae ec cf 40 01
+17:36:00.717  spk->mac  EVENT  tuner_feed=24 aa dd 42 05 d9 cb d0 40 01
+17:36:00.807  spk->mac  EVENT  tuner_feed=ca a7 dd 42 05 ac a5 cf 40 01
+17:36:00.913  spk->mac  EVENT  tuner_feed=41 9f dd 42 05 8f 7c cb 40 01
+17:36:01.018  spk->mac  EVENT  tuner_feed=02 a1 dd 42 05 f7 54 cc 40 01
+17:36:01.122  spk->mac  EVENT  tuner_feed=31 a1 dd 42 05 a3 6c cc 40 01
+17:36:01.212  spk->mac  EVENT  tuner_feed=93 a0 dd 42 05 dd 1e cc 40 01
+17:36:01.318  spk->mac  EVENT  tuner_feed=01 a5 dd 42 05 66 49 ce 40 01
+17:36:01.422  spk->mac  EVENT  tuner_feed=06 9f dd 42 05 21 5e cb 40 01
+17:36:01.512  spk->mac  EVENT  tuner_feed=fa 9d dd 42 05 41 da ca 40 01
+17:36:01.617  spk->mac  EVENT  tuner_feed=27 9c dd 42 05 b6 f7 c9 40 01
+17:36:01.722  spk->mac  EVENT  tuner_feed=6c 96 dd 42 05 de 2a c7 40 01
+17:36:01.827  spk->mac  EVENT  tuner_feed=8b 96 dd 42 05 c6 3b c7 40 01
+17:36:01.918  spk->mac  EVENT  tuner_feed=26 8e dd 42 05 30 20 c3 40 01
+17:36:02.022  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 2 more times)
+17:36:02.322  spk->mac  EVENT  tuner_feed=96 2d db 42 05 ac 5e 4f c0 01
+17:36:02.427  spk->mac  EVENT  tuner_feed=ff a8 dd 42 05 d5 3d d0 40 01
+17:36:02.532  spk->mac  EVENT  tuner_feed=57 c2 dd 42 05 be 9a dc 40 01
+17:36:02.622  spk->mac  EVENT  tuner_feed=fc c8 dd 42 05 8d da df 40 01
+17:36:02.727  spk->mac  EVENT  tuner_feed=1a a1 dd 42 05 7e 62 cc 40 01
+17:36:02.833  spk->mac  EVENT  tuner_feed=8c 99 dd 42 05 1a b3 c8 40 01
+17:36:02.922  spk->mac  EVENT  tuner_feed=af ae dd 42 05 e9 03 d3 40 01
+17:36:03.027  spk->mac  EVENT  tuner_feed=86 aa dd 42 05 30 fb d0 40 01
+17:36:03.132  spk->mac  EVENT  tuner_feed=21 a6 dd 42 05 6a d7 ce 40 01
+17:36:03.222  spk->mac  EVENT  tuner_feed=ae a5 dd 42 05 ef 9d ce 40 01
+17:36:03.328  spk->mac  EVENT  tuner_feed=f1 ad dd 42 05 3b a5 d2 40 01
+17:36:03.433  spk->mac  EVENT  tuner_feed=80 94 dd 42 05 cc 3a c6 40 01
+17:36:03.538  spk->mac  EVENT  tuner_feed=17 a5 dd 42 05 8b 53 ce 40 01
+17:36:03.628  spk->mac  EVENT  tuner_feed=34 83 dd 42 05 23 ca bd 40 01
+17:36:03.732  spk->mac  EVENT  tuner_feed=08 75 dd 42 05 f2 da b6 40 01
+17:36:03.837  spk->mac  EVENT  tuner_feed=46 7b dd 42 05 07 e8 b9 40 01
+17:36:03.942  spk->mac  EVENT  tuner_feed=76 a1 dd 42 05 73 8e cc 40 01
+17:36:04.032  spk->mac  EVENT  tuner_feed=04 a1 dd 42 05 59 58 cc 40 01
+17:36:04.137  spk->mac  EVENT  tuner_feed=75 85 dd 42 05 c9 e2 be 40 01
+17:36:04.242  spk->mac  EVENT  tuner_feed=0b b6 dd 42 05 a1 9b d6 40 01
+17:36:04.285  mac->spk  SET    TUNER=01
+17:36:04.285  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:36:04.286  mac->spk  SET    TUNER=01
+17:36:04.334  spk->mac  SET-reply  
+17:36:04.334  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:04.363  spk->mac  SET-reply  
+17:36:04.379  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:04.394  spk->mac  SET-reply  
+17:36:04.394  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:04.423  spk->mac  SET-reply  
+17:36:04.452  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+              (… repeated 1 more times)
+17:36:04.633  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:36:04.842  spk->mac  EVENT  tuner_feed=cd 03 de 42 05 63 87 fc 40 01
+17:36:04.947  spk->mac  EVENT  tuner_feed=70 e3 dd 42 05 b7 be ec 40 01
+17:36:05.052  spk->mac  EVENT  tuner_feed=f1 d0 dd 42 05 47 b9 e3 40 01
+17:36:05.157  spk->mac  EVENT  tuner_feed=1a c3 dd 42 05 6c f9 dc 40 01
+17:36:05.247  spk->mac  EVENT  tuner_feed=ef c2 dd 42 05 22 e5 dc 40 01
+17:36:05.352  spk->mac  EVENT  tuner_feed=55 bd dd 42 05 33 29 da 40 01
+17:36:05.457  spk->mac  EVENT  tuner_feed=54 ba dd 42 05 e0 b1 d8 40 01
+17:36:05.562  spk->mac  EVENT  tuner_feed=b0 b3 dd 42 05 74 75 d5 40 01
+17:36:05.653  spk->mac  EVENT  tuner_feed=ef af dd 42 05 74 9f d3 40 01
+17:36:05.757  spk->mac  EVENT  tuner_feed=70 a9 dd 42 05 ef 73 d0 40 01
+17:36:05.862  spk->mac  EVENT  tuner_feed=d7 aa dd 42 05 c4 23 d1 40 01
+17:36:05.968  spk->mac  EVENT  tuner_feed=7f ab dd 42 05 eb 74 d1 40 01
+17:36:06.057  spk->mac  EVENT  tuner_feed=f0 a7 dd 42 05 f6 b9 cf 40 01
+17:36:06.162  spk->mac  EVENT  tuner_feed=4e b0 dd 42 05 ca ce d3 40 01
+17:36:06.268  spk->mac  EVENT  tuner_feed=20 ab dd 42 05 94 45 d1 40 01
+17:36:06.357  spk->mac  EVENT  tuner_feed=3f a7 dd 42 05 0d 62 cf 40 01
+17:36:06.462  spk->mac  EVENT  tuner_feed=c0 9b dd 42 05 fe c4 c9 40 01
+17:36:06.568  spk->mac  EVENT  tuner_feed=95 a3 dd 42 05 92 99 cd 40 01
+17:36:06.672  spk->mac  EVENT  tuner_feed=87 a7 dd 42 05 dc 83 cf 40 01
+17:36:06.763  spk->mac  EVENT  tuner_feed=ce a2 dd 42 05 83 37 cd 40 01
+17:36:06.868  spk->mac  EVENT  tuner_feed=90 b0 dd 42 05 39 ed d3 40 01
+17:36:06.973  spk->mac  EVENT  tuner_feed=7e 71 dd 42 05 fd 1f b5 40 01
+17:36:07.062  spk->mac  EVENT  tuner_feed=86 3c de 42 05 8d 14 0c 41 01
+17:36:07.168  spk->mac  EVENT  tuner_feed=6f c0 de 42 05 14 28 2c 41 01
+17:36:07.273  spk->mac  EVENT  tuner_feed=44 6a e2 42 05 e6 09 c7 41 01
+17:36:07.362  spk->mac  EVENT  tuner_feed=08 40 de 42 05 a6 ee 0c 41 01
+17:36:07.468  spk->mac  EVENT  tuner_feed=83 1f de 42 05 8c 03 05 41 01
+17:36:07.572  spk->mac  EVENT  tuner_feed=b5 fa dd 42 05 44 17 f8 40 01
+17:36:07.677  spk->mac  EVENT  tuner_feed=14 e0 dd 42 05 6f 1b eb 40 01
+17:36:07.768  spk->mac  EVENT  tuner_feed=58 f0 dd 42 05 9b 0b f3 40 01
+17:36:07.872  spk->mac  EVENT  tuner_feed=a0 e6 dd 42 05 b5 4d ee 40 01
+17:36:07.977  spk->mac  EVENT  tuner_feed=76 d0 dd 42 05 cc 7f e3 40 01
+17:36:08.082  spk->mac  EVENT  tuner_feed=32 c2 dd 42 05 d6 89 dc 40 01
+17:36:08.172  spk->mac  EVENT  tuner_feed=7a ca dd 42 05 86 94 e0 40 01
+17:36:08.278  spk->mac  EVENT  tuner_feed=a7 c5 dd 42 05 a6 3a de 40 01
+17:36:08.383  spk->mac  EVENT  tuner_feed=f9 b7 dd 42 05 b3 8b d7 40 01
+17:36:08.472  spk->mac  EVENT  tuner_feed=cc c1 dd 42 05 1e 57 dc 40 01
+17:36:08.577  spk->mac  EVENT  tuner_feed=05 c3 dd 42 05 47 ef dc 40 01
+17:36:08.683  spk->mac  EVENT  tuner_feed=02 be dd 42 05 bc 7d da 40 01
+17:36:08.773  spk->mac  EVENT  tuner_feed=51 b8 dd 42 05 a8 b7 d7 40 01
+17:36:08.878  spk->mac  EVENT  tuner_feed=42 c1 dd 42 05 7f 13 dc 40 01
+17:36:08.998  spk->mac  EVENT  tuner_feed=81 b8 dd 42 05 54 cf d7 40 01
+17:36:09.072  spk->mac  EVENT  tuner_feed=9a b7 dd 42 05 5c 5c d7 40 01
+17:36:09.177  spk->mac  EVENT  tuner_feed=d4 b3 dd 42 05 5c 86 d5 40 01
+17:36:09.283  spk->mac  EVENT  tuner_feed=3c 1f e0 42 05 d1 8b 80 41 01
+17:36:09.387  spk->mac  EVENT  tuner_feed=71 34 de 42 05 bc 1c 0a 41 01
+17:36:09.477  spk->mac  EVENT  tuner_feed=bc 87 dd 42 05 d1 fe bf 40 01
+17:36:09.582  spk->mac  EVENT  tuner_feed=aa b4 dd 42 05 2e ef d5 40 01
+17:36:09.687  spk->mac  EVENT  tuner_feed=07 cb dd 42 05 26 d8 e0 40 01
+17:36:09.792  spk->mac  EVENT  tuner_feed=da e4 dd 42 05 ed 71 ed 40 01
+17:36:09.882  spk->mac  EVENT  tuner_feed=98 d4 dd 42 05 c1 81 e5 40 01
+17:36:09.987  spk->mac  EVENT  tuner_feed=4b cf dd 42 05 66 ee e2 40 01
+17:36:10.092  spk->mac  EVENT  tuner_feed=8e cd dd 42 05 9c 12 e2 40 01
+17:36:10.182  spk->mac  EVENT  tuner_feed=de c4 dd 42 05 36 d5 dd 40 01
+17:36:10.287  spk->mac  EVENT  tuner_feed=5f b7 dd 42 05 4f 41 d7 40 01
+17:36:10.392  spk->mac  EVENT  tuner_feed=de bb dd 42 05 9d 72 d9 40 01
+17:36:10.498  spk->mac  EVENT  tuner_feed=b0 b0 dd 42 05 21 fe d3 40 01
+17:36:10.587  spk->mac  EVENT  tuner_feed=6d b2 dd 42 05 88 d6 d4 40 01
+17:36:10.693  spk->mac  EVENT  tuner_feed=4f af dd 42 05 ae 51 d3 40 01
+17:36:10.798  spk->mac  EVENT  tuner_feed=1e b0 dd 42 05 1f b7 d3 40 01
+17:36:10.888  spk->mac  EVENT  tuner_feed=ca ae dd 42 05 6f 11 d3 40 01
+17:36:10.992  spk->mac  EVENT  tuner_feed=aa b0 dd 42 05 c0 fa d3 40 01
+17:36:11.098  spk->mac  EVENT  tuner_feed=8f b2 dd 42 05 70 e7 d4 40 01
+17:36:11.111  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:36:11.112  mac->spk  SET    TUNER=01
+17:36:11.159  spk->mac  SET-reply  
+17:36:11.174  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:11.189  spk->mac  SET-reply  
+17:36:11.189  spk->mac  EVENT  tuner_feed=22 b5 dd 42 05 aa 28 d6 40 01
+17:36:11.204  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:11.204  spk->mac  SET-reply  
+17:36:11.292  spk->mac  EVENT  tuner_feed=f7 b6 dd 42 05 99 0e d7 40 01
+17:36:11.322  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:11.427  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:11.533  spk->mac  EVENT  tuner_feed=50 b1 dd 42 05 e6 4b d4 40 01
+17:36:11.637  spk->mac  EVENT  tuner_feed=45 ac dd 42 05 fa d6 d1 40 01
+17:36:11.742  spk->mac  EVENT  tuner_feed=af a5 dd 42 05 ef 9d ce 40 01
+17:36:11.833  spk->mac  EVENT  tuner_feed=4a 99 dd 42 05 4a 91 c8 40 01
+17:36:11.937  spk->mac  EVENT  tuner_feed=ce 8f dd 42 05 72 ee c3 40 01
+17:36:12.042  spk->mac  EVENT  tuner_feed=ed 96 dd 42 05 1d 6b c7 40 01
+17:36:12.147  spk->mac  EVENT  tuner_feed=2d 81 dd 42 05 89 cc bc 40 01
+17:36:12.237  spk->mac  EVENT  tuner_feed=54 ce ee 42 05 88 00 8e 42 01
+17:36:12.342  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 22 more times)
+17:36:14.727  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:17.407  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:17.408  mac->spk  SET    TUNER=01
+17:36:17.408  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:17.444  spk->mac  SET-reply  
+17:36:17.459  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:17.474  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:36:17.503  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:17.592  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:17.684  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:17.787  spk->mac  EVENT  tuner_feed=6c 6e dd 42 05 e7 a1 b3 40 01
+17:36:17.892  spk->mac  EVENT  tuner_feed=47 7f dd 42 05 76 dc bb 40 01
+17:36:17.998  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:18.103  spk->mac  EVENT  tuner_feed=ab aa a6 43 01 2c d7 1a 41 01
+17:36:18.193  spk->mac  EVENT  tuner_feed=fe 89 a6 43 01 49 3a 10 41 01
+17:36:18.298  spk->mac  EVENT  tuner_feed=8c 03 a6 43 01 1c fa c8 40 01
+17:36:18.402  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:18.507  spk->mac  EVENT  tuner_feed=95 b1 dd 42 05 b7 6d d4 40 01
+17:36:18.598  spk->mac  EVENT  tuner_feed=05 b1 dd 42 05 b5 26 d4 40 01
+17:36:18.703  spk->mac  EVENT  tuner_feed=9b a9 dd 42 05 39 88 d0 40 01
+17:36:18.807  spk->mac  EVENT  tuner_feed=02 ad dd 42 05 44 32 d2 40 01
+17:36:18.898  spk->mac  EVENT  tuner_feed=c4 a7 dd 42 05 4a a2 cf 40 01
+17:36:19.003  spk->mac  EVENT  tuner_feed=e7 a6 dd 42 05 18 36 cf 40 01
+17:36:19.107  spk->mac  EVENT  tuner_feed=09 a9 dd 42 05 37 41 d0 40 01
+17:36:19.199  spk->mac  EVENT  tuner_feed=a6 a4 dd 42 05 71 1d ce 40 01
+17:36:19.303  spk->mac  EVENT  tuner_feed=37 a4 dd 42 05 57 e7 cd 40 01
+17:36:19.407  spk->mac  EVENT  tuner_feed=5b a3 dd 42 05 23 7b cd 40 01
+17:36:19.513  spk->mac  EVENT  tuner_feed=7a 9f dd 42 05 9c 97 cb 40 01
+17:36:19.602  spk->mac  EVENT  tuner_feed=0b 9d dd 42 05 4a 67 ca 40 01
+17:36:19.707  spk->mac  EVENT  tuner_feed=a6 97 dd 42 05 07 c3 c7 40 01
+17:36:19.812  spk->mac  EVENT  tuner_feed=f1 8c dd 42 05 69 8b c2 40 01
+17:36:19.917  spk->mac  EVENT  tuner_feed=9a 92 dd 42 05 1b 4e c5 40 01
+17:36:20.007  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:36:20.217  spk->mac  EVENT  tuner_feed=f4 eb a7 43 01 26 5f 81 41 01
+17:36:20.322  spk->mac  EVENT  tuner_feed=ba 87 a7 43 01 d5 68 62 41 01
+17:36:20.413  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:36:20.607  spk->mac  EVENT  tuner_feed=7c d4 dd 42 05 3a 74 e5 40 01
+17:36:20.712  spk->mac  EVENT  tuner_feed=53 d8 dd 42 05 60 54 e7 40 01
+17:36:20.818  spk->mac  EVENT  tuner_feed=f5 ca dd 42 05 02 ce e0 40 01
+17:36:20.922  spk->mac  EVENT  tuner_feed=60 ba dd 42 05 a4 b8 d8 40 01
+17:36:21.012  spk->mac  EVENT  tuner_feed=cb b5 dd 42 05 33 7d d6 40 01
+17:36:21.117  spk->mac  EVENT  tuner_feed=48 bd dd 42 05 70 22 da 40 01
+17:36:21.222  spk->mac  EVENT  tuner_feed=4d b6 dd 42 05 10 ba d6 40 01
+17:36:21.312  spk->mac  EVENT  tuner_feed=54 b5 dd 42 05 55 40 d6 40 01
+17:36:21.417  spk->mac  EVENT  tuner_feed=cc b8 dd 42 05 86 f4 d7 40 01
+17:36:21.522  spk->mac  EVENT  tuner_feed=0d b4 dd 42 05 69 a1 d5 40 01
+17:36:21.613  spk->mac  EVENT  tuner_feed=43 b8 dd 42 05 e5 b0 d7 40 01
+17:36:21.717  spk->mac  EVENT  tuner_feed=e0 b3 dd 42 05 1f 8d d5 40 01
+17:36:21.822  spk->mac  EVENT  tuner_feed=ee b1 dd 42 05 aa 99 d4 40 01
+17:36:21.927  spk->mac  EVENT  tuner_feed=c9 ab dd 42 05 1d 9a d1 40 01
+17:36:22.032  spk->mac  EVENT  tuner_feed=3e ad dd 42 05 b3 50 d2 40 01
+17:36:22.123  spk->mac  EVENT  tuner_feed=cd a7 dd 42 05 0e a9 cf 40 01
+17:36:22.227  spk->mac  EVENT  tuner_feed=a4 17 e1 42 05 7f 76 9e 41 01
+17:36:22.318  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:22.423  spk->mac  EVENT  tuner_feed=99 b3 a6 43 01 5f bd 1d 41 01
+17:36:22.528  spk->mac  EVENT  tuner_feed=1b fd a6 43 01 f5 92 35 41 01
+17:36:22.632  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:22.722  spk->mac  EVENT  tuner_feed=81 b5 dd 42 05 01 58 d6 40 01
+17:36:22.827  spk->mac  EVENT  tuner_feed=3c cc dd 42 05 4e 70 e1 40 01
+17:36:22.933  spk->mac  EVENT  tuner_feed=0d bf dd 42 05 9b 01 db 40 01
+17:36:23.022  spk->mac  EVENT  tuner_feed=5c be dd 42 05 b1 a9 da 40 01
+17:36:23.127  spk->mac  EVENT  tuner_feed=90 bd dd 42 05 a2 47 da 40 01
+17:36:23.232  spk->mac  EVENT  tuner_feed=d7 b8 dd 42 05 e7 f7 d7 40 01
+17:36:23.337  spk->mac  EVENT  tuner_feed=3b be dd 42 05 c9 98 da 40 01
+17:36:23.427  spk->mac  EVENT  tuner_feed=12 ba dd 42 05 72 93 d8 40 01
+17:36:23.534  spk->mac  EVENT  tuner_feed=94 bb dd 42 05 6b 4d d9 40 01
+17:36:23.637  spk->mac  EVENT  tuner_feed=60 b7 dd 42 05 4f 41 d7 40 01
+17:36:23.707  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:23.708  mac->spk  SET    TUNER=01
+17:36:23.708  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:23.729  spk->mac  EVENT  tuner_feed=46 b6 dd 42 05 ae b6 d6 40 01
+17:36:23.744  spk->mac  SET-reply  
+17:36:23.759  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:23.759  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:36:23.803  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:23.832  spk->mac  EVENT  tuner_feed=a2 b5 dd 42 05 e9 68 d6 40 01
+17:36:23.877  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:23.983  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:24.088  spk->mac  EVENT  tuner_feed=df 9b dd 42 05 e6 d5 c9 40 01
+17:36:24.192  spk->mac  EVENT  tuner_feed=12 97 dd 42 05 05 7c c7 40 01
+17:36:24.283  spk->mac  EVENT  tuner_feed=ef 13 e0 42 05 64 5d 7e 41 01
+17:36:24.388  spk->mac  EVENT  tuner_feed=b5 3c de 42 05 62 20 0c 41 01
+17:36:24.493  spk->mac  EVENT  tuner_feed=44 2f de 42 05 d2 d9 08 41 01
+17:36:24.583  spk->mac  EVENT  tuner_feed=ef 27 de 42 05 57 11 07 41 01
+17:36:24.687  spk->mac  EVENT  tuner_feed=d9 f3 dd 42 05 cb bf f4 40 01
+17:36:24.792  spk->mac  EVENT  tuner_feed=83 dc dd 42 05 7a 60 e9 40 01
+17:36:24.898  spk->mac  EVENT  tuner_feed=b4 dc dd 42 05 25 78 e9 40 01
+17:36:25.002  spk->mac  EVENT  tuner_feed=cd ce dd 42 05 27 ae e2 40 01
+17:36:25.092  spk->mac  EVENT  tuner_feed=2e bf dd 42 05 22 0f db 40 01
+17:36:25.198  spk->mac  EVENT  tuner_feed=28 c1 dd 42 05 f8 05 dc 40 01
+17:36:25.302  spk->mac  EVENT  tuner_feed=0b c2 dd 42 05 8c 75 dc 40 01
+17:36:25.392  spk->mac  EVENT  tuner_feed=a1 bb dd 42 05 2e 54 d9 40 01
+17:36:25.498  spk->mac  EVENT  tuner_feed=8f be dd 42 05 5c c1 da 40 01
+17:36:25.602  spk->mac  EVENT  tuner_feed=48 bc dd 42 05 56 a5 d9 40 01
+17:36:25.692  spk->mac  EVENT  tuner_feed=f4 b7 dd 42 05 52 88 d7 40 01
+17:36:25.798  spk->mac  EVENT  tuner_feed=aa b8 dd 42 05 9d e3 d7 40 01
+17:36:25.902  spk->mac  EVENT  tuner_feed=34 b9 dd 42 05 3e 27 d8 40 01
+17:36:26.008  spk->mac  EVENT  tuner_feed=1f ad dd 42 05 cb 3f d2 40 01
+17:36:26.097  spk->mac  EVENT  tuner_feed=d2 b1 dd 42 05 24 8c d4 40 01
+17:36:26.202  spk->mac  EVENT  tuner_feed=3d ad dd 42 05 51 4d d2 40 01
+17:36:26.307  spk->mac  EVENT  tuner_feed=0b a1 dd 42 05 bb 5b cc 40 01
+17:36:26.397  spk->mac  EVENT  tuner_feed=de ae dd 42 05 94 1b d3 40 01
+17:36:26.502  spk->mac  EVENT  tuner_feed=ad aa e5 42 05 50 e4 14 42 01
+17:36:26.608  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 1 more times)
+17:36:26.802  spk->mac  EVENT  tuner_feed=17 78 a5 43 01 65 dd 5b 40 01
+17:36:26.907  spk->mac  EVENT  tuner_feed=d6 5c a5 43 01 d7 33 38 40 01
+17:36:27.013  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:27.118  spk->mac  EVENT  tuner_feed=bc 0d de 42 05 79 ae 00 41 01
+17:36:27.208  spk->mac  EVENT  tuner_feed=08 eb dd 42 05 de 74 f0 40 01
+17:36:27.312  spk->mac  EVENT  tuner_feed=1f d9 dd 42 05 d0 b9 e7 40 01
+17:36:27.402  spk->mac  EVENT  tuner_feed=0d e6 dd 42 05 b4 06 ee 40 01
+17:36:27.507  spk->mac  EVENT  tuner_feed=46 dc dd 42 05 0b 42 e9 40 01
+17:36:27.612  spk->mac  EVENT  tuner_feed=4a d2 dd 42 05 57 62 e4 40 01
+17:36:27.717  spk->mac  EVENT  tuner_feed=d6 c9 dd 42 05 5f 43 e0 40 01
+17:36:27.807  spk->mac  EVENT  tuner_feed=4a cc dd 42 05 11 77 e1 40 01
+17:36:27.897  spk->mac  EVENT  battery%=29
+17:36:27.913  spk->mac  EVENT  tuner_feed=fb cf dd 42 05 ee 42 e3 40 01
+17:36:27.914  spk->mac  EVENT  battery%=29
+17:36:28.017  spk->mac  EVENT  tuner_feed=00 c9 dd 42 05 8d da df 40 01
+17:36:28.107  spk->mac  EVENT  tuner_feed=ec c8 dd 42 05 68 d0 df 40 01
+17:36:28.213  spk->mac  EVENT  tuner_feed=97 c9 dd 42 05 f0 24 e0 40 01
+17:36:28.317  spk->mac  EVENT  tuner_feed=dd c4 dd 42 05 36 d5 dd 40 01
+17:36:28.423  spk->mac  EVENT  tuner_feed=83 bd dd 42 05 df 40 da 40 01
+17:36:28.512  spk->mac  EVENT  tuner_feed=1d b8 dd 42 05 9b 9c d7 40 01
+17:36:28.617  spk->mac  EVENT  tuner_feed=af b6 dd 42 05 c8 ec d6 40 01
+17:36:28.724  spk->mac  EVENT  tuner_feed=6e b5 dd 42 05 dc 4d d6 40 01
+17:36:28.815  spk->mac  EVENT  tuner_feed=e0 ab dd 42 05 41 a4 d1 40 01
+17:36:28.933  spk->mac  EVENT  tuner_feed=c8 b9 dd 42 05 40 6e d8 40 01
+17:36:29.023  spk->mac  EVENT  tuner_feed=98 be dd 42 05 20 c8 da 40 01
+17:36:29.127  spk->mac  EVENT  tuner_feed=91 c3 dd 42 05 e8 32 dd 40 01
+17:36:29.218  spk->mac  EVENT  tuner_feed=34 dc dd 42 05 e6 37 e9 40 01
+17:36:29.323  spk->mac  EVENT  tuner_feed=e5 97 e0 42 05 56 18 8f 41 01
+17:36:29.427  spk->mac  EVENT  tuner_feed=e0 e5 f4 42 05 cb 9c b9 42 01
+17:36:29.518  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 4 more times)
+17:36:30.008  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:30.008  mac->spk  SET    TUNER=01
+17:36:30.008  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:30.008  mac->spk  SET    ui_mode?=01 00
+17:36:30.008  mac->spk  SET    TUNER=00
+17:36:30.009  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+17:36:30.028  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:30.043  spk->mac  SET-reply  
+17:36:30.058  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:30.059  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:36:30.104  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:30.119  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:36:30.133  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:36:30.389  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:30.390  spk->mac  SET-reply  
+17:36:30.390  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:30.390  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:36:35.547  spk->mac  EVENT  volume=00 00 07
+17:36:35.727  spk->mac  EVENT  volume=00 00 00
+              (… repeated 2 more times)
+17:36:36.267  spk->mac  EVENT  volume=00 00 02
+17:36:36.328  spk->mac  EVENT  battery%=29
+              (… repeated 1 more times)
+17:36:36.372  spk->mac  EVENT  volume=00 00 03
+              (… repeated 1 more times)
+17:36:39.451  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 2 more times)
+17:36:39.479  spk->mac  EVENT  volume=01 02 1d
+17:36:39.494  spk->mac  SET-reply  
+17:36:39.508  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:39.509  spk->mac  SET-reply  
+17:36:39.539  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:39.554  spk->mac  SET-reply  
+17:36:39.568  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:39.673  spk->mac  EVENT  volume=01 02 19
+17:36:39.702  spk->mac  EVENT  volume=01 02 15
+              (… repeated 1 more times)
+17:36:40.017  spk->mac  EVENT  volume=01 02 13
+17:36:40.183  spk->mac  EVENT  volume=01 02 0f
+              (… repeated 1 more times)
+17:36:40.423  spk->mac  EVENT  volume=01 02 0d
+17:36:40.602  spk->mac  EVENT  volume=01 02 09
+              (… repeated 1 more times)
+17:36:40.873  spk->mac  EVENT  volume=01 02 07
+17:36:41.038  spk->mac  EVENT  volume=01 02 06
+              (… repeated 1 more times)
+17:36:41.307  spk->mac  EVENT  volume=01 02 05
+17:36:41.532  spk->mac  EVENT  volume=01 02 04
+17:36:42.027  spk->mac  EVENT  volume=01 02 03
+17:36:43.093  spk->mac  EVENT  volume=00 00 05
+17:36:43.228  spk->mac  EVENT  volume=00 00 06
+              (… repeated 1 more times)
+17:36:43.723  spk->mac  EVENT  volume=00 00 07
+17:36:44.007  spk->mac  EVENT  volume=00 00 08
+17:36:44.142  spk->mac  EVENT  volume=00 00 10
+17:36:44.367  spk->mac  EVENT  volume=00 00 14
+              (… repeated 1 more times)
+17:36:44.817  spk->mac  EVENT  volume=00 00 0c
+17:36:45.058  spk->mac  EVENT  volume=00 00 0b
+              (… repeated 1 more times)
+17:36:48.908  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03
+              (… repeated 1 more times)
+17:36:48.944  spk->mac  SET-reply  
+17:36:48.958  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+17:36:48.973  spk->mac  SET-reply  
+17:36:48.988  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 01  chan_info=03 00 02
+[17:36:57.838] done listening

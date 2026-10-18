@@ -306,12 +306,14 @@ final class BandBoxClient: NSObject, ObservableObject {
         case Property.stemAI where !r.value.isEmpty:
             stemAI = r.value[0] == 1
         case Property.tuner where !r.value.isEmpty:
-            tunerOn = r.value[0] == 1
-            if !tunerOn {
-                tuner = nil
-                // Turned off some other way (e.g. the speaker's button): stop keeping it alive.
-                tunerKeepAlive?.invalidate()
-                tunerKeepAlive = nil
+            let on = r.value[0] == 1
+            if !on { tuner = nil }
+            if !on, tunerKeepAlive != nil {
+                // The speaker drops its tuner when a channel is selected or a jack goes in or out
+                // (and on its own tuner button); one turned on here stays on until turned off here.
+                send(BandBoxProtocol.set(Property.tuner, [1]))
+            } else {
+                tunerOn = on
             }
         case Property.tunerFeed:
             tuner = BandBoxProtocol.tunerReading(r.value)

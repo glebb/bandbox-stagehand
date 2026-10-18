@@ -56,10 +56,10 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x0008 | 16 | ASCII | Serial number | app capture |
 | 0x000d | 1 | `64` (100) | **Battery %** | listen + app capture |
 | 0x0031 | 16 | sec,min,hour,?,day,month,year(u16),?,"+03:00",dst | Date/time; the app SETs it on connect | app capture |
-| 0x3100 | 1 | `00`/`01` | **Tuner off/on**. GET works too. **Verified from the Mac**: SET → OK reply + EVENT confirming the new state A tuner turned on with SET **switches itself off after ~11 s**; repeating SET 0x3100 = 01 every 5 s keeps it on (tested 36 s). Turned on from the speaker's button, it stayed on | app capture + Mac test |
+| 0x3100 | 1 | `00`/`01` | **Tuner off/on**. GET works too. **Verified from the Mac**: SET → OK reply + EVENT confirming the new state A tuner turned on with SET **switches itself off after ~11 s**; repeating SET 0x3100 = 01 every 5 s keeps it on (tested 36 s). Turned on from the speaker's button, it stayed on. Selecting a channel on the speaker, or plugging or unplugging a jack, **turns it off** (EVENT 0x3100 = 00); the next keep-alive SET turns it back on | app capture + Mac test, `captures/tuner.decoded.txt` |
 | 0x3101, 0x3102, 0x3104, 0x3107 | 1 | `00` | Tuner readings? All 0 when nothing was played | app capture |
 | 0x3103 | 2 | `30 11` | **Tuner reference pitch** ×10: 0x1130 = 4400 → 440.0 Hz. GET from the Mac works | app capture + Mac test |
-| 0x3106 | 10 | `36 3b a5 42 06 87 2a 0c 40 01` | **Live tuner feed**, EVENT ~10×/s while the tuner is on. Bytes 0–3: detected frequency, float32 Hz (82.6). Byte 4: **guitar string** it's matched to, 1 = high E … 6 = low E (a string tuner, not chromatic). Bytes 5–8: offset from that string's target, float32 in **half-cents** (×2 for cents; checked at 82.6, 80.1 and 102.5 Hz). Byte 9: 1 = signal, 0 = silence (then all bytes 0) | `captures/speaker-controls.listen.log` |
+| 0x3106 | 10 | `36 3b a5 42 06 87 2a 0c 40 01` | **Live tuner feed**, EVENT ~10×/s while the tuner is on. Bytes 0–3: detected frequency, float32 Hz (82.6). Byte 4: **guitar string** it's matched to, 1 = high E … 6 = low E (a string tuner, not chromatic). Bytes 5–8: offset from that string's target, float32 in **half-cents** (×2 for cents; checked at 82.6, 80.1 and 102.5 Hz). Byte 9: 1 = signal, 0 = silence (then all bytes 0). **No channel byte: it hears a guitar in channel 1 or channel 3**, whichever channel is selected on the speaker (with one guitar; two at once untested) | `captures/speaker-controls.listen.log`, `captures/tuner.decoded.txt` |
 | 0x3804 | 2 | `01 02` / `01 00` | Sent with the tuner on/off (UI mode/page?) | app capture |
 | 0x3441 | 1 | `03` | **Query current tone**: SET 0x3441 = 03 → EVENT 0x3442 with the current tone | Mac probe |
 | 0x3442 | 2 | `ch NN` | **Current tone** of guitar channel ch (01 or 03, each has its own): SET 0x3442 = 01 NN switched channel 1 audibly and left channel 3 alone (`captures/ch1-guitar.decoded.txt`). The speaker also sends it unprompted for channel 01 (01 33 when its preset button was pressed), so a client must check the channel byte. NN = tone ID from the 0x3440 library (not a 1–3 slot; the speaker's preset buttons step through the library). SET selects a tone. GET returns nothing; use 0x3441. The leading byte is the channel | listen + app capture 2 + Mac test |
@@ -122,7 +122,8 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~SET commands for preset and STEM AI~~ **Verified from the Mac** (`captures/preset-stem-test-1.log`).
 - ~~How to read the current preset on connect~~ **SET 0x3441 = 03** (verified).
 - ~~What the `03` in 0x3441/0x3442 means~~ **The guitar channel** (01 or 03): each has its own tone, and 0x3442 and 0x3445 work for channel 01 (`captures/ch1-guitar.decoded.txt`). 01 for channel 2 gets no answer.
-- Whether the tuner (0x3106, no channel byte) listens to channel 1, 3 or the selected channel: untested, no guitar was plugged in during `capture-ch1-guitar.sh`.
+- ~~Whether the tuner listens to channel 1, 3 or the selected channel~~ Both inputs, not the selection (`captures/tuner.decoded.txt`). Untested: two guitars at once, and a mic or line input.
+- The speaker's channel selection sends no message at all, so a client can't know which channel is selected.
 - Which channel the speaker's preset button steps when both guitar inputs are in use: with the channel 1 switch on guitar it stepped channel 1 (0x1b → 0x33, confirmed by pressing it in `capture-ch1-guitar.sh`).
 - The parameter layout inside 0x3444 (gain, EQ, effects…?).
 - ~~Live tuner readings~~ All in 0x3106 (decoded 2026-10-17); 0x3101/02/04/07 stayed 0.
@@ -133,6 +134,7 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Whether SET works from the Mac without the app's connect sequence~~ **It does** (2026-10-16 20:39, `captures/tuner-test-1.log`): no datetime/handshake needed, no ACKs needed.
 
 ## Logs
+- `captures/tuner.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): tuner kept on from the Mac while one guitar plays low E in channel 3, then A in channel 1, with the speaker's channel selection switched at each step (17:34–17:37, 2026-10-18). Script: `capture-tuner.sh`
 - `captures/ch1-guitar.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): the Mac switches channel 1's tone 0x1b → 01 → 0x1b, turns its delay on and off, runs the tuner, polling 0x3441 = 01/03 every 3 s (17:10–17:12, 2026-10-18). Tone and delay changes were heard; no guitar was plugged in, so the tuner saw nothing. Script: `capture-ch1-guitar.sh`
 - `captures/probe-ch1-tone.log`: SET 0x3441 = 01/03, tone details of 0x1b ("Bypassed") and SET 0x3402 = 01 (17:10, 2026-10-18)
 - `captures/ch2-controls.listen.log` (+ `.timeline.log`, `.markers.log`, `.decoded.txt`): channel 2 with a mic (Delay, Reverb up and down, Bass up), then line in (Bass, Mid, Treble up and down), then the mic back in (16:56–17:01, 2026-10-18). Script: `capture-ch2-controls.sh`
