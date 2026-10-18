@@ -36,11 +36,11 @@ and switch logic checked offline; the whole path checked against the speaker wit
 `midi-send.swift` (a source appearing and going away, PC tones on both channels,
 momentary CC presses, unbound notes ignored).
 
-## Step 3: mapping — defaults and modes done; Learn and saving left
+## Step 3: mapping — done
 - Default map, omni:
   - PC 0–3: tone buttons of the primary channel; PC 4–7: of channel 1.
   - CC 80–84: Comp, Dist, FX, Delay, Reverb of the primary channel; CC 85–89: of channel 1.
-  - (Note On 60–67 / 72–81 the same way? Decide when building the sheet.)
+  - No default notes: Learn covers keyboards and pads.
 - Pedal modes, per binding:
   - **Auto** (default), works with momentary and latching switches alike: a value ≥ 64
     toggles; a value < 64 toggles too, unless it's a momentary switch letting go. Each
@@ -53,14 +53,18 @@ momentary CC presses, unbound notes ignored).
   replaces any other action bound to the same message. A binding is omni or one channel.
 - Saved in UserDefaults as JSON, like `ToneAssignments`.
 
-## Step 4: UI
+## Step 4: UI — done
 - A **MIDI** button in the footer next to Log (Mac only), with a dot that flashes amber on
   incoming messages.
 - The MIDI sheet: on / off, connected sources, the 18 actions with their bindings
   (`PC 2`, `CC 81 · ch 1`), Learn, Auto / Follow for pedals, Reset to defaults.
 
-## Step 5: testing and docs
+Done 2026-10-18 and tried in the app with `midi-send.swift`: Learn (the learning press and
+its release don't act; the old binding is replaced), saving across a relaunch, MIDI off,
+Reset to Defaults. The ⋯ menu (channel, mode, clear) wasn't clicked through.
+
+## Step 5: testing and docs — done but for a real controller
 - `midi-send.swift`: a virtual CoreMIDI source that sends PC / CC sequences, to test the
   whole path without hardware (the IAC Driver works too).
-- Check by ear with the speaker.
-- README: the MIDI section in the Mac part.
+- Checked with the speaker through `midi-send.swift`; a hardware controller is still to try.
+- README: the MIDI paragraph in the Mac part.

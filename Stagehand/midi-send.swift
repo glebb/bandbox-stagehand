@@ -4,6 +4,7 @@
 //   cc N V     Control Change N = V
 //   press N    a momentary switch on CC N: 127, then 0 after 0.15 s
 //   note N     Note On N (velocity 100)
+//   wait S     wait S seconds (to click Learn in Stagehand first)
 // Messages go on MIDI channel 1, half a second apart, after a second for Stagehand to connect.
 import CoreMIDI
 import Foundation
@@ -31,6 +32,7 @@ while !args.isEmpty {
     case "cc": let n = number(); send(0xB0, n, number())
     case "press": let n = number(); send(0xB0, n, 127); Thread.sleep(forTimeInterval: 0.15); send(0xB0, n, 0)
     case "note": send(0x90, number(), 100)
+    case "wait": Thread.sleep(forTimeInterval: Double(number()))
     case let other: print("unknown:", other); exit(1)
     }
     Thread.sleep(forTimeInterval: 0.5)

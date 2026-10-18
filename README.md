@@ -57,6 +57,16 @@ another app in front and play with one free finger. While it's on (amber), those
 don't type digits anywhere else; turn it off to type normally. It stays as you left it.
 No permission is needed.
 
+The Mac app also takes **MIDI**, from any connected device or app, with Stagehand in
+front or not. By default, on any MIDI channel, Program Change 0–3 select the tone buttons
+and CC 80–84 switch Comp, Dist, FX, Delay and Reverb, as keys 1–9 do; PC 4–7 and CC 85–89
+do the same for channel 1. The **MIDI** button in the footer (its dot flashes on each
+message) opens the list: click a binding, then press a switch or key, to use that instead
+(MIDI Learn). Pedals work with momentary and latching switches alike; the ⋯ menu limits a
+binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it matches a
+latching switch. Each message Stagehand acts on shows in the Log. Without a controller,
+`swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
+
 Build and run (no Xcode project needed):
 
 ```bash

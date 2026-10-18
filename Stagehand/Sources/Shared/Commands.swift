@@ -16,6 +16,12 @@ enum StageAction: Hashable, Codable {
         ToneSlot.all.map { .tone(slot: $0.id, target) } + Pedal.allCases.map { .pedal($0, target) }
     }
 
+    var target: ChannelTarget {
+        switch self {
+        case let .tone(_, target), let .pedal(_, target): target
+        }
+    }
+
     /// "Tone 2", "Dist", with "(CH 1)" for channel 1.
     var label: String {
         switch self {

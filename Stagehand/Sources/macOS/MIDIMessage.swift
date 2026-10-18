@@ -55,6 +55,16 @@ struct MIDITrigger: Hashable, Codable {
     func matches(_ m: MIDIMessage) -> Bool {
         m.kind == kind && m.number == number && (channel == nil || channel == m.channel)
     }
+
+    /// "PC 2", "CC 81 · ch 3", "Note 60".
+    var label: String {
+        let name = switch kind {
+        case .program: "PC \(number)"
+        case .control: "CC \(number)"
+        case .note: "Note \(number)"
+        }
+        return channel.map { "\(name) · ch \($0 + 1)" } ?? name
+    }
 }
 
 /// How a pedal's binding reads a controller's value.

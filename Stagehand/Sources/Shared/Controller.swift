@@ -9,6 +9,9 @@ struct ContentView: View {
     @EnvironmentObject private var assignments: ToneAssignments
     #if os(macOS)
     @EnvironmentObject private var hotKeys: GlobalHotKeys
+    @EnvironmentObject private var midi: MIDIInput
+    @State private var showMIDI = false
+    @State private var midiFlash = false
     #endif
     @State private var page = 0
     @State private var channel = 3
@@ -80,6 +83,11 @@ struct ContentView: View {
         #endif
         .background(shortcuts)
         .sheet(isPresented: $showLog) { LogView().environmentObject(client) }
+        #if os(macOS)
+        .sheet(isPresented: $showMIDI) {
+            MIDISheet().environmentObject(midi).environmentObject(client).environmentObject(assignments)
+        }
+        #endif
     }
 
     private var footer: some View {
@@ -121,6 +129,22 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .padding(.leading, 10)
                 .help("When on, 1–4 select tones and 5–9 switch pedals while other apps are in front (Shift for channel 1).")
+                // The dot flashes amber on each incoming message.
+                Button { showMIDI = true } label: {
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(midiFlash ? Stage.amber : midi.enabled && !midi.sources.isEmpty ? Stage.secondaryText : Stage.dot)
+                            .frame(width: 5, height: 5)
+                        Text(midi.enabled ? "MIDI" : "MIDI off")
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(.leading, 10)
+                .help("MIDI control: which messages select tones and switch pedals.")
+                .onChange(of: midi.messageCount) {
+                    midiFlash = true
+                    withAnimation(.easeOut(duration: 0.3).delay(0.1)) { midiFlash = false }
+                }
                 #endif
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)

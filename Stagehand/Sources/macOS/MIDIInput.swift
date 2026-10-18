@@ -25,9 +25,21 @@ struct MIDIBinding: Hashable, Codable {
 /// outputs) and does the bound actions, with the app in front or not. Sources that come
 /// later are connected as they appear. CoreMIDI needs no permission.
 final class MIDIInput: ObservableObject {
+    private static let enabledKey = "midiEnabled"
+    private static let bindingsKey = "midiBindings"
+
+    @Published var enabled = UserDefaults.standard.object(forKey: enabledKey) as? Bool ?? true {
+        didSet { UserDefaults.standard.set(enabled, forKey: Self.enabledKey) }
+    }
+    /// At most one per action and one per message.
+    @Published private(set) var bindings: [MIDIBinding] = MIDIInput.savedBindings() ?? MIDIBinding.defaults {
+        didSet { UserDefaults.standard.set(try? JSONEncoder().encode(bindings), forKey: Self.bindingsKey) }
+    }
     @Published private(set) var sources: [String] = []
     @Published private(set) var lastMessage: MIDIMessage?
-    var bindings = MIDIBinding.defaults
+    @Published private(set) var messageCount = 0
+    /// The action that the next message gets bound to (MIDI Learn).
+    @Published var learning: StageAction?
 
     private var midiClient = MIDIClientRef()
     private var port = MIDIPortRef()
@@ -73,9 +85,48 @@ final class MIDIInput: ObservableObject {
         return name?.takeRetainedValue() as String? ?? "MIDI source"
     }
 
+    private static func savedBindings() -> [MIDIBinding]? {
+        UserDefaults.standard.data(forKey: bindingsKey).flatMap { try? JSONDecoder().decode([MIDIBinding].self, from: $0) }
+    }
+
+    func binding(for action: StageAction) -> MIDIBinding? { bindings.first { $0.action == action } }
+
+    /// Binds `trigger` to `action`, taking it from any other action, keeping the action's mode.
+    func bind(_ trigger: MIDITrigger, to action: StageAction) {
+        let mode = binding(for: action)?.mode ?? .auto
+        bindings.removeAll { $0.action == action || $0.trigger == trigger }
+        bindings.append(MIDIBinding(trigger: trigger, action: action, mode: mode))
+    }
+
+    func setChannel(_ channel: Int?, for action: StageAction) {
+        guard var b = binding(for: action) else { return }
+        b.trigger.channel = channel
+        bind(b.trigger, to: action)
+    }
+
+    func setMode(_ mode: PedalMode, for action: StageAction) {
+        if let i = bindings.firstIndex(where: { $0.action == action }) { bindings[i].mode = mode }
+    }
+
+    func clear(_ action: StageAction) { bindings.removeAll { $0.action == action } }
+
+    func resetToDefaults() {
+        bindings = MIDIBinding.defaults
+        learning = nil
+    }
+
     private func handle(_ message: MIDIMessage) {
         lastMessage = message
-        guard let client, let assignments,
+        messageCount += 1
+        if let action = learning {
+            // A momentary switch's release, coming next, shouldn't press it right away.
+            _ = reader.press(message, mode: .auto)
+            bind(MIDITrigger(kind: message.kind, number: message.number), to: action)
+            learning = nil
+            client?.record("MIDI \(message.label) learned for \(action.label)")
+            return
+        }
+        guard enabled, let client, let assignments,
               let binding = bindings.first(where: { $0.trigger.matches(message) }),
               let press = reader.press(message, mode: binding.mode) else { return }
         client.record("MIDI \(message.label) → \(binding.action.label)")
