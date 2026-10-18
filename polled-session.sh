@@ -51,6 +51,8 @@ GAP=$GAP bash guided-session.sh none "$OUT-prompts" "${STEPS[@]}" > /dev/null
 mv "$OUT-prompts.markers.log" "$OUT.markers.log"
 
 pkill -f BLEScan.app/Contents/MacOS/BLEScan; wait $LPID 2>/dev/null
+# Keep nearby devices out of git: drop every scan line but the speaker's.
+sed -i '' '/^• /{/JBL BandBox Trio/!d;}' "$OUT.listen.log"
 { grep '^\[' "$OUT.listen.log" | sed 's/  |.*//'; cat "$OUT.markers.log"; } | sort > "$OUT.timeline.log"
 python3 -I decode-log.py "$OUT.listen.log" > "$OUT.decoded.txt"
 echo "Decoded: $OUT.decoded.txt"

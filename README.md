@@ -138,6 +138,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 | `capture-speaker-controls.sh`, `capture-app-controls.sh` | Guided sessions behind the notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |
 | `polled-session.sh` | Like `guided-session.sh`, but also polls the per-channel queries and unknown properties every few seconds; the two sessions below use it |
 | `capture-mic-controls.sh` | Guided session sweeping channel 1's mic knobs (Delay, Reverb, Bass, Treble, Volume) |
+| `capture-ch1-guitar.sh` | The Mac switches channel 1's tone and toggles its delay while you play, then runs the tuner |
 | `capture-ch2-controls.sh` | Guided session for channel 2's knobs: mic Delay and Reverb, then line-in Bass, Mid and Treble |
 | `capture-inputs.sh` | Guided session plugging a mic, guitar and line-in into each channel, polling the per-channel queries while you do |
 | `capture-app-features.sh` | Prompts for one JBL app feature area per run (save, pedals, pickup, stem, pitch, drums, looper, eq), for the features not mapped yet |

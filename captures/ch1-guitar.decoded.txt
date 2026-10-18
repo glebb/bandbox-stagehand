@@ -1,0 +1,175 @@
+>>> probing D4291430-F768-C379-56B8-B7EC4D41D56A …
+[17:10:50.535] connected to JBL BandBox Trio
+[17:10:51.046] found JBL BandBox Trio [D4291430-F768-C379-56B8-B7EC4D41D56A]
+[17:10:51.256] subscribed com/0001 (notifying=true)
+[17:10:51.256] listening for 95s — use the speaker and the app now
+17:10:51.256  spk->mac  EVENT  hello=00 01
+17:10:53.878  mac->spk  SET    0x3441=01  0x3441=03
+17:10:53.928  spk->mac  SET-reply  
+17:10:53.928  spk->mac  EVENT  preset=01 1b
+17:10:53.928  spk->mac  EVENT  preset=03 01
+17:10:57.030  mac->spk  SET    0x3441=01  0x3441=03
+17:10:57.062  spk->mac  SET-reply  
+17:10:57.078  spk->mac  EVENT  preset=01 1b
+17:10:57.078  spk->mac  EVENT  preset=03 01
+17:11:00.178  mac->spk  SET    0x3441=01  0x3441=03
+17:11:00.212  spk->mac  SET-reply  
+17:11:00.228  spk->mac  EVENT  preset=01 1b
+17:11:00.228  spk->mac  EVENT  preset=03 01
+17:11:03.327  mac->spk  SET    0x3441=01  0x3441=03
+17:11:03.328  mac->spk  SET    preset=01 01
+17:11:03.348  spk->mac  SET-reply  
+17:11:03.363  spk->mac  EVENT  preset=01 1b
+17:11:03.363  spk->mac  EVENT  preset=03 01
+17:11:03.392  spk->mac  SET-reply  
+17:11:03.393  spk->mac  EVENT  preset=01 01
+17:11:06.479  mac->spk  SET    0x3441=01  0x3441=03
+17:11:06.528  spk->mac  SET-reply  
+17:11:06.528  spk->mac  EVENT  preset=01 01
+17:11:06.528  spk->mac  EVENT  preset=03 01
+17:11:09.628  mac->spk  SET    0x3441=01  0x3441=03
+17:11:09.678  spk->mac  SET-reply  
+17:11:09.679  spk->mac  EVENT  preset=01 01
+17:11:09.679  spk->mac  EVENT  preset=03 01
+17:11:12.779  mac->spk  SET    0x3441=01  0x3441=03
+17:11:12.812  spk->mac  SET-reply  
+17:11:12.813  spk->mac  EVENT  preset=01 01
+17:11:12.827  spk->mac  EVENT  preset=03 01
+17:11:14.354  mac->spk  SET    preset=01 1b
+17:11:14.403  spk->mac  SET-reply  
+17:11:14.417  spk->mac  EVENT  preset=01 1b
+17:11:15.928  mac->spk  SET    0x3441=01  0x3441=03
+17:11:15.963  spk->mac  SET-reply  
+17:11:15.964  spk->mac  EVENT  preset=01 1b
+17:11:15.964  spk->mac  EVENT  preset=03 01
+17:11:19.078  mac->spk  SET    0x3441=01  0x3441=03
+17:11:19.098  spk->mac  SET-reply  
+17:11:19.113  spk->mac  EVENT  preset=01 1b
+17:11:19.113  spk->mac  EVENT  preset=03 01
+17:11:22.228  mac->spk  SET    0x3441=01  0x3441=03
+17:11:22.278  spk->mac  SET-reply  
+17:11:22.279  spk->mac  EVENT  preset=01 1b
+17:11:22.279  spk->mac  EVENT  preset=03 01
+17:11:24.856  mac->spk  SET    effect_block=01 1b 01 06 14 00 00 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42
+17:11:24.857  mac->spk  SET    0x3441=01  0x3441=03
+17:11:24.903  spk->mac  SET-reply  
+17:11:24.903  spk->mac  EVENT  effect_block=01 1b 01 06 ff ff 00 00
+17:11:24.933  spk->mac  SET-reply  
+17:11:24.933  spk->mac  EVENT  preset=01 1b
+17:11:24.933  spk->mac  EVENT  preset=03 01
+17:11:28.528  mac->spk  SET    0x3441=01  0x3441=03
+17:11:28.563  spk->mac  SET-reply  
+17:11:28.578  spk->mac  EVENT  preset=01 1b
+17:11:28.578  spk->mac  EVENT  preset=03 01
+17:11:31.678  mac->spk  SET    0x3441=01  0x3441=03
+17:11:31.712  spk->mac  SET-reply  
+17:11:31.728  spk->mac  EVENT  preset=01 1b
+17:11:31.728  spk->mac  EVENT  preset=03 01
+17:11:32.431  spk->mac  EVENT  preset=01 33
+17:11:34.828  mac->spk  SET    0x3441=01  0x3441=03
+17:11:34.829  mac->spk  SET    effect_block=01 1b 01 06 14 00 01 03 01 00 00 e1 43 02 00 00 50 42 00 00 00 30 42
+17:11:34.878  spk->mac  SET-reply  
+17:11:34.879  spk->mac  EVENT  preset=01 33
+17:11:34.879  spk->mac  EVENT  preset=03 01
+17:11:34.908  spk->mac  SET-reply  
+17:11:34.908  spk->mac  EVENT  effect_block=01 1b 01 06 ff ff 01 00
+17:11:37.978  mac->spk  SET    0x3441=01  0x3441=03
+17:11:38.012  spk->mac  SET-reply  
+17:11:38.028  spk->mac  EVENT  preset=01 33
+17:11:38.028  spk->mac  EVENT  preset=03 01
+17:11:41.128  mac->spk  SET    0x3441=01  0x3441=03
+17:11:41.178  spk->mac  SET-reply  
+17:11:41.178  spk->mac  EVENT  preset=01 33
+17:11:41.179  spk->mac  EVENT  preset=03 01
+17:11:44.278  mac->spk  SET    0x3441=01  0x3441=03
+17:11:44.279  mac->spk  SET    TUNER=01
+17:11:44.312  spk->mac  SET-reply  
+17:11:44.328  spk->mac  EVENT  preset=01 33
+17:11:44.328  spk->mac  EVENT  preset=03 01
+17:11:44.357  spk->mac  SET-reply  
+17:11:44.477  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:11:44.566  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 28 more times)
+17:11:47.428  mac->spk  SET    0x3441=01  0x3441=03
+17:11:47.478  spk->mac  SET-reply  
+17:11:47.478  spk->mac  EVENT  preset=01 33
+17:11:47.493  spk->mac  EVENT  preset=03 01
+17:11:47.493  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 30 more times)
+17:11:50.578  mac->spk  SET    0x3441=01  0x3441=03
+17:11:50.579  mac->spk  SET    TUNER=01
+17:11:50.629  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:11:50.630  spk->mac  SET-reply  
+17:11:50.630  spk->mac  EVENT  preset=01 33
+17:11:50.630  spk->mac  EVENT  preset=03 01
+17:11:50.643  spk->mac  SET-reply  
+17:11:50.717  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:11:50.778  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:11:50.866  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 28 more times)
+17:11:53.728  mac->spk  SET    0x3441=01  0x3441=03
+17:11:53.729  mac->spk  SET    TUNER=01
+17:11:53.778  spk->mac  SET-reply  
+17:11:53.779  spk->mac  EVENT  preset=01 33
+17:11:53.779  spk->mac  EVENT  preset=03 01
+17:11:53.793  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:11:53.808  spk->mac  SET-reply  
+17:11:53.882  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:11:53.928  spk->mac  EVENT  tuner_ref=30 11  TUNER=01  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:11:54.016  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 28 more times)
+17:11:56.882  mac->spk  SET    0x3441=01  0x3441=03
+              (… repeated 1 more times)
+17:11:56.930  spk->mac  SET-reply  
+17:11:56.930  spk->mac  EVENT  preset=01 33
+17:11:56.930  spk->mac  EVENT  preset=03 01
+17:11:56.945  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:11:56.959  spk->mac  SET-reply  
+17:11:56.960  spk->mac  EVENT  preset=01 33
+17:11:56.960  spk->mac  EVENT  preset=03 01
+17:11:57.047  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+              (… repeated 45 more times)
+17:12:01.603  mac->spk  SET    ui_mode?=01 00
+17:12:01.603  mac->spk  SET    TUNER=00
+17:12:01.604  mac->spk  SET    0x3441=01  0x3441=03
+17:12:01.637  spk->mac  SET-reply  
+              (… repeated 1 more times)
+17:12:01.683  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:12:01.698  spk->mac  SET-reply  
+17:12:01.713  spk->mac  EVENT  preset=01 33
+17:12:01.713  spk->mac  EVENT  preset=03 01
+17:12:01.877  spk->mac  EVENT  tuner_feed=00 00 00 00 00 00 00 00 00 00
+17:12:01.908  spk->mac  EVENT  tuner_ref=30 11  TUNER=00  0x3104=00  0x3101=00  0x3107=00  0x3102=00
+17:12:06.328  mac->spk  SET    0x3441=01  0x3441=03
+              (… repeated 1 more times)
+17:12:06.363  spk->mac  SET-reply  
+17:12:06.378  spk->mac  EVENT  preset=01 33
+17:12:06.379  spk->mac  EVENT  preset=03 01
+17:12:06.393  spk->mac  SET-reply  
+17:12:06.422  spk->mac  EVENT  preset=01 33
+17:12:06.423  spk->mac  EVENT  preset=03 01
+17:12:12.624  mac->spk  SET    0x3441=01  0x3441=03
+              (… repeated 1 more times)
+17:12:12.664  spk->mac  SET-reply  
+17:12:12.664  spk->mac  EVENT  preset=01 33
+17:12:12.664  spk->mac  EVENT  preset=03 01
+17:12:12.694  spk->mac  SET-reply  
+17:12:12.694  spk->mac  EVENT  preset=01 33
+17:12:12.694  spk->mac  EVENT  preset=03 01
+17:12:18.925  mac->spk  SET    0x3441=01  0x3441=03
+17:12:18.926  mac->spk  SET    preset=01 1b  preset=03 01
+17:12:18.926  mac->spk  SET    0x3441=01  0x3441=03
+17:12:18.948  spk->mac  SET-reply  
+17:12:18.963  spk->mac  EVENT  preset=01 33
+17:12:18.964  spk->mac  EVENT  preset=03 01
+17:12:18.993  spk->mac  SET-reply  
+17:12:19.009  spk->mac  EVENT  preset=01 1b
+17:12:19.009  spk->mac  EVENT  preset=03 01
+17:12:19.010  spk->mac  SET-reply  
+17:12:19.010  spk->mac  EVENT  preset=01 1b
+17:12:19.023  spk->mac  EVENT  preset=03 01
+17:12:25.232  mac->spk  SET    0x3441=01  0x3441=03
+17:12:25.263  spk->mac  SET-reply  
+17:12:25.278  spk->mac  EVENT  preset=01 1b
+17:12:25.279  spk->mac  EVENT  preset=03 01
+[17:12:31.003] done listening
