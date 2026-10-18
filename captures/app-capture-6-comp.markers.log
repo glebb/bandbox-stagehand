@@ -1,0 +1,18 @@
+[19:08:41.772] >>> Select the Feathered Blues tone and open its preset page
+[19:08:54.211] >>> Open the Compressor
+[19:09:04.553] >>> Take a screenshot
+[19:09:14.908] >>> Turn the Compressor off
+[19:09:25.498] >>> Turn it on
+[19:09:35.449] >>> Knob 1 all the way down, skip it if there is none
+[19:09:47.599] >>> Knob 1 all the way up
+[19:09:58.077] >>> Knob 1 back to the middle
+[19:10:08.669] >>> Knob 2 all the way down, skip it if there is none
+[19:10:20.763] >>> Knob 2 all the way up
+[19:10:31.207] >>> Knob 2 back to the middle
+[19:10:41.790] >>> Knob 3 all the way down, skip it if there is none
+[19:10:53.916] >>> Knob 3 all the way up
+[19:11:04.415] >>> Knob 3 back to the middle
+[19:11:15.003] >>> Knob 4 all the way down, skip it if there is none
+[19:11:27.168] >>> Knob 4 all the way up
+[19:11:37.682] >>> Knob 4 back to the middle
+[19:11:48.289] >>> Leave the preset page without saving, discard the changes

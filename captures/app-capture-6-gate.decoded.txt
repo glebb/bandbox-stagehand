@@ -1,0 +1,330 @@
+19:05:06.100  spk->phone  EVENT  keepalive=-
+19:05:06.104  phone->spk  ACK    02 00 00 00
+19:05:11.142  spk->phone  EVENT  keepalive=-
+19:05:11.146  phone->spk  ACK    02 00 00 00
+19:05:16.181  spk->phone  EVENT  keepalive=-
+19:05:16.185  phone->spk  ACK    02 00 00 00
+19:05:21.220  spk->phone  EVENT  keepalive=-
+19:05:21.224  phone->spk  ACK    02 00 00 00
+19:05:26.260  spk->phone  EVENT  keepalive=-
+19:05:26.265  phone->spk  ACK    02 00 00 00
+19:05:31.299  spk->phone  EVENT  keepalive=-
+19:05:31.303  phone->spk  ACK    02 00 00 00
+19:05:36.340  spk->phone  EVENT  keepalive=-
+19:05:36.343  phone->spk  ACK    02 00 00 00
+19:05:41.379  spk->phone  EVENT  keepalive=-
+19:05:41.384  phone->spk  ACK    02 00 00 00
+19:05:46.422  spk->phone  EVENT  keepalive=-
+19:05:46.426  phone->spk  ACK    02 00 00 00
+19:05:51.474  spk->phone  EVENT  keepalive=-
+19:05:51.479  phone->spk  ACK    02 00 00 00
+19:05:55.054  phone->spk  SET    effect_block=01 0d 01 00 1c 00 01 02 00 00 00 34 42 01 00 00 78 42
+19:05:55.076  spk->phone  SET-reply  
+19:05:55.076  spk->phone  EVENT  effect_block=01 0d 01 00 ff ff 01 00
+19:05:55.092  phone->spk  ACK    02 00 00 00
+19:05:57.352  phone->spk  SET    effect_block=01 0d 01 00 1c 00 00 02 00 00 00 34 42 01 00 00 78 42
+19:05:57.387  spk->phone  SET-reply  
+19:05:57.400  spk->phone  EVENT  effect_block=01 0d 01 00 ff ff 00 00
+19:05:57.411  phone->spk  ACK    02 00 00 00
+19:06:02.440  spk->phone  EVENT  keepalive=-
+19:06:02.444  phone->spk  ACK    02 00 00 00
+19:06:06.543  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 1c 42
+19:06:06.580  spk->phone  SET-reply  
+19:06:06.580  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 1c 42
+19:06:06.596  phone->spk  ACK    02 00 00 00
+19:06:07.322  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 00 00
+19:06:07.347  spk->phone  SET-reply  
+19:06:07.362  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 00 00
+19:06:07.377  phone->spk  ACK    02 00 00 00
+19:06:08.231  spk->phone  EVENT  battery%=1f
+19:06:08.235  phone->spk  ACK    02 00 00 00
+19:06:08.307  spk->phone  EVENT  battery%=1f
+19:06:08.310  phone->spk  ACK    02 00 00 00
+19:06:13.436  spk->phone  EVENT  keepalive=-
+19:06:13.440  phone->spk  ACK    02 00 00 00
+19:06:15.966  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 00 40
+19:06:16.016  spk->phone  SET-reply  
+19:06:16.016  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 00 40
+19:06:16.034  phone->spk  ACK    02 00 00 00
+19:06:16.079  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 54 42
+19:06:16.121  spk->phone  SET-reply  
+19:06:16.121  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 54 42
+19:06:16.138  phone->spk  ACK    02 00 00 00
+19:06:16.541  spk->phone  EVENT  battery%=1f
+19:06:16.546  phone->spk  ACK    02 00 00 00
+19:06:16.645  spk->phone  EVENT  battery%=1f
+19:06:16.649  phone->spk  ACK    02 00 00 00
+19:06:16.679  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 c8 42
+19:06:16.751  spk->phone  SET-reply  
+19:06:16.751  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 c8 42
+19:06:16.768  phone->spk  ACK    02 00 00 00
+19:06:21.806  spk->phone  EVENT  keepalive=-
+19:06:21.811  phone->spk  ACK    02 00 00 00
+19:06:26.861  spk->phone  EVENT  keepalive=-
+19:06:26.865  phone->spk  ACK    02 00 00 00
+19:06:27.270  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 c0 42
+19:06:27.296  spk->phone  SET-reply  
+19:06:27.312  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 c0 42
+19:06:27.324  phone->spk  ACK    02 00 00 00
+19:06:27.384  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 86 42
+19:06:27.416  spk->phone  SET-reply  
+19:06:27.431  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 86 42
+19:06:27.441  phone->spk  ACK    02 00 00 00
+19:06:27.637  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 78 42
+19:06:27.672  spk->phone  SET-reply  
+19:06:27.701  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 78 42
+19:06:27.716  phone->spk  ACK    02 00 00 00
+19:06:27.749  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 60 42
+19:06:27.791  spk->phone  SET-reply  
+19:06:27.791  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 60 42
+19:06:27.807  phone->spk  ACK    02 00 00 00
+19:06:27.867  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 34 42
+19:06:27.911  spk->phone  SET-reply  
+19:06:27.911  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 34 42
+19:06:27.930  phone->spk  ACK    02 00 00 00
+19:06:27.999  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 0c 42
+19:06:28.061  spk->phone  SET-reply  
+19:06:28.061  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 0c 42
+19:06:28.074  phone->spk  ACK    02 00 00 00
+19:06:28.302  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 04 42
+19:06:28.331  spk->phone  SET-reply  
+19:06:28.346  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 04 42
+19:06:28.356  phone->spk  ACK    02 00 00 00
+19:06:28.435  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 10 42
+19:06:28.481  spk->phone  SET-reply  
+19:06:28.481  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 10 42
+19:06:28.498  phone->spk  ACK    02 00 00 00
+19:06:28.569  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 1c 42
+19:06:28.616  spk->phone  SET-reply  
+19:06:28.631  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 1c 42
+19:06:28.641  phone->spk  ACK    02 00 00 00
+19:06:28.683  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 24 42
+19:06:28.721  spk->phone  SET-reply  
+19:06:28.721  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 24 42
+19:06:28.739  phone->spk  ACK    02 00 00 00
+19:06:28.800  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 30 42
+19:06:28.856  spk->phone  SET-reply  
+19:06:28.856  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 30 42
+19:06:28.870  phone->spk  ACK    02 00 00 00
+19:06:29.049  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 40 42
+19:06:29.081  spk->phone  SET-reply  
+19:06:29.096  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 40 42
+19:06:29.112  phone->spk  ACK    02 00 00 00
+19:06:29.198  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 40 42
+19:06:29.260  spk->phone  SET-reply  
+19:06:29.260  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 00 00 00 40 42
+19:06:29.275  phone->spk  ACK    02 00 00 00
+19:06:30.056  spk->phone  EVENT  battery%=1f
+19:06:30.060  phone->spk  ACK    02 00 00 00
+19:06:30.130  spk->phone  EVENT  battery%=1f
+19:06:30.134  phone->spk  ACK    02 00 00 00
+19:06:35.261  spk->phone  EVENT  keepalive=-
+19:06:35.266  phone->spk  ACK    02 00 00 00
+19:06:38.526  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 70 42
+19:06:38.562  spk->phone  EVENT  battery%=1f
+19:06:38.566  phone->spk  ACK    02 00 00 00
+19:06:38.639  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 2c 42
+19:06:38.651  spk->phone  EVENT  battery%=1f
+19:06:38.670  phone->spk  ACK    02 00 00 00
+19:06:38.741  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 f8 41
+19:06:38.741  spk->phone  SET-reply  
+19:06:38.741  spk->phone  SET-reply  
+19:06:38.756  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 70 42
+19:06:38.756  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 2c 42
+19:06:38.776  phone->spk  ACK    02 00 00 00
+19:06:38.786  spk->phone  SET-reply  
+19:06:38.786  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 f8 41
+19:06:38.801  phone->spk  ACK    02 00 00 00
+19:06:38.831  phone->spk  ACK    02 00 00 00
+19:06:38.877  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 80 40
+19:06:38.921  spk->phone  SET-reply  
+19:06:38.921  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 80 40
+19:06:38.936  phone->spk  ACK    02 00 00 00
+19:06:39.270  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 00 00
+19:06:39.297  spk->phone  SET-reply  
+19:06:39.312  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 00 00
+19:06:39.328  phone->spk  ACK    02 00 00 00
+19:06:44.366  spk->phone  EVENT  keepalive=-
+19:06:44.370  phone->spk  ACK    02 00 00 00
+19:06:44.846  spk->phone  EVENT  battery%=1f
+19:06:44.849  phone->spk  ACK    02 00 00 00
+19:06:44.936  spk->phone  EVENT  battery%=1f
+19:06:44.939  phone->spk  ACK    02 00 00 00
+19:06:50.035  spk->phone  EVENT  keepalive=-
+19:06:50.039  phone->spk  ACK    02 00 00 00
+19:06:50.693  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 00 40
+19:06:50.725  spk->phone  SET-reply  
+19:06:50.741  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 00 40
+19:06:50.753  phone->spk  ACK    02 00 00 00
+19:06:50.807  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 82 42
+19:06:50.846  spk->phone  SET-reply  
+19:06:50.846  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 82 42
+19:06:50.862  phone->spk  ACK    02 00 00 00
+19:06:51.322  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 c8 42
+19:06:51.356  spk->phone  SET-reply  
+19:06:51.371  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 c8 42
+19:06:51.385  phone->spk  ACK    02 00 00 00
+19:06:56.306  spk->phone  EVENT  battery%=1f
+19:06:56.310  phone->spk  ACK    02 00 00 00
+19:06:56.397  spk->phone  EVENT  battery%=1f
+19:06:56.400  phone->spk  ACK    02 00 00 00
+19:06:56.426  spk->phone  EVENT  keepalive=-
+19:06:56.429  phone->spk  ACK    02 00 00 00
+19:06:59.802  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 c4 42
+19:06:59.846  spk->phone  SET-reply  
+19:06:59.846  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 c4 42
+19:06:59.857  phone->spk  ACK    02 00 00 00
+19:06:59.914  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 ae 42
+19:06:59.951  spk->phone  SET-reply  
+19:06:59.951  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 ae 42
+19:06:59.967  phone->spk  ACK    02 00 00 00
+19:07:00.029  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 9c 42
+19:07:00.070  spk->phone  SET-reply  
+19:07:00.070  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 9c 42
+19:07:00.089  phone->spk  ACK    02 00 00 00
+19:07:00.131  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 92 42
+19:07:00.176  spk->phone  SET-reply  
+19:07:00.176  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 92 42
+19:07:00.194  phone->spk  ACK    02 00 00 00
+19:07:00.265  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 8c 42
+19:07:00.297  spk->phone  SET-reply  
+19:07:00.312  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 8c 42
+19:07:00.327  phone->spk  ACK    02 00 00 00
+19:07:00.417  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 86 42
+19:07:00.460  spk->phone  SET-reply  
+19:07:00.460  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 86 42
+19:07:00.474  phone->spk  ACK    02 00 00 00
+19:07:00.548  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 80 42
+19:07:00.595  spk->phone  SET-reply  
+19:07:00.596  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 80 42
+19:07:00.612  phone->spk  ACK    02 00 00 00
+19:07:00.765  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 74 42
+19:07:00.807  spk->phone  SET-reply  
+19:07:00.807  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 74 42
+19:07:00.824  phone->spk  ACK    02 00 00 00
+19:07:01.082  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 70 42
+19:07:01.107  spk->phone  SET-reply  
+19:07:01.122  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 70 42
+19:07:01.137  phone->spk  ACK    02 00 00 00
+19:07:01.248  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 68 42
+19:07:01.271  spk->phone  SET-reply  
+19:07:01.287  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 68 42
+19:07:01.303  phone->spk  ACK    02 00 00 00
+19:07:01.364  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 60 42
+19:07:01.391  spk->phone  SET-reply  
+19:07:01.419  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 60 42
+19:07:01.436  phone->spk  ACK    02 00 00 00
+19:07:01.648  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 54 42
+19:07:01.692  spk->phone  SET-reply  
+19:07:01.693  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 54 42
+19:07:01.706  phone->spk  ACK    02 00 00 00
+19:07:01.827  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 50 42
+19:07:01.858  spk->phone  SET-reply  
+19:07:01.872  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 50 42
+19:07:01.884  phone->spk  ACK    02 00 00 00
+19:07:01.930  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 4c 42
+19:07:01.976  spk->phone  SET-reply  
+19:07:01.976  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 4c 42
+19:07:01.991  phone->spk  ACK    02 00 00 00
+19:07:02.210  phone->spk  SET    effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 4c 42
+19:07:02.247  spk->phone  SET-reply  
+19:07:02.247  spk->phone  EVENT  effect_block=01 0d 04 00 1c 00 ff 01 01 00 00 4c 42
+19:07:02.264  phone->spk  ACK    02 00 00 00
+19:07:07.301  spk->phone  EVENT  keepalive=-
+19:07:07.305  phone->spk  ACK    02 00 00 00
+19:07:08.801  spk->phone  EVENT  battery%=1f
+19:07:08.805  phone->spk  ACK    02 00 00 00
+19:07:08.876  spk->phone  EVENT  battery%=1f
+19:07:08.880  phone->spk  ACK    02 00 00 00
+19:07:11.845  phone->spk  SET    effect_block=01 0d 02 00 00 00 ff 00
+19:07:11.921  spk->phone  SET-reply  
+19:07:11.936  spk->phone  EVENT  effect_block=01 0d 00 00 00 00 ff 01 00 00 00 f0 41
+19:07:11.957  phone->spk  ACK    02 00 00 00
+19:07:16.991  spk->phone  EVENT  keepalive=-
+19:07:16.995  phone->spk  ACK    02 00 00 00
+19:07:22.031  spk->phone  EVENT  keepalive=-
+19:07:22.035  phone->spk  ACK    02 00 00 00
+19:07:24.624  spk->phone  EVENT  battery%=1f
+19:07:24.628  phone->spk  ACK    02 00 00 00
+19:07:24.716  spk->phone  EVENT  battery%=1f
+19:07:24.719  phone->spk  ACK    02 00 00 00
+19:07:29.817  spk->phone  EVENT  keepalive=-
+19:07:29.822  phone->spk  ACK    02 00 00 00
+19:07:32.846  spk->phone  EVENT  battery%=1f
+19:07:32.850  phone->spk  ACK    02 00 00 00
+19:07:32.921  spk->phone  EVENT  battery%=1f
+19:07:32.925  phone->spk  ACK    02 00 00 00
+19:07:35.581  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 d8 41
+19:07:35.621  spk->phone  SET-reply  
+19:07:35.621  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 d8 41
+19:07:35.636  phone->spk  ACK    02 00 00 00
+19:07:36.243  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 00 00
+19:07:36.282  spk->phone  SET-reply  
+19:07:36.282  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 00 00
+19:07:36.298  phone->spk  ACK    02 00 00 00
+19:07:39.773  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 80 3f
+19:07:39.806  spk->phone  SET-reply  
+19:07:39.821  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 80 3f
+19:07:39.831  phone->spk  ACK    02 00 00 00
+19:07:39.886  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 80 41
+19:07:39.927  spk->phone  SET-reply  
+19:07:39.927  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 80 41
+19:07:39.941  phone->spk  ACK    02 00 00 00
+19:07:39.988  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 20 42
+19:07:40.016  spk->phone  SET-reply  
+19:07:40.031  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 20 42
+19:07:40.042  phone->spk  ACK    02 00 00 00
+19:07:40.105  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 96 42
+19:07:40.151  spk->phone  SET-reply  
+19:07:40.151  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 96 42
+19:07:40.166  phone->spk  ACK    02 00 00 00
+19:07:40.770  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 c8 42
+19:07:40.811  spk->phone  SET-reply  
+19:07:40.811  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 c8 42
+19:07:40.828  phone->spk  ACK    02 00 00 00
+19:07:43.836  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 c6 42
+19:07:43.856  spk->phone  SET-reply  
+19:07:43.871  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 c6 42
+19:07:43.881  phone->spk  ACK    02 00 00 00
+19:07:43.947  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 aa 42
+19:07:43.991  spk->phone  SET-reply  
+19:07:43.991  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 aa 42
+19:07:44.004  phone->spk  ACK    02 00 00 00
+19:07:44.050  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 98 42
+19:07:44.096  spk->phone  SET-reply  
+19:07:44.096  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 98 42
+19:07:44.108  phone->spk  ACK    02 00 00 00
+19:07:44.166  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 84 42
+19:07:44.216  spk->phone  SET-reply  
+19:07:44.216  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 84 42
+19:07:44.231  phone->spk  ACK    02 00 00 00
+19:07:44.283  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 78 42
+19:07:44.321  spk->phone  SET-reply  
+19:07:44.321  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 78 42
+19:07:44.338  phone->spk  ACK    02 00 00 00
+19:07:44.435  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 6c 42
+19:07:44.456  spk->phone  SET-reply  
+19:07:44.471  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 6c 42
+19:07:44.483  phone->spk  ACK    02 00 00 00
+19:07:44.584  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 60 42
+19:07:44.636  spk->phone  SET-reply  
+19:07:44.636  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 60 42
+19:07:44.655  phone->spk  ACK    02 00 00 00
+19:07:44.885  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 58 42
+19:07:44.921  spk->phone  SET-reply  
+19:07:44.921  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 58 42
+19:07:44.936  phone->spk  ACK    02 00 00 00
+19:07:45.334  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 54 42
+19:07:45.371  spk->phone  SET-reply  
+19:07:45.371  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 54 42
+19:07:45.389  phone->spk  ACK    02 00 00 00
+19:07:45.467  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 50 42
+19:07:45.506  spk->phone  SET-reply  
+19:07:45.506  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 50 42
+19:07:45.524  phone->spk  ACK    02 00 00 00
+19:07:45.745  phone->spk  SET    effect_block=01 0d 04 00 00 00 ff 01 00 00 00 50 42
+19:07:45.776  spk->phone  SET-reply  
+19:07:45.792  spk->phone  EVENT  effect_block=01 0d 04 00 00 00 ff 01 00 00 00 50 42
+19:07:45.803  phone->spk  ACK    02 00 00 00
+19:07:50.845  spk->phone  EVENT  keepalive=-
+19:07:50.849  phone->spk  ACK    02 00 00 00

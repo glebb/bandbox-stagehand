@@ -97,14 +97,14 @@ The JBL app's model lists (app capture 4, changing models on Brit Crunch):
 
 | Slot | Pedal | Model IDs | Notes |
 |---|---|---|---|
-| 0 | Gate | 00, 1c | Off in most factory tones, model 00. Feathered Blues (0x0d) has it on as model 0x1c with 2 params (0 = 45, 1 = 62); the JBL app draws it as a pedal with 2 knobs |
-| 1 | Compressor | 01 | one model |
-| 2 | Distortion | 02 Auto-Wah, 03 Touch-Wah, 04 Precision Drive | Wahs and the drive share this slot. 04 = Precision Drive for sure (Soulful Verb's 40/25/36 = Drive, Bright, Level); 02 vs 03 from tap order only |
+| 0 | Gate | 00 Noise Gate, 1c Gate | Off in most factory tones, as 00. See *Gate, compressor and reverb parameters* |
+| 1 | Compressor | 01 | one model. See *Gate, compressor and reverb parameters* |
+| 2 | Distortion | 02 Auto-Wah, 03 Touch-Wah, 04 Precision Drive | Wahs and the drive share this slot. See *Distortion parameters* |
 | 3 | Amp | 0xNN06 guitar amps, 0x001d, 0x001e | See *Amp models* |
 | 4 | Cab | 0x0008 … 0x0b08 | See *Cab models* |
-| 5 | FX | 0e Echo Phase, 0f Green Phaser, 11 Notch Phaser, 12 Minivibe, 13 Tremolo, 0b Chorus, 0c Retro Shiver, 0d Jetter Flanger, 09 Grand Vibrato | App order. 9 models; 0a and 10 not offered. Matched by tap order and knob count; Echo Phase's one knob = Speed |
+| 5 | FX | 0e Echo Phase, 0f Green Phaser, 11 Notch Phaser, 12 Minivibe, 13 Tremolo, 0b Chorus, 0c Retro Shiver, 0d Jetter Flanger, 09 Grand Vibrato | App order. 9 models; 0a and 10 not offered. See *FX parameters* |
 | 6 | Delay | 14 Pure Echo, 15 Analog Echo, 16 Echopress 900, 17 Sweep Echo, 18 Sweet Echo | See *Delay parameters* |
-| 7 | Reverb | 1b | one model |
+| 7 | Reverb | 1b | one model. See *Gate, compressor and reverb parameters* |
 
 ### Amp models
 In the JBL app's list order (`captures/app-capture-6-amp.*`, names and knob values from its amp pages; every screenshot's knobs equal the defaults in the speaker's op 00 reply). Params: **0 Drive, 1 Bass, 2 Mid, 3 Treble, 4 Volume**, all 0–100 (swept on Yellow Tweed). The app shows a category under the name.
@@ -137,6 +137,42 @@ In the JBL app's list order, switched with op 03 (`captures/app-capture-6-cab.*`
 | 0x0408 | BM59 4x10 | | 0x0a08 | A Bass 8x10 |
 | 0x0508 | Tanger 4x12 | | 0x0b08 | JC120 2x12 |
 
+### FX parameters
+Swept min → max in the JBL app (`captures/app-capture-6-fx.decoded.txt`), names from its pedal pages; each page's knobs equal the defaults in the speaker's op 02 reply. All 0–100 except Tremolo's Shape. Big knobs first, then the small ones, as on the page.
+
+| Model | Name | Params (id Name default) |
+|---|---|---|
+| 0e | Echo Phase | 0 Speed 21 |
+| 0f | Green Phaser | 0 Speed 36, 2 Fdbk 35; small: 1 Depth 100 |
+| 11 | Notch Phaser | 0 Speed 24, 2 Fdbk 61; small: 1 Depth 39 |
+| 12 | Minivibe | 0 Speed 75, 2 Fdbk 39; small: 1 Depth 18 |
+| 13 | Tremolo | 1 **Shape 0–4**, a waveform picker drawn as icons, no names: 0 sine, 1 triangle, 2 square, 3 sawtooth, 4 rounded double-hump wave (`app-capture-6-dist`, end); 2 Speed 46; small: 3 Depth 100, 4 Bias 32. No param 0 |
+| 0b | Chorus | 0 Speed 45, 4 Mix 36; small: 1 Depth 16 |
+| 0c | Retro Shiver | 0 Speed 42, 1 Depth 31 |
+| 0d | Jetter Flanger | 0 Speed 33, 1 Depth 53; small: 2 Offset 68, 3 Fdbk 66 |
+| 09 | Grand Vibrato | 0 Speed 92, 1 Depth 36 |
+
+### Distortion parameters
+Swept in the JBL app (`captures/app-capture-6-dist.*`), names from its pedal pages, all 0–100. Four (three) small knobs in a row, in this order:
+
+| Model | Name | Params (id Name default) |
+|---|---|---|
+| 02 | Auto-Wah | 1 Speed 18, 2 Freq 31, 4 Res 52, 0 Mix 79 (Feathered Blues' saved values) |
+| 03 | Touch-Wah | 1 Sense 30, 3 Res 40, 0 Mix 100, 2 Freq 7 |
+| 04 | Precision Drive | 0 Drive 44, 1 Bright 51, 2 Level 100 |
+
+### Gate, compressor and reverb parameters
+Swept in the JBL app (`captures/app-capture-6-{gate,comp,reverb}.*`), names from its pedal pages. All 0–100 except the ratio.
+
+| Slot | Model | Name | Params (id Name default) |
+|---|---|---|---|
+| 0 | 1c | Gate | 0 Thresh 45, 1 Strength 62 (Feathered Blues) |
+| 0 | 00 | Noise Gate (the app spells it "Nosie Gate") | 0 Thresh 30 |
+| 1 | 01 | Compressor | 0 Thresh 84, 4 Output 18, 1 **Ratio 1.0–100.0** (the app sends and shows one decimal: 22.0), 2 Attack 41. Laid out 2 × 2 in that order |
+| 7 | 1b | Reverb | 0 PreDelay 2, then 2 Decay 22, 4 Mix 24 |
+
+The gate switches models with op 02 like the pedals; bypass of gate and compressor is op 01 as for the others.
+
 ### Delay parameters
 The same for every delay model (`captures/app-capture-6-delay.*`, swept min → max in the JBL app, names from its pedal pages):
 
@@ -157,7 +193,7 @@ The ranges aren't mapped yet; known values look like 0–100 knobs, and delay pa
 ## Not mapped yet
 Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:
 - **Pitch shifter**: probably 0x30c1 (above); confirm and check the ±5 ends.
-- **Pedal parameters**: set with 0x3445 op 04; delay mapped, the other slots' names and ranges: `capture-preset-edit.sh`.
+- ~~Pedal parameters~~ Set with 0x3445 op 04; every slot's models and knobs are in *Effect models*.
 - ~~Amp models~~ (see *Amp models*). ~~Cab models~~ (see *Cab models*).
 - **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
 - **Save as** a new user tone (0x3446 with another target?), rename, delete: `capture-preset-edit.sh save`.
@@ -178,6 +214,9 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Whether SET works from the Mac without the app's connect sequence~~ **It does** (2026-10-16 20:39, `captures/tuner-test-1.log`): no datetime/handshake needed, no ACKs needed.
 
 ## Logs
+- `captures/app-capture-6-gate.pklg`, `-comp.pklg`, `-reverb.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: each pedal off and on, knobs swept, the gate's other model (19:05–19:15, 2026-10-18). Script: `capture-preset-edit.sh gate|comp|reverb`
+- `captures/app-capture-6-dist.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: each distortion model's knobs swept, discard, then Tremolo's Shape stepped 0 → 4 (18:54–19:02, 2026-10-18). Script: `capture-preset-edit.sh dist`
+- `captures/app-capture-6-fx.pklg` (+ `.decoded.txt`): JBL app on Feathered Blues, channel 1: every FX model's knobs swept min → max (18:45–18:51, 2026-10-18), no spoken prompts
 - `captures/app-capture-6-cab.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: every cabinet in the list in order, then discard (18:37–18:40, 2026-10-18). Script: `capture-preset-edit.sh cab`
 - `captures/app-capture-6-amp.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: Yellow Tweed's five knobs swept, then every amp in the list in order, then discard (18:23–18:31, 2026-10-18). Script: `capture-preset-edit.sh amp`
 - `captures/app-capture-6-delay.pklg` (+ `.decoded.txt`, `.markers.log`): JBL app on Feathered Blues, channel 1: each delay model's knobs swept min → max → middle, tap tempo, then discard (18:04–18:15, 2026-10-18). Script: `capture-preset-edit.sh delay`

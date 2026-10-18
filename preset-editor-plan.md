@@ -13,10 +13,10 @@ view (pick a tone, switch pedals on and off); the editor goes deeper. The JBL ap
 | Bypass (0x3445 op 01) and model swap (op 02) | Done for comp, dist, FX, delay, reverb |
 | Save into the same tone (0x3446 op 04, target ff) | Done |
 | Changing a parameter value | Probably op 01 with new floats; probe from the Mac |
-| Parameter names, ranges and units per model | Only Pure Echo and Precision Drive known |
+| Parameter names, ranges and units per model | All mapped (protocol-notes.md, *Effect models*) |
 | Amp models and names | Mapped: 11 amps, op 03 between guitar amps, op 02 for Acoustic / Studio Bass |
 | Cab models and names | Mapped: 12 cabs, op 03, no params |
-| Gate (slot 0) | Has knobs in the JBL app; models unknown |
+| Gate (slot 0) | Mapped: Noise Gate (00), Gate (1c) |
 | Save as a new tone (target ID, name) | Not captured |
 | Discard edits (0x3446 op 08) | Probably; unconfirmed |
 

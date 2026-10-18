@@ -1,0 +1,14 @@
+[19:12:29.700] >>> Select the Feathered Blues tone and open its preset page
+[19:12:42.189] >>> Open the Reverb
+[19:12:52.295] >>> Take a screenshot
+[19:13:02.684] >>> Switch the Reverb to another model, if there is one
+[19:13:14.745] >>> Knob 1 all the way down, skip it if there is none
+[19:13:26.887] >>> Knob 1 all the way up
+[19:13:37.366] >>> Knob 1 back to the middle
+[19:13:47.943] >>> Knob 2 all the way down, skip it if there is none
+[19:14:00.063] >>> Knob 2 all the way up
+[19:14:10.516] >>> Knob 2 back to the middle
+[19:14:21.085] >>> Knob 3 all the way down, skip it if there is none
+[19:14:33.228] >>> Knob 3 all the way up
+[19:14:43.721] >>> Knob 3 back to the middle
+[19:14:54.337] >>> Leave the preset page without saving, discard the changes

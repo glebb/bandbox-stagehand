@@ -1,0 +1,14 @@
+[19:05:08.532] >>> Select the Feathered Blues tone and open its preset page
+[19:05:20.955] >>> Open the Gate
+[19:05:31.001] >>> Take a screenshot
+[19:05:41.373] >>> Turn the Gate off
+[19:05:51.593] >>> Turn it on
+[19:06:01.509] >>> Knob 1 all the way down, skip it if there is none
+[19:06:13.647] >>> Knob 1 all the way up
+[19:06:24.130] >>> Knob 1 back to the middle
+[19:06:34.724] >>> Knob 2 all the way down, skip it if there is none
+[19:06:46.824] >>> Knob 2 all the way up
+[19:06:57.288] >>> Knob 2 back to the middle
+[19:07:07.849] >>> Switch the Gate to another model, if there is one
+[19:07:19.796] >>> Take a screenshot
+[19:07:30.143] >>> Leave the preset page without saving, discard the changes

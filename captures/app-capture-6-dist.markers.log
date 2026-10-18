@@ -1,0 +1,41 @@
+[18:54:22.756] >>> Select the Feathered Blues tone and open its preset page
+[18:54:35.225] >>> Open the Auto-Wah pedal
+[18:54:45.802] >>> Take a screenshot
+[18:54:56.178] >>> Knob 1 all the way down, skip it if there is none
+[18:55:08.308] >>> Knob 1 all the way up
+[18:55:18.795] >>> Knob 1 back to the middle
+[18:55:29.375] >>> Knob 2 all the way down, skip it if there is none
+[18:55:41.483] >>> Knob 2 all the way up
+[18:55:51.927] >>> Knob 2 back to the middle
+[18:56:02.485] >>> Knob 3 all the way down, skip it if there is none
+[18:56:14.635] >>> Knob 3 all the way up
+[18:56:25.137] >>> Knob 3 back to the middle
+[18:56:35.754] >>> Knob 4 all the way down, skip it if there is none
+[18:56:47.919] >>> Knob 4 all the way up
+[18:56:58.442] >>> Knob 4 back to the middle
+[18:57:09.042] >>> Switch the model to Touch-Wah
+[18:57:19.967] >>> Take a screenshot
+[18:57:30.325] >>> Knob 1 all the way down, skip it if there is none
+[18:57:42.467] >>> Knob 1 all the way up
+[18:57:52.926] >>> Knob 1 back to the middle
+[18:58:03.558] >>> Knob 2 all the way down, skip it if there is none
+[18:58:15.677] >>> Knob 2 all the way up
+[18:58:26.159] >>> Knob 2 back to the middle
+[18:58:36.776] >>> Knob 3 all the way down, skip it if there is none
+[18:58:48.941] >>> Knob 3 all the way up
+[18:58:59.442] >>> Knob 3 back to the middle
+[18:59:10.089] >>> Knob 4 all the way down, skip it if there is none
+[18:59:22.270] >>> Knob 4 all the way up
+[18:59:32.810] >>> Knob 4 back to the middle
+[18:59:43.419] >>> Switch the model to Precision Drive
+[18:59:54.658] >>> Take a screenshot
+[19:00:05.021] >>> Knob 1 all the way down, skip it if there is none
+[19:00:17.144] >>> Knob 1 all the way up
+[19:00:27.635] >>> Knob 1 back to the middle
+[19:00:38.225] >>> Knob 2 all the way down, skip it if there is none
+[19:00:50.335] >>> Knob 2 all the way up
+[19:01:00.800] >>> Knob 2 back to the middle
+[19:01:11.380] >>> Knob 3 all the way down, skip it if there is none
+[19:01:23.524] >>> Knob 3 all the way up
+[19:01:33.993] >>> Knob 3 back to the middle
+[19:01:44.607] >>> Leave the preset page without saving, discard the changes
