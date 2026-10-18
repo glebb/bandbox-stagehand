@@ -1,0 +1,688 @@
+>>> probing C379E3BB-7E53-D39B-2167-893CFD842ACE …
+[16:35:51.900] connected to JBL BandBox Trio
+[16:35:52.527] found JBL BandBox Trio [C379E3BB-7E53-D39B-2167-893CFD842ACE]
+[16:35:52.706] subscribed com/0001 (notifying=true)
+[16:35:52.708] listening for 335s — use the speaker and the app now
+16:35:52.737  spk->mac  EVENT  hello=00 01
+16:35:53.754  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:35:53.876  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:35:54.275  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:35:54.328  spk->mac  SET-reply  
+16:35:54.357  spk->mac  EVENT  preset=01 1b
+16:35:54.357  spk->mac  EVENT  preset=03 01
+16:35:54.386  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:35:56.902  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:35:56.983  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:35:57.425  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:35:57.463  spk->mac  SET-reply  
+16:35:57.492  spk->mac  EVENT  preset=01 1b
+16:35:57.509  spk->mac  EVENT  preset=03 01
+16:35:57.509  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:00.051  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:00.132  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:00.575  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:00.613  spk->mac  SET-reply  
+16:36:00.644  spk->mac  EVENT  preset=01 1b
+16:36:00.644  spk->mac  EVENT  preset=03 01
+16:36:00.659  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:03.199  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:03.283  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:03.732  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:03.793  spk->mac  SET-reply  
+16:36:03.808  spk->mac  EVENT  preset=01 1b
+16:36:03.824  spk->mac  EVENT  preset=03 01
+16:36:03.824  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:06.353  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:06.353  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:06.433  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:06.449  spk->mac  SET-reply  
+16:36:06.449  spk->mac  EVENT  preset=01 1b
+16:36:06.464  spk->mac  EVENT  preset=03 01
+16:36:06.464  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:09.503  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:09.504  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:09.599  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:09.600  spk->mac  SET-reply  
+16:36:09.615  spk->mac  EVENT  preset=01 1b
+16:36:09.615  spk->mac  EVENT  preset=03 01
+16:36:09.630  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:12.652  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:12.653  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:12.764  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:12.765  spk->mac  SET-reply  
+16:36:12.780  spk->mac  EVENT  preset=01 1b
+16:36:12.781  spk->mac  EVENT  preset=03 01
+16:36:12.794  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:15.803  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:15.804  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:15.899  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:15.899  spk->mac  SET-reply  
+16:36:15.914  spk->mac  EVENT  preset=01 1b
+16:36:15.914  spk->mac  EVENT  preset=03 01
+16:36:15.928  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:18.952  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:18.953  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:19.033  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:19.049  spk->mac  SET-reply  
+16:36:19.049  spk->mac  EVENT  preset=01 1b
+16:36:19.064  spk->mac  EVENT  preset=03 01
+16:36:19.064  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:22.103  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:22.104  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:22.183  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:22.200  spk->mac  SET-reply  
+16:36:22.201  spk->mac  EVENT  preset=01 1b
+16:36:22.214  spk->mac  EVENT  preset=03 01
+16:36:22.214  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:23.037  spk->mac  EVENT  chan_info=01 00 02
+16:36:23.174  spk->mac  EVENT  0x31c3=02 01 00 00 00 00 00 00 00 00 00 00 00 00
+16:36:23.175  spk->mac  EVENT  chan_info=01 00 01
+16:36:23.190  spk->mac  EVENT  0x0c0c=9a 99 19 40
+16:36:25.252  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:25.253  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:25.333  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:25.349  spk->mac  SET-reply  
+16:36:25.349  spk->mac  EVENT  preset=01 1b
+16:36:25.364  spk->mac  EVENT  preset=03 01
+16:36:25.379  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:28.403  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:28.404  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:28.483  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:28.500  spk->mac  SET-reply  
+16:36:28.501  spk->mac  EVENT  preset=01 1b
+16:36:28.515  spk->mac  EVENT  preset=03 01
+16:36:28.530  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:31.552  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:31.553  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:31.633  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:31.649  spk->mac  SET-reply  
+16:36:31.649  spk->mac  EVENT  preset=01 1b
+16:36:31.663  spk->mac  EVENT  preset=03 01
+16:36:31.678  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:34.703  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:34.704  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:34.783  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:34.799  spk->mac  SET-reply  
+16:36:34.799  spk->mac  EVENT  preset=01 1b
+16:36:34.813  spk->mac  EVENT  preset=03 01
+16:36:34.828  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:37.856  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:37.857  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:37.963  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:37.965  spk->mac  SET-reply  
+16:36:37.979  spk->mac  EVENT  preset=01 1b
+16:36:37.979  spk->mac  EVENT  preset=03 01
+16:36:37.993  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:39.793  spk->mac  EVENT  chan_info=01 01 01
+16:36:39.794  spk->mac  EVENT  0x31c3=01 01 00 00 c0 c0 00 00 a0 c0 00 00 80 40
+16:36:39.794  spk->mac  EVENT  volume=01 01 12
+16:36:41.007  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:41.008  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:41.099  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:41.100  spk->mac  SET-reply  
+16:36:41.114  spk->mac  EVENT  preset=01 1b
+16:36:41.114  spk->mac  EVENT  preset=03 01
+16:36:41.114  spk->mac  EVENT  chan_info=01 01 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:44.153  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:44.154  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:44.219  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:44.220  spk->mac  SET-reply  
+16:36:44.234  spk->mac  EVENT  preset=01 1b
+16:36:44.249  spk->mac  EVENT  preset=03 01
+16:36:44.249  spk->mac  EVENT  chan_info=01 01 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:47.302  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:47.303  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:47.371  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:47.371  spk->mac  SET-reply  
+16:36:47.385  spk->mac  EVENT  preset=01 1b
+16:36:47.386  spk->mac  EVENT  preset=03 01
+16:36:47.400  spk->mac  EVENT  chan_info=01 01 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:50.453  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:50.454  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:50.520  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:50.520  spk->mac  SET-reply  
+16:36:50.534  spk->mac  EVENT  preset=01 1b
+16:36:50.549  spk->mac  EVENT  preset=03 01
+16:36:50.550  spk->mac  EVENT  chan_info=01 01 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:53.600  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:53.600  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:53.683  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:53.684  spk->mac  SET-reply  
+16:36:53.699  spk->mac  EVENT  preset=01 1b
+16:36:53.699  spk->mac  EVENT  preset=03 01
+16:36:53.700  spk->mac  EVENT  chan_info=01 01 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:55.753  spk->mac  EVENT  chan_info=01 00 01
+16:36:56.750  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:56.750  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:36:56.751  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:36:56.820  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:36:56.820  spk->mac  SET-reply  
+16:36:56.834  spk->mac  EVENT  preset=01 1b
+16:36:56.849  spk->mac  EVENT  preset=03 01
+16:36:56.849  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:36:56.878  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:00.425  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:00.426  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:00.426  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:00.464  spk->mac  SET-reply  
+16:37:00.479  spk->mac  EVENT  preset=01 1b
+16:37:00.479  spk->mac  EVENT  preset=03 01
+16:37:00.494  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:00.524  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:00.525  spk->mac  SET-reply  
+16:37:00.539  spk->mac  EVENT  preset=01 1b
+16:37:00.554  spk->mac  EVENT  preset=03 01
+16:37:00.554  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:06.200  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:06.200  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:06.201  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:06.270  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:06.270  spk->mac  SET-reply  
+16:37:06.285  spk->mac  EVENT  preset=01 1b
+16:37:06.285  spk->mac  EVENT  preset=03 01
+16:37:06.299  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:06.329  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:09.875  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:09.876  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:09.876  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:09.914  spk->mac  SET-reply  
+16:37:09.929  spk->mac  EVENT  preset=01 1b
+16:37:09.944  spk->mac  EVENT  preset=03 01
+16:37:09.945  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:09.975  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:09.975  spk->mac  SET-reply  
+16:37:09.989  spk->mac  EVENT  preset=01 1b
+16:37:09.990  spk->mac  EVENT  preset=03 01
+16:37:10.004  spk->mac  EVENT  chan_info=01 00 01  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:14.833  spk->mac  EVENT  chan_info=01 00 02
+16:37:15.653  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:15.654  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:15.654  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:15.655  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:15.720  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:15.721  spk->mac  SET-reply  
+16:37:15.734  spk->mac  EVENT  preset=01 1b
+16:37:15.735  spk->mac  EVENT  preset=03 01
+16:37:15.749  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:15.779  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:15.780  spk->mac  SET-reply  
+16:37:15.794  spk->mac  EVENT  preset=01 1b
+16:37:15.794  spk->mac  EVENT  preset=03 01
+16:37:15.808  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:21.953  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:21.954  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:21.955  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:21.955  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:22.034  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:22.035  spk->mac  SET-reply  
+16:37:22.065  spk->mac  EVENT  preset=01 1b
+16:37:22.065  spk->mac  EVENT  preset=03 01
+16:37:22.065  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:22.109  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:22.124  spk->mac  SET-reply  
+16:37:22.125  spk->mac  EVENT  preset=01 1b
+16:37:22.139  spk->mac  EVENT  preset=03 01
+16:37:22.140  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:28.253  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:28.254  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:28.254  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:28.255  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:28.350  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:28.350  spk->mac  SET-reply  
+16:37:28.364  spk->mac  EVENT  preset=01 1b
+16:37:28.365  spk->mac  EVENT  preset=03 01
+16:37:28.379  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:28.453  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:33.718  spk->mac  EVENT  chan_info=01 01 02
+16:37:33.734  spk->mac  EVENT  volume=01 02 1f
+16:37:34.552  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:34.553  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:34.553  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:34.554  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:34.620  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:34.620  spk->mac  SET-reply  
+16:37:34.634  spk->mac  EVENT  preset=01 1b
+16:37:34.635  spk->mac  EVENT  preset=03 01
+16:37:34.649  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:34.679  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:34.680  spk->mac  SET-reply  
+16:37:34.694  spk->mac  EVENT  preset=01 1b
+16:37:34.709  spk->mac  EVENT  preset=03 01
+16:37:34.709  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:40.853  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:40.855  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:40.855  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:40.856  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:40.934  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:40.949  spk->mac  SET-reply  
+16:37:40.950  spk->mac  EVENT  preset=01 1b
+16:37:40.964  spk->mac  EVENT  preset=03 01
+16:37:40.965  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:40.994  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:40.995  spk->mac  SET-reply  
+16:37:41.009  spk->mac  EVENT  preset=01 1b
+16:37:41.009  spk->mac  EVENT  preset=03 01
+16:37:41.024  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:47.153  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:47.154  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:47.154  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:47.154  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:47.221  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:47.235  spk->mac  SET-reply  
+16:37:47.250  spk->mac  EVENT  preset=01 1b
+16:37:47.251  spk->mac  EVENT  preset=03 01
+16:37:47.251  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:47.279  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:47.280  spk->mac  SET-reply  
+16:37:47.294  spk->mac  EVENT  preset=01 1b
+16:37:47.309  spk->mac  EVENT  preset=03 01
+16:37:47.309  spk->mac  EVENT  chan_info=01 01 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:49.603  spk->mac  EVENT  chan_info=01 00 02
+16:37:53.458  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:53.459  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:53.460  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:53.460  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:53.535  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:53.550  spk->mac  SET-reply  
+16:37:53.550  spk->mac  EVENT  preset=01 1b
+16:37:53.565  spk->mac  EVENT  preset=03 01
+16:37:53.565  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:53.594  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:53.595  spk->mac  SET-reply  
+16:37:53.609  spk->mac  EVENT  preset=01 1b
+16:37:53.624  spk->mac  EVENT  preset=03 01
+16:37:53.624  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:59.758  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:59.759  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:59.759  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:59.760  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:37:59.760  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:37:59.835  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:59.836  spk->mac  SET-reply  
+16:37:59.850  spk->mac  EVENT  preset=01 1b
+16:37:59.850  spk->mac  EVENT  preset=03 01
+16:37:59.864  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:59.895  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:37:59.896  spk->mac  SET-reply  
+16:37:59.910  spk->mac  EVENT  preset=01 1b
+16:37:59.910  spk->mac  EVENT  preset=03 01
+16:37:59.924  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:37:59.954  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:02.218  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:38:06.583  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:06.584  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:06.584  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:06.585  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:06.585  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:06.614  spk->mac  SET-reply  
+16:38:06.645  spk->mac  EVENT  preset=01 1b
+16:38:06.645  spk->mac  EVENT  preset=03 01
+16:38:06.659  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:06.705  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:06.706  spk->mac  SET-reply  
+16:38:06.706  spk->mac  EVENT  preset=01 1b
+16:38:06.706  spk->mac  EVENT  preset=03 01
+16:38:06.719  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:06.764  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:06.764  spk->mac  SET-reply  
+16:38:06.779  spk->mac  EVENT  preset=01 1b
+16:38:06.779  spk->mac  EVENT  preset=03 01
+16:38:06.794  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:13.888  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:38:15.508  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:15.509  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:15.510  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:15.510  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:15.510  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:15.510  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:15.585  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:15.586  spk->mac  SET-reply  
+16:38:15.600  spk->mac  EVENT  preset=01 1b
+16:38:15.614  spk->mac  EVENT  preset=03 01
+16:38:15.615  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:15.645  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:15.645  spk->mac  SET-reply  
+16:38:15.660  spk->mac  EVENT  preset=01 1b
+16:38:15.660  spk->mac  EVENT  preset=03 01
+16:38:15.675  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:15.706  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:15.707  spk->mac  SET-reply  
+16:38:15.719  spk->mac  EVENT  preset=01 1b
+16:38:15.734  spk->mac  EVENT  preset=03 01
+16:38:15.735  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:24.958  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:24.959  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:24.960  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:24.960  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:24.960  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:24.960  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:25.065  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:25.065  spk->mac  SET-reply  
+16:38:25.080  spk->mac  EVENT  preset=01 1b
+16:38:25.080  spk->mac  EVENT  preset=03 01
+16:38:25.094  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:25.169  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+              (… repeated 1 more times)
+16:38:25.214  spk->mac  SET-reply  
+16:38:25.215  spk->mac  EVENT  preset=01 1b
+16:38:25.229  spk->mac  EVENT  preset=03 01
+16:38:25.230  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:25.693  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:38:27.313  spk->mac  EVENT  chan_info=02 01 03
+16:38:27.329  spk->mac  EVENT  0x31c3=02 01 00 00 00 00 00 00 00 00 00 00 00 00
+16:38:27.330  spk->mac  EVENT  volume=02 03 0b
+16:38:34.409  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:34.409  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:34.410  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:34.410  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:34.410  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:34.410  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:34.485  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:34.486  spk->mac  SET-reply  
+16:38:34.500  spk->mac  EVENT  preset=01 1b
+16:38:34.500  spk->mac  EVENT  preset=03 01
+16:38:34.514  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:34.560  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:34.561  spk->mac  SET-reply  
+16:38:34.562  spk->mac  EVENT  preset=01 1b
+16:38:34.562  spk->mac  EVENT  preset=03 01
+16:38:34.574  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:34.605  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:34.606  spk->mac  SET-reply  
+16:38:34.619  spk->mac  EVENT  preset=01 1b
+16:38:34.634  spk->mac  EVENT  preset=03 01
+16:38:34.634  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:38.503  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:38:43.708  spk->mac  EVENT  chan_info=02 00 03
+16:38:43.854  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:43.854  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:43.854  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:43.855  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:43.855  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:43.855  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:43.920  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:43.935  spk->mac  SET-reply  
+16:38:43.935  spk->mac  EVENT  preset=01 1b
+16:38:43.950  spk->mac  EVENT  preset=03 01
+16:38:43.950  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:43.980  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:43.981  spk->mac  SET-reply  
+16:38:43.994  spk->mac  EVENT  preset=01 1b
+16:38:44.010  spk->mac  EVENT  preset=03 01
+16:38:44.010  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:44.040  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:44.040  spk->mac  SET-reply  
+16:38:44.054  spk->mac  EVENT  preset=01 1b
+16:38:44.069  spk->mac  EVENT  preset=03 01
+16:38:44.070  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:53.309  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:53.310  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:53.310  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:53.311  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:53.311  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:38:53.311  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:38:53.386  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:53.387  spk->mac  SET-reply  
+16:38:53.400  spk->mac  EVENT  preset=01 1b
+16:38:53.415  spk->mac  EVENT  preset=03 01
+16:38:53.416  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:53.445  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:53.446  spk->mac  SET-reply  
+16:38:53.460  spk->mac  EVENT  preset=01 1b
+16:38:53.461  spk->mac  EVENT  preset=03 01
+16:38:53.475  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:53.505  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:38:53.506  spk->mac  SET-reply  
+16:38:53.519  spk->mac  EVENT  preset=01 1b
+16:38:53.535  spk->mac  EVENT  preset=03 01
+16:38:53.535  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 03  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:38:55.244  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:39:02.324  spk->mac  EVENT  chan_info=02 00 01
+16:39:02.325  spk->mac  EVENT  0x31c3=02 01 00 00 00 00 00 00 00 00 00 00 00 00
+16:39:02.339  spk->mac  EVENT  0x0c10=00 00 00 00
+16:39:02.759  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:02.759  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:02.760  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:02.760  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:02.760  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:02.761  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:02.761  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:02.835  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:02.836  spk->mac  SET-reply  
+16:39:02.850  spk->mac  EVENT  preset=01 1b
+16:39:02.850  spk->mac  EVENT  preset=03 01
+16:39:02.865  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:02.895  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:02.896  spk->mac  SET-reply  
+16:39:02.910  spk->mac  EVENT  preset=01 1b
+16:39:02.910  spk->mac  EVENT  preset=03 01
+16:39:02.925  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:02.955  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:02.956  spk->mac  SET-reply  
+16:39:02.970  spk->mac  EVENT  preset=01 1b
+16:39:02.984  spk->mac  EVENT  preset=03 01
+16:39:02.985  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:03.013  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:09.959  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:39:12.734  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:12.734  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:12.735  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:12.735  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:12.735  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:12.736  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:12.736  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:12.795  spk->mac  SET-reply  
+16:39:12.825  spk->mac  EVENT  preset=01 1b
+16:39:12.826  spk->mac  EVENT  preset=03 01
+16:39:12.826  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:12.855  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:12.870  spk->mac  SET-reply  
+16:39:12.870  spk->mac  EVENT  preset=01 1b
+16:39:12.885  spk->mac  EVENT  preset=03 01
+16:39:12.885  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:12.915  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:12.916  spk->mac  SET-reply  
+16:39:12.930  spk->mac  EVENT  preset=01 1b
+16:39:12.930  spk->mac  EVENT  preset=03 01
+16:39:12.960  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:12.975  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:12.976  spk->mac  SET-reply  
+16:39:12.990  spk->mac  EVENT  preset=01 1b
+16:39:12.990  spk->mac  EVENT  preset=03 01
+16:39:13.005  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:20.879  spk->mac  EVENT  chan_info=02 01 01
+16:39:20.880  spk->mac  EVENT  0x31c3=02 01 00 00 00 00 00 00 00 00 00 00 00 00
+16:39:20.894  spk->mac  EVENT  volume=02 01 0b
+16:39:22.798  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:39:24.809  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:24.809  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:24.810  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:24.810  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:24.810  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:24.811  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:24.811  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:24.811  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:24.885  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:24.886  spk->mac  SET-reply  
+16:39:24.900  spk->mac  EVENT  preset=01 1b
+16:39:24.900  spk->mac  EVENT  preset=03 01
+16:39:24.915  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:24.960  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:24.960  spk->mac  SET-reply  
+16:39:24.975  spk->mac  EVENT  preset=01 1b
+16:39:24.976  spk->mac  EVENT  preset=03 01
+16:39:24.976  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:25.005  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:25.006  spk->mac  SET-reply  
+16:39:25.021  spk->mac  EVENT  preset=01 1b
+16:39:25.035  spk->mac  EVENT  preset=03 01
+16:39:25.036  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:25.065  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:25.066  spk->mac  SET-reply  
+16:39:25.079  spk->mac  EVENT  preset=01 1b
+16:39:25.080  spk->mac  EVENT  preset=03 01
+16:39:25.094  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 01 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:36.973  spk->mac  EVENT  chan_info=02 00 01
+16:39:37.409  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:37.410  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:37.410  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:37.410  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:37.411  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:37.411  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:37.411  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:37.411  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:37.485  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:37.486  spk->mac  SET-reply  
+16:39:37.500  spk->mac  EVENT  preset=01 1b
+16:39:37.500  spk->mac  EVENT  preset=03 01
+16:39:37.515  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:37.545  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:37.546  spk->mac  SET-reply  
+16:39:37.560  spk->mac  EVENT  preset=01 1b
+16:39:37.575  spk->mac  EVENT  preset=03 01
+16:39:37.575  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:37.605  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:37.606  spk->mac  SET-reply  
+16:39:37.620  spk->mac  EVENT  preset=01 1b
+16:39:37.620  spk->mac  EVENT  preset=03 01
+16:39:37.635  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:37.665  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:37.665  spk->mac  SET-reply  
+16:39:37.680  spk->mac  EVENT  preset=01 1b
+16:39:37.680  spk->mac  EVENT  preset=03 01
+16:39:37.680  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:50.009  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:50.010  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:50.010  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:50.010  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:50.011  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:50.011  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:50.011  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:39:50.012  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:39:50.084  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:50.100  spk->mac  SET-reply  
+16:39:50.115  spk->mac  EVENT  preset=01 1b
+16:39:50.116  spk->mac  EVENT  preset=03 01
+16:39:50.130  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:50.162  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:50.163  spk->mac  SET-reply  
+16:39:50.176  spk->mac  EVENT  preset=01 1b
+16:39:50.176  spk->mac  EVENT  preset=03 01
+16:39:50.190  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:50.222  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:50.222  spk->mac  SET-reply  
+16:39:50.236  spk->mac  EVENT  preset=01 1b
+16:39:50.236  spk->mac  EVENT  preset=03 01
+16:39:50.251  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:50.281  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:39:50.281  spk->mac  SET-reply  
+16:39:50.295  spk->mac  EVENT  preset=01 1b
+16:39:50.295  spk->mac  EVENT  preset=03 01
+16:39:50.310  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:39:57.734  spk->mac  EVENT  chan_info=03 01 02
+16:39:57.750  spk->mac  EVENT  battery%=30
+16:39:57.751  spk->mac  EVENT  volume=03 02 08
+16:39:57.751  spk->mac  EVENT  battery%=30
+16:40:02.610  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:02.610  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:02.611  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:02.611  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:02.611  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:02.612  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:02.612  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:02.612  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:02.685  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:02.686  spk->mac  SET-reply  
+16:40:02.700  spk->mac  EVENT  preset=01 1b
+16:40:02.700  spk->mac  EVENT  preset=03 01
+16:40:02.715  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02  0x3403=01 00  0x3403=03 02
+16:40:02.746  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:02.747  spk->mac  SET-reply  
+16:40:02.762  spk->mac  EVENT  preset=01 1b
+16:40:02.762  spk->mac  EVENT  preset=03 01
+16:40:02.775  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02  0x3403=01 00  0x3403=03 02
+16:40:02.822  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:02.822  spk->mac  SET-reply  
+16:40:02.836  spk->mac  EVENT  preset=01 1b
+16:40:02.852  spk->mac  EVENT  preset=03 01
+16:40:02.852  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02  0x3403=01 00  0x3403=03 02
+16:40:02.881  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:02.882  spk->mac  SET-reply  
+16:40:02.896  spk->mac  EVENT  preset=01 1b
+16:40:02.911  spk->mac  EVENT  preset=03 01
+16:40:02.911  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 01 02  0x3403=01 00  0x3403=03 02
+16:40:04.888  spk->mac  EVENT  battery%=30
+              (… repeated 1 more times)
+16:40:13.859  spk->mac  EVENT  chan_info=03 00 02
+16:40:15.210  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:15.210  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:15.211  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:15.211  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:15.212  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:15.212  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:15.212  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:15.212  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:15.212  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:15.285  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:15.286  spk->mac  SET-reply  
+16:40:15.300  spk->mac  EVENT  preset=01 1b
+16:40:15.315  spk->mac  EVENT  preset=03 01
+16:40:15.315  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:15.345  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:15.346  spk->mac  SET-reply  
+16:40:15.361  spk->mac  EVENT  preset=01 1b
+16:40:15.361  spk->mac  EVENT  preset=03 01
+16:40:15.375  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:15.420  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:15.421  spk->mac  SET-reply  
+16:40:15.435  spk->mac  EVENT  preset=01 1b
+16:40:15.436  spk->mac  EVENT  preset=03 01
+16:40:15.436  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:15.466  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:15.481  spk->mac  SET-reply  
+16:40:15.496  spk->mac  EVENT  preset=01 1b
+16:40:15.496  spk->mac  EVENT  preset=03 01
+16:40:15.497  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:15.525  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:16.453  spk->mac  EVENT  battery%=30
+16:40:16.469  spk->mac  EVENT  battery%=2f
+16:40:28.334  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:28.335  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:28.335  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:28.336  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:28.336  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:28.336  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:28.336  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:28.336  mac->spk  GET    0x000c 0x1008 0x2c00 0x2c01 0x2c02 0x2c03 0x2c04 0x2c05 0x2c80 0x0c00 0x3000 0x3040 0x3145 0x3148 0x3404 0x3407 0x31c3
+16:40:28.337  mac->spk  SET    chan_query=01  chan_query=02  chan_query=03  0x3402=01  0x3402=02  0x3402=03  0x3441=01  0x3441=02  0x3441=03
+16:40:28.379  spk->mac  SET-reply  
+16:40:28.395  spk->mac  EVENT  preset=01 1b
+16:40:28.395  spk->mac  EVENT  preset=03 01
+16:40:28.410  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:28.440  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:28.441  spk->mac  SET-reply  
+16:40:28.455  spk->mac  EVENT  preset=01 1b
+16:40:28.455  spk->mac  EVENT  preset=03 01
+16:40:28.470  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:28.500  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:28.501  spk->mac  SET-reply  
+16:40:28.515  spk->mac  EVENT  preset=01 1b
+16:40:28.515  spk->mac  EVENT  preset=03 01
+16:40:28.530  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:28.560  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:28.561  spk->mac  SET-reply  
+16:40:28.575  spk->mac  EVENT  preset=01 1b
+16:40:28.576  spk->mac  EVENT  preset=03 01
+16:40:28.590  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
+16:40:28.637  spk->mac  GET-reply  0x000c=1a 1c 15 0a 0a  0x1008=b1 0e 00 00  0x2c00=00  0x2c01=00  0x2c02=00  0x2c03=00  0x3000=00  0x3040=00  0x3145=00  0x3148=00  0x3404=01  0x3407=00
+16:40:28.638  spk->mac  SET-reply  
+16:40:28.666  spk->mac  EVENT  preset=01 1b
+16:40:28.666  spk->mac  EVENT  preset=03 01
+16:40:28.666  spk->mac  EVENT  chan_info=01 00 02  chan_info=02 00 01  chan_info=03 00 02  0x3403=01 00  0x3403=03 02
