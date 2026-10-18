@@ -26,9 +26,9 @@ drag), tap the dots, or use ← / →.
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
 2. **Tuner and mix**: a channel picker across the top (1–4, each labelled with what its
-   switch is set to: Guitar, Mic, Line, USB/BT) chooses the channel the rest of the screen
-   shows: its pickup type (Active, Humbucker, Single coil; only for channel 3, or channel 1
-   with its switch on guitar), the tuner (string, cents and frequency) and its volume.
+   switch is set to: Guitar, Mic, Line, USB/BT; it starts on the guitar's channel) chooses
+   the channel the rest of the screen shows: its pickup type (Active, Humbucker, Single
+   coil; only for channel 3, or channel 1 with its switch on guitar), the tuner (string, cents and frequency) and its volume.
    Master volume is on the right.
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
    and the volumes of both plus Others.

@@ -32,6 +32,8 @@ struct ContentView: View {
                         StemScreen()
                     }
                 }
+                // The mix screen starts on the guitar's channel, and follows it when guitars come or go.
+                .onChange(of: client.primaryGuitarChannel) { _, guitar in channel = guitar }
                 // Keep showing the same screen when a guitar page comes or goes before it.
                 .onChange(of: guitarPages) { old, new in
                     if page >= old.count {
