@@ -30,6 +30,8 @@ struct RootView: View {
 }
 
 struct SplashView: View {
+    @EnvironmentObject private var client: BandBoxClient
+
     var body: some View {
         ZStack {
             Color.white.ignoresSafeArea()
@@ -41,6 +43,11 @@ struct SplashView: View {
                         .font(.system(size: 13))
                         .foregroundStyle(Stage.secondaryText)
                 }
+                // Use the app without the speaker; the controller offers Connect later.
+                Button("Continue without speaker") { client.disconnect() }
+                    .buttonStyle(.plain)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Logo.bandboxAmber)
             }
         }
     }

@@ -31,6 +31,7 @@ struct ContentView: View {
             Stage.background.ignoresSafeArea()
 
             VStack(spacing: 8) {
+                if !connected { linkBanner }
                 Pager(page: $page, count: pageCount) { index in
                     if index < guitarPages.count {
                         TonesScreen(channel: guitarPages[index]) { tone in
@@ -60,23 +61,14 @@ struct ContentView: View {
                         page = 0
                     }
                 }
-                .allowsHitTesting(connected)
-                .opacity(connected ? 1 : 0.4)
+                // Usable offline (screens, MIDI, log); dimmed so it's clear nothing reaches the speaker.
+                .opacity(connected ? 1 : 0.5)
 
                 footer
             }
             .padding([.horizontal, .top], 16)
             .padding(.bottom, 8)
 
-            if !connected {
-                Label(statusText, systemImage: "antenna.radiowaves.left.and.right")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Stage.text)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(Capsule().fill(Stage.tile))
-                    .overlay(Capsule().strokeBorder(Stage.tileBorder, lineWidth: 1))
-            }
         }
         #if os(macOS)
         .frame(minWidth: 760, idealWidth: 900, minHeight: 360, idealHeight: 420)
@@ -157,6 +149,34 @@ struct ContentView: View {
         .frame(height: 14)
     }
 
+    /// Why there's no speaker, with Cancel while it searches and Connect once stopped.
+    private var linkBanner: some View {
+        HStack(spacing: 10) {
+            Circle().fill(statusColor).frame(width: 8, height: 8)
+            Text(statusText)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(Stage.text)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            Spacer()
+            switch client.link {
+            case .searching, .connecting:
+                Button("Cancel") { client.disconnect() }
+            case .offline:
+                Button("Connect") { client.connect() }
+            default:
+                EmptyView()
+            }
+        }
+        .buttonStyle(.plain)
+        .font(.system(size: 13, weight: .semibold))
+        .foregroundStyle(Stage.amber)
+        .padding(.horizontal, 14)
+        .frame(height: 36)
+        .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Stage.tile))
+        .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(Stage.tileBorder, lineWidth: 1))
+    }
+
     /// Invisible buttons that carry the keyboard shortcuts.
     private var shortcuts: some View {
         ZStack {
@@ -178,6 +198,7 @@ struct ContentView: View {
         switch client.link {
         case .connected: "Connected"
         case .connecting: "Connecting…"
+        case .offline: "Not connected to the speaker"
         case .searching: "Searching… (close the JBL app on your phone)"
         case .bluetoothOff: "Bluetooth is off"
         #if os(macOS)
@@ -193,6 +214,7 @@ struct ContentView: View {
         case .connected: .green
         case .connecting, .searching: .orange
         case .bluetoothOff, .unauthorized: .red
+        case .offline: Stage.dot
         }
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 final class BandBoxClient: NSObject, ObservableObject {
     enum Link: Equatable {
         case bluetoothOff, unauthorized, searching, connecting, connected
+        case offline   // the user stopped connecting; connect() starts again
     }
 
     @Published private(set) var link: Link = .searching
@@ -72,6 +73,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     private var writeInFlight = false
     private var fragments: [UInt16: [UInt8]] = [:]
     private var rescanTimer: Timer?
+    private var stopped = false   // disconnect() was called: don't search until connect()
     private var tunerKeepAlive: Timer?
 
     override init() {
@@ -472,6 +474,25 @@ final class BandBoxClient: NSObject, ObservableObject {
 
     // MARK: Discovery
 
+    /// Stops searching (or drops the connection) until connect() is called.
+    func disconnect() {
+        guard link != .offline else { return }
+        stopped = true
+        rescanTimer?.invalidate()
+        central.stopScan()
+        candidates.removeAll()
+        if let p = peripheral { central.cancelPeripheralConnection(p) }
+        peripheral = nil
+        link = .offline
+        record("stopped connecting")
+    }
+
+    /// Starts searching again after disconnect().
+    func connect() {
+        stopped = false
+        if central.state == .poweredOn { startSearching() } else { centralManagerDidUpdateState(central) }
+    }
+
     private func startSearching() {
         link = .searching
         confirmed = false
@@ -493,7 +514,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     }
 
     private func probeNext() {
-        guard peripheral == nil, !candidates.isEmpty else { return }
+        guard !stopped, peripheral == nil, !candidates.isEmpty else { return }
         let p = candidates.removeFirst()
         peripheral = p
         link = .connecting
@@ -508,6 +529,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         rejected.insert(p.identifier)
         central.cancelPeripheralConnection(p)
         peripheral = nil
+        guard !stopped else { return }
         link = .searching
         probeNext()
     }
@@ -525,7 +547,7 @@ final class BandBoxClient: NSObject, ObservableObject {
 extension BandBoxClient: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ c: CBCentralManager) {
         switch c.state {
-        case .poweredOn: startSearching()
+        case .poweredOn: if stopped { link = .offline } else { startSearching() }
         case .unauthorized: link = .unauthorized
         default: link = .bluetoothOff
         }
@@ -533,7 +555,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
 
     func centralManager(_ c: CBCentralManager, didDiscover p: CBPeripheral,
                         advertisementData adv: [String: Any], rssi: NSNumber) {
-        guard !rejected.contains(p.identifier), !candidates.contains(where: { $0 === p }), peripheral !== p else { return }
+        guard !stopped, !rejected.contains(p.identifier), !candidates.contains(where: { $0 === p }), peripheral !== p else { return }
         let name = p.name ?? (adv[CBAdvertisementDataLocalNameKey] as? String)
         let silent = adv[CBAdvertisementDataManufacturerDataKey] == nil
             && adv[CBAdvertisementDataServiceUUIDsKey] == nil
@@ -557,7 +579,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
     }
 
     func centralManager(_ c: CBCentralManager, didDisconnectPeripheral p: CBPeripheral, error: Error?) {
-        guard p === peripheral else { return }
+        guard p === peripheral || stopped else { return }
         if confirmed {
             record("disconnected: \(error?.localizedDescription ?? "no reason given")")
         }
@@ -570,7 +592,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
         tunerKeepAlive = nil
         toneDetails = [:]
         savedDetails = [:]
-        startSearching()
+        if stopped { peripheral = nil } else { startSearching() }
     }
 }
 
