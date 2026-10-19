@@ -245,6 +245,13 @@ struct PresetEditor: View {
                     }
                     .frame(width: 52, height: 34)
                 }
+                // Some tones (the factory "Bypassed") switch the amp and cab off too.
+                if let block, selected == .amp || selected == .cab, block.bypassed {
+                    Text("Off in this tone")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(Stage.mutedText)
+                        .fixedSize()
+                }
                 modelChips(current: block?.model)
             }
             .frame(height: 34)
