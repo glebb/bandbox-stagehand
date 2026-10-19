@@ -32,7 +32,13 @@ struct TonesScreen: View {
         return SwitchPad(on: on == true,
                          longPress: switchable ? { choosingModel = pedal } : nil,
                          action: { if let on { client.setPedal(pedal, on: !on, channel: channel) } }) {
-            Text(pedal.name).font(.system(size: 13, weight: .medium))
+            // Off: the pedal's kind (FX); on: the model it is playing.
+            let model = on == true ? client.model(pedal, channel: channel).flatMap { pedal.slot.model($0)?.name } : nil
+            Text(model ?? pedal.name)
+                .font(.system(size: 13, weight: .medium))
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .padding(.horizontal, 4)
         }
         .opacity(on == nil ? 0.4 : 1)
         #if os(macOS)
