@@ -17,6 +17,9 @@ struct ContentView: View {
     @State private var channel = 3
     @State private var editorChannel: Int?   // the guitar channel the preset editor edits; nil = the primary one
     @State private var showLog = false
+    #if os(iOS)
+    @State private var confirmQuit = false
+    #endif
 
     private var guitarPages: [Int] { client.activeGuitarChannels }
     private var pageCount: Int { guitarPages.count + 3 }
@@ -141,6 +144,22 @@ struct ContentView: View {
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)
                     .padding(.leading, 10)
+                #if os(iOS)
+                // Out of the way at the end of the footer, and asks first: a stray tap mid-song does nothing.
+                Button("Quit") { confirmQuit = true }
+                    .buttonStyle(.plain)
+                    .padding(.leading, 16)
+                    .confirmationDialog("Quit Stagehand?", isPresented: $confirmQuit, titleVisibility: .visible) {
+                        Button("Quit", role: .destructive) {
+                            // Let go of the speaker first, so the JBL app can connect.
+                            client.disconnect()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { exit(0) }
+                        }
+                        Button("Cancel", role: .cancel) {}
+                    } message: {
+                        Text("Disconnects from the speaker and closes the app.")
+                    }
+                #endif
             }
             .font(.system(size: 11))
             .foregroundStyle(Stage.faintText)
@@ -234,7 +253,10 @@ struct Pager<Content: View>: View {
         GeometryReader { geo in
             HStack(spacing: 0) {
                 ForEach(0 ..< count, id: \.self) { i in
-                    content(i).frame(width: geo.size.width, height: geo.size.height)
+                    content(i)
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        // The whole page takes the swipe, also its gaps and switched-off controls.
+                        .contentShape(Rectangle())
                 }
             }
             .frame(width: geo.size.width * CGFloat(count), alignment: .leading)
