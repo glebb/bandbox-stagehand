@@ -26,12 +26,13 @@ struct TonesScreen: View {
     }
 
     /// Tap switches the pedal on or off; long-press (or right-click) picks its model.
+    /// Either is saved into the tone right away.
     private func pedalButton(_ pedal: Pedal) -> some View {
         let on = client.isOn(pedal, channel: channel)
         let switchable = pedal.models.count > 1 && on != nil
         return SwitchPad(on: on == true,
                          longPress: switchable ? { choosingModel = pedal } : nil,
-                         action: { if let on { client.setPedal(pedal, on: !on, channel: channel) } }) {
+                         action: { if let on { client.setPedal(pedal, on: !on, channel: channel); save() } }) {
             // Off: the pedal's kind (FX); on: the model it is playing.
             let model = on == true ? client.model(pedal, channel: channel).flatMap { pedal.slot.model($0)?.name } : nil
             Text(model ?? pedal.name)
@@ -45,7 +46,7 @@ struct TonesScreen: View {
         .contextMenu {
             if switchable {
                 ForEach(pedal.models) { model in
-                    Button { client.setModel(pedal, model, channel: channel) } label: {
+                    Button { client.setModel(pedal, model, channel: channel); save() } label: {
                         if client.model(pedal, channel: channel) == model.id { Label(model.name, systemImage: "checkmark") } else { Text(model.name) }
                     }
                 }
@@ -56,6 +57,7 @@ struct TonesScreen: View {
                                       set: { if !$0 { choosingModel = nil } })) {
             ModelPicker(pedal: pedal, current: client.model(pedal, channel: channel)) {
                 client.setModel(pedal, $0, channel: channel)
+                save()
                 choosingModel = nil
             }
             .presentationCompactAdaptation(.popover)
@@ -94,8 +96,6 @@ struct TonesScreen: View {
         .contextMenu {
             Button("Rename…") { assigning = slot.id }
             Button("Edit \(toneName(toneID))…") { edit(toneID) }
-            Button("Save Pedals to \(toneName(toneID))") { client.saveTone(channel: channel) }
-                .disabled(!selected || client.toneDetails[channel]?.id != toneID)
             Divider()
             toneMenu { assignments.assign($0, to: slot.id, channel: channel) }
         }
@@ -110,8 +110,6 @@ struct TonesScreen: View {
                 nameField(slot)
                 Divider()
                 editRow(toneID)
-                Divider()
-                saveRow(toneID)
             }
             .presentationCompactAdaptation(.popover)
         }
@@ -149,34 +147,9 @@ struct TonesScreen: View {
         .buttonStyle(.plain)
     }
 
-    /// Saves the pedals as they are now into the button's tone on the speaker.
-    /// Only for the playing tone: the pedal states are the speaker's, for that tone.
-    private func saveRow(_ toneID: Int) -> some View {
-        let ready = client.presets[channel] == toneID && client.toneDetails[channel]?.id == toneID
-        let on = Pedal.allCases.filter { client.isOn($0, channel: channel) == true }.map(\.name)
-        return Button {
-            client.saveTone(channel: channel)
-            assigning = nil
-        } label: {
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Save pedals to \(toneName(toneID))")
-                    Text(ready ? (on.isEmpty ? "All pedals off" : on.joined(separator: ", "))
-                               : "Select this tone first")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-                Spacer()
-                Image(systemName: "square.and.arrow.down")
-            }
-            .padding(12)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .disabled(!ready)
-        .opacity(ready ? 1 : 0.4)
-    }
+    /// Saves the pedals as they are now into the playing tone on the speaker; the write
+    /// follows the change's, so the speaker has applied it first.
+    private func save() { client.saveTone(channel: channel) }
 
     @ViewBuilder
     private func toneMenu(_ pick: @escaping (Int) -> Void) -> some View {
