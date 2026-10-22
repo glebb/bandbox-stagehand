@@ -1,6 +1,7 @@
 # Build output
 Stagehand/build/
 BLEScan.app/
+ScratchProbe.app/
 ble-scan
 
 # Raw PacketLogger captures: full iPhone Bluetooth traffic, including other devices.

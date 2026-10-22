@@ -40,11 +40,14 @@ final class MIDIInput: ObservableObject {
     @Published private(set) var messageCount = 0
     /// The action that the next message gets bound to (MIDI Learn).
     @Published var learning: StageAction?
+    /// The last song's tones the Rocksmith companion sent (ScratchTones.swift).
+    @Published private(set) var songTones: SongTonesRequest?
 
     private var midiClient = MIDIClientRef()
     private var port = MIDIPortRef()
     private var connected: Set<MIDIEndpointRef> = []
     private var reader = SwitchReader()
+    private let sysex = SysExReaders()
     private weak var client: BandBoxClient?
     private weak var assignments: ToneAssignments?
 
@@ -58,10 +61,18 @@ final class MIDIInput: ObservableObject {
         }
         guard status == noErr else { return client.record("! MIDI unavailable (\(status))") }
         // Called on CoreMIDI's own thread: parse there, act on the main thread.
-        MIDIInputPortCreateWithProtocol(midiClient, "Stagehand in" as CFString, ._1_0, &port) { [weak self] list, _ in
-            let messages = list.unsafeSequence().flatMap { MIDIMessage.parse($0.words()) }
-            guard !messages.isEmpty else { return }
-            DispatchQueue.main.async { messages.forEach { self?.handle($0) } }
+        // The source's endpoint comes as the connection's refCon, so each source has its own SysEx.
+        let sysex = self.sysex
+        MIDIInputPortCreateWithProtocol(midiClient, "Stagehand in" as CFString, ._1_0, &port) { [weak self] list, refCon in
+            let packets = list.unsafeSequence().map { Array($0.words()) }
+            let messages = packets.flatMap { MIDIMessage.parse($0) }
+            let source = Int(bitPattern: refCon)
+            let sysexMessages = packets.flatMap { sysex.feed($0, source: source) }
+            guard !messages.isEmpty || !sysexMessages.isEmpty else { return }
+            DispatchQueue.main.async {
+                messages.forEach { self?.handle($0) }
+                sysexMessages.forEach { self?.handleSysEx($0) }
+            }
         }
         connectSources()
     }
@@ -69,7 +80,7 @@ final class MIDIInput: ObservableObject {
     private func connectSources() {
         let endpoints = (0..<MIDIGetNumberOfSources()).map(MIDIGetSource).filter { $0 != 0 }
         for source in endpoints where !connected.contains(source) {
-            MIDIPortConnectSource(port, source, nil)
+            MIDIPortConnectSource(port, source, UnsafeMutableRawPointer(bitPattern: Int(source)))
         }
         connected = Set(endpoints)
         let names = endpoints.map(Self.name)
@@ -115,6 +126,14 @@ final class MIDIInput: ObservableObject {
         learning = nil
     }
 
+    /// A SysEx message: the Rocksmith companion's song tones are the only kind Stagehand reads.
+    private func handleSysEx(_ bytes: [UInt8]) {
+        guard enabled, let request = SongTonesRequest.parse(bytes) else { return }
+        songTones = request
+        client?.record("MIDI song tones for \(request.song.isEmpty ? "a song" : request.song): \(request.summary)")
+        request.warnings.forEach { client?.record("! song tones: \($0)") }
+    }
+
     private func handle(_ message: MIDIMessage) {
         lastMessage = message
         messageCount += 1
@@ -134,5 +153,16 @@ final class MIDIInput: ObservableObject {
         case .toggle: client.perform(binding.action, assignments: assignments)
         case let .set(on): client.perform(binding.action, assignments: assignments, on: on)
         }
+    }
+}
+
+/// A SysEx assembler per MIDI source, used on CoreMIDI's thread.
+private final class SysExReaders {
+    private let lock = NSLock()
+    private var assemblers: [Int: SysExAssembler] = [:]
+
+    func feed(_ words: [UInt32], source: Int) -> [[UInt8]] {
+        lock.lock(); defer { lock.unlock() }
+        return assemblers[source, default: SysExAssembler()].feed(words)
     }
 }

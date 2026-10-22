@@ -210,7 +210,7 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Pedal parameters~~ Set with 0x3445 op 04; every slot's models and knobs are in *Effect models*.
 - ~~Amp models~~ (see *Amp models*). ~~Cab models~~ (see *Cab models*).
 - **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
-- ~~Save as, rename, delete~~ See *Tone actions*. Still open: how many user tones fit, and whether rename can change the category.
+- ~~Save as, rename, delete~~ See *Tone actions*. Still open: how many user tones fit, and whether rename can change the category. `ScratchProbe.app` (`build-scratch-probe.sh`) answers the first, and whether a tone that isn't playing can be read, edited and saved.
 
 ## Still unknown
 - ~~SET commands for preset and STEM AI~~ **Verified from the Mac** (`captures/preset-stem-test-1.log`).

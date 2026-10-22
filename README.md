@@ -98,6 +98,13 @@ binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it m
 latching switch. Each message Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
+**Song-made tones for Rocksmith (in progress).** The
+[Rocksmith companion](https://github.com/glebb/rs-mac-companion) can send, as a song loads,
+a SysEx message (manufacturer 0x7D, then JSON) describing the song's tones: for each one, a
+tone button to start from and how its FX, Delay and Reverb should be set. Stagehand reads it
+and logs it; filling scratch tones on the speaker from it, played with PC 8–12, comes next
+(`Sources/Shared/ScratchTones.swift`).
+
 ## Getting it
 
 ### Mac
@@ -195,6 +202,7 @@ The code is shared: `Sources/Shared` holds the protocol, client and screens, and
 `Sources/macOS` / `Sources/iOS` each hold an app's entry point; the Mac's also holds the
 global keys and the MIDI input and sheet. `project.yml` describes
 the iPhone project for XcodeGen.
+`./test.sh` runs the tests of the parts that need no speaker (`Tests/main.swift`).
 
 The logo is set in [Yellowtail](https://fonts.google.com/specimen/Yellowtail)
 (`Fonts/`, Apache 2.0). `swift render-art.swift` redraws the iPhone and Mac icons and
@@ -215,6 +223,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 | File | Purpose |
 |---|---|
 | `ble-scan.swift`, `build-blescan.sh` | Scanner/listener/sender (`BLEScan.app`): finds the speaker, dumps GATT, logs notifications, sends timed writes |
+| `scratch-probe.swift`, `build-scratch-probe.sh` | `ScratchProbe.app`: what scratch tones for Rocksmith need (reading and saving a tone that isn't playing, write speed, how many user tones fit), on its own "Probe" tones, which it deletes |
 | `guided-session.sh` | Runs the listener and speaks prompts aloud, so each button press lines up with its message |
 | `capture-speaker-controls.sh`, `capture-app-controls.sh` | Guided sessions behind the notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |
 | `polled-session.sh` | Like `guided-session.sh`, but also polls the per-channel queries and unknown properties every few seconds; the two sessions below use it |

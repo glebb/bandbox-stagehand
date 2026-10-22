@@ -46,6 +46,43 @@ struct MIDIMessage: Equatable {
     }
 }
 
+/// Puts SysEx messages back together from MIDI 1.0 universal MIDI packets (type 3: up to 6
+/// bytes each, marked complete, start, continue or end), which may span several packet lists.
+/// One per source, so two sources' messages aren't mixed.
+struct SysExAssembler {
+    /// Longer messages are dropped: Stagehand's own are a few kilobytes.
+    static let maxLength = 16_384
+
+    private var buffer: [UInt8]?
+
+    /// The messages that `words` complete, as the bytes between F0 and F7.
+    mutating func feed(_ words: some Sequence<UInt32>) -> [[UInt8]] {
+        var done: [[UInt8]] = []
+        var iterator = words.makeIterator()
+        while let word = iterator.next() {
+            let type = Int(word >> 28)
+            guard type == 0x3 else {
+                for _ in 1 ..< Self.wordCount[type] { _ = iterator.next() }
+                continue
+            }
+            guard let second = iterator.next() else { break }
+            let status = word >> 20 & 0xF, count = min(Int(word >> 16 & 0xF), 6)
+            let bytes = [word >> 8, word, second >> 24, second >> 16, second >> 8, second].prefix(count).map { UInt8($0 & 0x7F) }
+            switch status {
+            case 0: done.append(bytes); buffer = nil                   // complete in one
+            case 1: buffer = bytes                                     // start
+            case 2: buffer? += bytes                                   // continue
+            case 3: if let b = buffer { done.append(b + bytes) }; buffer = nil   // end
+            default: buffer = nil
+            }
+            if (buffer?.count ?? 0) > Self.maxLength { buffer = nil }
+        }
+        return done
+    }
+
+    private static let wordCount = [1, 1, 1, 2, 2, 4, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4]
+}
+
 /// What a MIDI binding listens to: a program, controller or note, on one channel or any.
 struct MIDITrigger: Hashable, Codable {
     let kind: MIDIMessage.Kind
