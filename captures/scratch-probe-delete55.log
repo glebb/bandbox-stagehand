@@ -1,0 +1,28 @@
+Bluetooth on — scanning 15s…
+• JBL BandBox Trio  [A8E4863E-6C7F-BD3E-EEAE-2DA1E8E5BA18]  rssi=-55
+
+>>> probing A8E4863E-6C7F-BD3E-EEAE-2DA1E8E5BA18 …
+• 43" Neo QLED  [5A0B8916-2E8B-EB84-1BD0-674852D5E3FA]  rssi=-63  mfg=7500420401806ee8aacb1f9013eaaacb1f901201cf08835e0b3d
+• iPhone (Antti)  [E765291E-2F21-3B34-F0A4-4B1E1D80FDCE]  rssi=-43  mfg=4c001006231e53b343fc0100000000000000000000000080000000
+• —  [F86F76D0-7022-11A2-9FD9-56674B74492B]  rssi=-87
+• [TV] Samsung 8 Series (75)  [814847E9-484F-8FDD-E709-CFD8C0839634]  rssi=-74  mfg=7500420401806084c0efd72e7686c0efd72e7501e90000000000
+• —  [0825F474-B416-6E76-74A2-7417B9E6CA08]  rssi=-55  mfg=4c001006121ecb31e43a
+[16:37:06.692] connected to JBL BandBox Trio
+• [TV] Samsung Q70AA 65 TV  [0EEE1019-F3BA-8DEC-576E-AA967671CC15]  rssi=-46  mfg=7500420401806e7c0a3f6df39f7e0a3f6df39e01000000000000
+[16:37:07.172] found JBL BandBox Trio [A8E4863E-6C7F-BD3E-EEAE-2DA1E8E5BA18]
+SERVICE 65786365-6C70-6F69-6E74-2E636F6D0000
+• Ruuvi 67CF  [171DF9CF-0DEF-5D33-EA82-B9DF4364C6FB]  rssi=-76  mfg=9904050fc84f3fc6f8000400180428a5b6cd4806e9d6757467cf
+[16:37:07.352] subscribed com/0001 (notifying=true)
+[16:37:07.352] listening for 6s — use the speaker and the app now
+[16:37:07.352] com/0001 <- (16B) 00 dd 03 00 01 00 08 00 00 00 01 00 02 00 00 01  |................|
+[16:37:07.412] com/0001 <- (14B) 00 dd 03 00 01 00 06 00 00 00 02 00 00 00  |..............|
+[16:37:09.361] com/0001 <- (14B) 00 dd 03 00 01 00 06 00 00 00 02 00 00 00  |..............|
+[16:37:09.450] com/0002 -> (18B) 00 dd 02 00 01 00 0a 00 46 34 06 00 03 07 37 ff ff 00  |........F4....7...|
+[16:37:09.541] write com/0002 acknowledged
+[16:37:09.542] com/0001 <- (10B) 00 dd 02 00 01 00 02 00 00 00  |..........|
+[16:37:09.571] com/0001 <- (20B) 00 dd 03 00 01 00 0c 00 00 00 46 34 06 00 03 07 37 ff ff 00  |..........F4....7...|
+[16:37:11.552] com/0002 -> (10B) 00 dd 01 00 01 00 02 00 40 34  |........@4|
+[16:37:11.598] write com/0002 acknowledged
+[16:37:11.628] com/0001 <- (248B) 00 dd 01 00 02 00 f0 00 00 00 40 34 c0 01 01 00 0d 43 6c 65 61 6e 20 43 6f 6d 70 69 6e 67 02 00 09 50 6f 70 20 43 6c 65 61 6e 03 00 0c 56 69 6e 74 61 67 65 20 54 72 65 6d 04 00 0b 53 6d 6f 6f 74 68 20 4a 61 7a 7a 05 00 0c 53 6f 75 6c 66 75 6c 20 56 65 72 62 06 00 0d 52 26 42 20 41 6c 6c 20 4e 69 67 68 74 07 01 0b 44 69 73 63 6f 20 54 77 61 6e 67 08 01 0b 46 75 6e 6b 79 20 4d 6f 75 74 68 09 02 10 43 72 6f 73 73 72 6f 61 64 73 20 44 72 69 76 65 0a 02 0d 51 75 65 65 6e 27 73 20 43 72 6f 77 6e 0b 02 0d 43 6f 75 6e 74 72 79 20 43 6c 65 61 6e 0c 02 0c 54 65 78 61 73 20 42 6f 6f 67 69 65 0d 03 0f 46 65 61 74 68 65 72 65 64 20 42 6c 75 65 73 0e 03 09 4c 65 61 64 20 53 6f 6c 6f 0f 03 0b 42 72 69 74 20 43 72 75 6e 63 68 10 03 10 38 30 73 20 41  |..........@4.....Clean Comping...Pop Clean...Vintage Trem...Smooth Jazz...Soulful Verb...R&B All Night...Disco Twang...Funky Mouth...Crossroads Drive...Queen's Crown...Country Clean...Texas Boogie...Feathered Blues...Lead Solo...Brit Crunch...80s A|
+[16:37:11.630] com/0001 <- (222B) 00 dd 01 00 02 01 d6 00 72 65 6e 61 20 43 68 6f 72 75 73 11 03 0e 48 69 67 68 20 47 61 69 6e 20 4c 65 61 64 12 03 0d 43 6f 61 73 74 61 6c 20 44 72 69 76 65 13 03 0e 54 65 61 72 20 44 72 6f 70 20 56 65 72 62 14 03 0a 56 6f 6f 64 6f 6f 20 48 65 78 15 04 10 49 6e 64 75 73 74 72 69 61 6c 20 4d 65 74 61 6c 16 04 08 55 53 20 4d 65 74 61 6c 17 05 08 41 63 6f 75 73 74 69 63 18 05 0f 41 63 6f 75 73 74 69 63 20 43 68 6f 72 75 73 19 06 0b 43 68 6f 72 75 73 20 42 61 73 73 1a 06 0b 53 74 75 64 69 6f 20 42 61 73 73 1b 07 08 42 79 70 61 73 73 65 64 33 04 07 41 20 6d 65 74 61 6c 34 04 0d 43 6c 65 61 6e 20 43 6f 6d 70 69 6e 67 35 07 05 74 65 73 74 32 36 07 05 74 65 73 74 33  |........rena Chorus...High Gain Lead...Coastal Drive...Tear Drop Verb...Voodoo Hex...Industrial Metal...US Metal...Acoustic...Acoustic Chorus...Chorus Bass...Studio Bass...Bypassed3..A metal4..Clean Comping5..test26..test3|
+[16:37:13.650] done listening

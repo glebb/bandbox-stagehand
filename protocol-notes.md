@@ -85,7 +85,7 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3082 | 2 | `ch VV` | **STEM channel volume**, ch 1, 2, 3 (3 = Others), VV 0–32. The app SETs `ch VV` + 7 zero bytes. Turning STEM AI off resets all three to 32 | app capture 3 |
 | 0x3083 / 0x3084 | 1 | `ch` | SET to query: 0x3083 = ch → EVENT 0x3081; 0x3084 = ch → EVENT 0x3082 | app capture 3 |
 | 0x3080, 0x3081, 0x3082 | | | Sent alongside STEM AI changes | listen |
-| 0x3440 | 432 | records `id cat len name…` | **Tone preset library**: 27 factory tones (Clean Comping … Bypassed) + user tones at 0x33, 0x34. GET works; reply comes in 2 fragments | Mac probe |
+| 0x3440 | 432 | records `id cat len name…` | **Tone preset library**: 27 factory tones (Clean Comping … Bypassed) + user tones at 0x33, 0x34. GET works; reply comes in 2 fragments. **It breaks off at about 1 KB**: with 86 tones (59 user tones) the reply was 1,159 bytes, correct up to tone 0x6b and then memory garbage, so later tones were missing (`captures/scratch-probe.log`, 2026-10-22). Keep the number of user tones well under ~60 | Mac probe |
 | 0x344a | | records `cat len name…` | **Tone categories**: Pop, Funk, Blues, Rock, Metal, Acoustic, Bass, Others | Mac probe |
 | 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | Capability/feature list? | app capture |
 | 0x1008, 0x000c, 0x2c00–0x2c05, 0x30c1, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect; unknown | app capture |
@@ -97,12 +97,14 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 |---|---|---|---|
 | 02 | `01 02 0d ff ff 00` | same | **Reset to factory**: tone NN back to its factory settings; the app re-queries 0x3443 |
 | 03 | `01 03 36 36 ff 05 "test3"` | `01 03 36 ff ff 05 "test3"` | **Rename** user tone NN (target = NN, cat ff = unchanged); the app re-reads the library (GET 0x3440) |
-| 04 | `03 04 0f ff ff 00` | `03 04 0f 0f ff 00` | **Save** NN's edits into itself |
+| 04 | `03 04 0f ff ff 00` | `03 04 0f 0f ff 00` | **Save** NN's edits into itself. **Works for a tone that isn't playing**: 0x3445 op 01, 02 and 04 edits sent to user tone 0x37 while channel 3 played tone 01, then op 04 on 0x37, all show in 0x3444 afterwards, and the channel didn't switch. **But the save renamed the tone** to the playing tone's name ("Probe A" → "Clean Comping", category kept); rename it back with op 03 after saving. Not yet known whether such edits are heard on the playing tone, or whether the save also takes the playing tone's other blocks (the test tone was a copy of the playing one) (`captures/scratch-probe.log`) |
 | 07 | `01 07 36 ff ff 00` | same | **Delete** user tone NN; the app re-reads the library and selects tone 01 on the channel |
 | 08 | `01 08 0d ff ff 00` | same, then EVENT 0x3442 | **Discard** NN's edits (heard from the Mac) |
-| 09 | `01 09 0d ff 00 05 "test1"` | `01 09 ff 35 00 05 "test1"` | **Save as** a new user tone: NN's current state *with its unsaved edits* (delay 1000 ms went into the new tone, Feathered Blues kept 250) under a new name and category (cat from 0x344a: 00 Pop … 07 Others). The echo gives the new ID as target (0x35, then 0x36: the next free ID after the user tones 0x33, 0x34). NN keeps its saved settings. The app then GETs 0x3440 and selects the new tone with 0x3442 |
+| 09 | `01 09 0d ff 00 05 "test1"` | `01 09 ff 35 00 05 "test1"` | **Save as** a new user tone: NN's current state *with its unsaved edits* (delay 1000 ms went into the new tone, Feathered Blues kept 250) under a new name and category (cat from 0x344a: 00 Pop … 07 Others). The echo gives the new ID as target (0x35, then 0x36: the next free ID after the user tones 0x33, 0x34). NN keeps its saved settings. The speaker itself then switches the channel to the new tone (EVENT 0x3442, seen from the Mac); the app GETs 0x3440. Save as works from a tone that isn't playing. 64 more user tones (0x38–0x77) were made without a refusal, about 60 ms each |
 
-The JBL app's *Save as* page (*Tallenna nimellä*) has a name field, prefilled with the tone's name, and the 8 categories as radio buttons; *Rename* (*Nimeä uudelleen*) only a name field. Names are plain ASCII as typed. The user-tone limit is not known.
+The JBL app's *Save as* page (*Tallenna nimellä*) has a name field, prefilled with the tone's name, and the 8 categories as radio buttons; *Rename* (*Nimeä uudelleen*) only a name field. Names are plain ASCII as typed. The user-tone limit wasn't reached at 69 user tones (0x33–0x77), but see 0x3440: the library reply breaks above about 60.
+
+**Timing from the Mac** (`captures/scratch-probe.log`, 2026-10-22): a 0x3445 op 04 write with response is acknowledged and echoed in about 60 ms (max 90); 20 op 04 writes without response went out in 47 ms, only 4 were echoed, but the saved value was the last one sent. Select (0x3442) echoes in ~45 ms, 0x3443 → 0x3444 ~45 ms, save ~65 ms, save as ~60 ms. 0x3443 answers for any tone, playing or not, without switching.
 
 ## Effect models
 The model in a 0x3444 block is a u16. For the pedals it's one ID space; the amp (slot 3) and
@@ -210,7 +212,7 @@ Things in the JBL app that haven't been captured. `capture-app-features.sh <area
 - ~~Pedal parameters~~ Set with 0x3445 op 04; every slot's models and knobs are in *Effect models*.
 - ~~Amp models~~ (see *Amp models*). ~~Cab models~~ (see *Cab models*).
 - **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
-- ~~Save as, rename, delete~~ See *Tone actions*. Still open: how many user tones fit, and whether rename can change the category. `ScratchProbe.app` (`build-scratch-probe.sh`) answers the first, and whether a tone that isn't playing can be read, edited and saved.
+- ~~Save as, rename, delete~~ See *Tone actions*. At least 69 user tones fit (the library reply breaks above ~60); a tone that isn't playing can be read, edited and saved, but the save renames it (*Tone actions*, `ScratchProbe.app`). Still open: whether rename can change the category.
 
 ## Still unknown
 - ~~SET commands for preset and STEM AI~~ **Verified from the Mac** (`captures/preset-stem-test-1.log`).

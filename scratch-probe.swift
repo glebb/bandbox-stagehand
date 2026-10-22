@@ -255,12 +255,16 @@ func select(_ id: Int) {
     _ = link.next(Property.preset, after: m, timeout: 1.5, where: { $0 == [UInt8(channel), UInt8(id)] })
 }
 
+/// The tones this run made, deleted at the end.
+var madeIDs: [Int] = []
+
 /// Save as: a new user tone from `id` (with its unsaved edits); returns the new tone's ID.
 func saveAs(_ id: Int, name: String) -> (id: Int, time: TimeInterval)? {
     let m = link.mark, start = Date()
     link.send(BandBoxProtocol.toneAction(.saveAs, channel: channel, tone: id, category: 7, name: name), "save tone \(id) as \(name)")
     guard let echo = link.next(Property.toneAction, after: m, where: { $0.count > 3 && $0[1] == ToneAction.saveAs.rawValue }),
           echo.record.value[3] != 0xFF else { return nil }
+    madeIDs.append(Int(echo.record.value[3]))
     return (Int(echo.record.value[3]), echo.at.timeIntervalSince(start))
 }
 
@@ -295,8 +299,17 @@ func blockLine(_ b: EffectBlock?) -> String {
 var findings: [String] = []
 func finding(_ line: String) { log("== \(line)"); findings.append(line) }
 
+/// Deletes the tones this run made, by ID (saving a tone that isn't playing renames it to the
+/// playing tone's name), then any "Probe" tone the library shows. With many user tones the
+/// library reply breaks off after about 1 KB, so it's read again until none is left.
 func deleteProbeTones() {
-    for t in library() where t.isUser && t.name.hasPrefix(probePrefix) { delete(t.id) }
+    madeIDs.forEach(delete)
+    madeIDs = []
+    for _ in 0 ..< 5 {
+        let left = library().filter { $0.isUser && $0.name.hasPrefix(probePrefix) }
+        if left.isEmpty { return }
+        left.forEach { delete($0.id) }
+    }
 }
 
 // MARK: The probe
