@@ -173,9 +173,24 @@ Ideas, not promises:
 
 ### Mac
 
-Ready-made zips go on [Releases](https://github.com/glebb/bandbox-stagehand/releases)
-(none published yet); their notes explain how to open an app that isn't notarized. Or
-build and run it yourself (no Xcode project needed):
+#### Install
+
+1. Download [`Stagehand-macOS.zip`](https://github.com/glebb/bandbox-stagehand/releases/latest/download/Stagehand-macOS.zip)
+   from the [releases](https://github.com/glebb/bandbox-stagehand/releases) page and open it;
+   you get **Stagehand.app**. Move it to Applications (macOS 14 or later, Apple silicon or Intel).
+2. Open it. The first time, macOS says it can't verify the developer (the app isn't notarized
+   by Apple). Go to **System Settings → Privacy & Security**, scroll down, click **Open
+   Anyway** next to Stagehand, and confirm. On older macOS versions, right-click (or
+   Control-click) the app, choose **Open**, then **Open** again.
+3. Allow Bluetooth when asked, and turn on the speaker.
+
+To update, download the new zip and replace the app in Applications. To uninstall, move it to
+the Trash; its settings are in
+`~/Library/Preferences/local.bandbox-stagehand.plist`.
+
+#### Building it yourself
+
+No Xcode project needed:
 
 ```bash
 cd Stagehand && ./build.sh --run

@@ -27,7 +27,8 @@ fi
 VERSION="$VERSION" ./build.sh --universal
 
 OUT=build/release
-ZIP="$OUT/Stagehand-$VERSION-macOS.zip"
+# A fixed name, so releases/latest/download/Stagehand-macOS.zip always gets the newest.
+ZIP="$OUT/Stagehand-macOS.zip"
 rm -rf "$OUT" && mkdir -p "$OUT"
 # ditto keeps the code signature and extended attributes that a plain zip would lose.
 ditto -c -k --sequesterRsrc --keepParent build/Stagehand.app "$ZIP"
@@ -39,11 +40,15 @@ Bandbox Stagehand $VERSION for macOS 14 or later, Apple silicon and Intel.
 
 ### Install
 
-1. Download \`$(basename "$ZIP")\`, unzip it and move **Stagehand.app** to Applications.
+1. Download \`$(basename "$ZIP")\` and open it; you get **Stagehand.app**. Move it to
+   Applications (to update, replace the old one).
 2. Open it. The app isn't notarized by Apple, so macOS blocks it the first time: open
    **System Settings › Privacy & Security**, scroll down and click **Open Anyway** next to
-   Stagehand, then confirm.
+   Stagehand, then confirm. On older macOS versions, right-click (or Control-click) the app,
+   choose **Open**, then **Open** again.
 3. Allow Bluetooth when asked.
+
+Full instructions are in the [README](https://github.com/glebb/bandbox-stagehand#readme).
 
 SHA-256: \`$SHA\`
 
