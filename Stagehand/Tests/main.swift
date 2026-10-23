@@ -62,6 +62,29 @@ check(SongTonesRequest.parse(message("not json")) == nil, "text that isn't JSON 
 let six = (0 ..< 6).map { #"{"base":"Clean","key":"t\#($0)","program":\#(8 + $0),"set":{}}"# }.joined(separator: ",")
 check(SongTonesRequest.parse(message(#"{"v":1,"kind":"song-tones","tones":[\#(six)]}"#))?.tones.count == 5, "at most five tones")
 
+// Version 2: Rocksmith's effects, mapped to the BandBox here.
+let song2 = #"{"v":2,"kind":"song-tones","song":"18 And Life","artist":"Skid Row","tempo":120,"style":"Classic rock","styles":["Soft","Classic rock","Metal"],"tones":["#
+    + #"{"program":8,"key":"c","category":"Clean","effects":{"modulation":{"kind":"chorus","mix":60},"reverb":{"mix":20}}},"#
+    + #"{"program":9,"key":"d","category":"Heavy","effects":{"delay":{"kind":"tape","mix":30,"feedback":120}}},"#
+    + #"{"program":10,"key":"l","category":"Lead","effects":{"modulation":{"kind":"phaser","mix":50},"delay":{"kind":"analog","time_ms":1500}}}]}"#
+if let r = SongTonesRequest.parse(message(song2)) {
+    check(r.bank == "Classic rock" && r.banks == ["Soft", "Classic rock", "Metal"], "v2: the style names the bank")
+    check(r.tones.map(\.slot) == [0, 2, 3], "v2: templates by category")
+    check(r.tones[0].changes[.fx] == .init(on: true, model: 0x0B, knobs: ["Mix": 35]), "v2: chorus, mix kept at 35")
+    check(r.tones[0].changes[.delay] == .init(on: false), "v2: no delay turns it off")
+    check(r.tones[0].changes[.reverb] == .init(on: true, knobs: ["Mix": 20]), "v2: reverb mix 20")
+    let tape = r.tones[1].changes[.delay]
+    check(tape?.model.flatMap { EffectSlot.delay.model($0)?.name } == "Echopress 900", "v2: tape delay is Echopress 900")
+    check(tape?.knobs == ["Time": 500, "Mix": 30, "Fdbk": 100], "v2: time from the tempo, feedback at most 100")
+    check(r.tones[1].changes[.reverb] == nil, "v2: no reverb leaves the template's")
+    check(r.tones[2].changes[.fx]?.model.flatMap { EffectSlot.fx.model($0)?.name } == "Green Phaser"
+          && r.tones[2].changes[.fx]?.knobs == [:], "v2: phaser, without a mix")
+    check(r.tones[2].changes[.delay]?.knobs["Time"] == 1000, "v2: time at most 1000 ms")
+    check(r.warnings.isEmpty, "v2: no warnings (\(r.warnings))")
+} else {
+    check(false, "v2 parses")
+}
+
 // Planning. A template like Brit Crunch: every slot, FX Green Phaser on, delay Pure Echo off.
 func block(_ slot: EffectSlot, _ model: UInt16, on: Bool, _ params: [(UInt8, Float)]) -> EffectBlock {
     EffectBlock(slot: slot.rawValue, model: model, bypassed: !on, params: params.map { EffectParam(id: $0.0, value: $0.1) })

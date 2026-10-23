@@ -1,18 +1,19 @@
 import Foundation
 
-// Song-made tones for Rocksmith (rs-mac-companion's song-tones-plan.md). While a song loads, the
-// companion sends one SysEx: manufacturer 0x7D, then a JSON text naming each of the song's
-// tones, in the order the song first plays them:
+// Song-made tones for Rocksmith. While a song loads, the RS Companion sends one SysEx: manufacturer
+// 0x7D, then a JSON text describing each of the song's tones in Rocksmith's terms, in the order
+// the song first plays them (its SongTones.swift has the format):
 //
-//   {"v": 1, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "bank": "Classic rock",
-//    "banks": ["Soft", "Classic rock", "Metal"],
-//    "tones": [{"program": 8, "key": "skid18an_clean", "base": "Clean",
-//               "set": {"FX": {"on": true, "model": "Chorus", "Mix": 35}, "Delay": {"on": false},
-//                       "Reverb": {"on": true, "Mix": 25}}}, ...]}
+//   {"v": 2, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "tempo": 92.4,
+//    "style": "Classic rock", "styles": ["Soft", "Classic rock", "Metal"],
+//    "tones": [{"program": 8, "key": "skid18an_clean", "category": "Clean",
+//               "effects": {"modulation": {"kind": "chorus", "mix": 60}, "reverb": {"mix": 25}}}, ...]}
 //
-// Tone i becomes scratch tone i, which PC 8 + i plays. Each one is a copy of the tone slot
-// named by "base" (its template) with only the FX, Delay and Reverb pedals changed, so it keeps
-// the template's level. Everything else in "set" is refused.
+// Tone i becomes scratch tone i, which PC 8 + i plays. Each one is a copy of the tone slot named
+// by its category (its template), in the bank named by the style, with only the FX, Delay and
+// Reverb pedals changed, so it keeps the template's level. Turning Rocksmith's effects into the
+// BandBox's is Stagehand's: BandBoxMapping below. (Version 1 named the BandBox models itself:
+// "bank", "banks", and per tone "base" and "set" with the pedals; still read.)
 
 /// The companion's message, checked against the pedals and models Stagehand knows.
 struct SongTonesRequest: Equatable {
@@ -51,8 +52,10 @@ struct SongTonesRequest: Equatable {
     static func parse(_ sysex: [UInt8]) -> SongTonesRequest? {
         guard sysex.first == manufacturer,
               let json = try? JSONSerialization.jsonObject(with: Data(sysex.dropFirst())) as? [String: Any],
-              json["kind"] as? String == "song-tones", json["v"] as? Int == 1,
+              json["kind"] as? String == "song-tones", let version = json["v"] as? Int, version == 1 || version == 2,
               let list = json["tones"] as? [[String: Any]] else { return nil }
+        let v2 = version == 2
+        let tempo = (json["tempo"] as? NSNumber)?.doubleValue
         var warnings: [String] = []
         if list.count > maxTones { warnings.append("\(list.count) tones, only the first \(maxTones) are made") }
         let tones = list.prefix(maxTones).enumerated().map { i, t in
@@ -60,13 +63,15 @@ struct SongTonesRequest: Equatable {
             if let program = t["program"] as? Int, program != firstProgram + i {
                 warnings.append("\(key): program \(program), but scratch tone \(i + 1) plays on PC \(firstProgram + i)")
             }
-            let base = t["base"] as? String ?? ""
+            let base = t[v2 ? "category" : "base"] as? String ?? ""
             let slot = slots.firstIndex { $0.caseInsensitiveCompare(base) == .orderedSame } ?? {
                 warnings.append("\(key): no tone slot \"\(base)\", using \(slots[0])")
                 return 0
             }()
             var changes: [EffectSlot: Change] = [:]
-            for (name, value) in t["set"] as? [String: Any] ?? [:] {
+            let set = v2 ? BandBoxMapping.pedals(t["effects"] as? [String: Any] ?? [:], tempo: tempo)
+                         : t["set"] as? [String: Any] ?? [:]
+            for (name, value) in set {
                 guard let slot = pedals[name] else {
                     warnings.append("\(key): \(name) can't be changed, only FX, Delay and Reverb")
                     continue
@@ -77,7 +82,8 @@ struct SongTonesRequest: Equatable {
             return Tone(key: key, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
-                                bank: json["bank"] as? String ?? "", banks: names(json["banks"]), tones: tones, warnings: warnings)
+                                bank: json[v2 ? "style" : "bank"] as? String ?? "", banks: names(json[v2 ? "styles" : "banks"]),
+                                tones: tones, warnings: warnings)
     }
 
     /// Bank names: text, trimmed, not empty, at most 16.
@@ -115,6 +121,66 @@ struct SongTonesRequest: Equatable {
             }
             return "\(i + 1) \(t.key) (\(Self.slots[t.slot])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + ")"
         }.joined(separator: ", ")
+    }
+}
+
+/// Rocksmith's effects, as a song tone message describes them, on the BandBox's pedals: the
+/// closest model, Rocksmith's mix kept at most 35 so a wet tone doesn't get louder than its
+/// template, and the delay's time from the song's tempo when the gear has none. A tone without
+/// a delay or modulation has that pedal off; without a reverb, the template's reverb stays.
+enum BandBoxMapping {
+    static let maxMix = 35.0
+
+    /// The pedal changes ("FX", "Delay", "Reverb", as version 1's "set") for a tone's "effects".
+    static func pedals(_ effects: [String: Any], tempo: Double?) -> [String: Any] {
+        func number(_ fields: [String: Any], _ key: String) -> Double? { (fields[key] as? NSNumber)?.doubleValue }
+        func mix(_ fields: [String: Any]) -> Double? { number(fields, "mix").map { min(max($0, 0), maxMix).rounded() } }
+        var set: [String: Any] = [:]
+        if let d = effects["delay"] as? [String: Any] {
+            let time = number(d, "time_ms") ?? tempo.map { 60000 / $0 } ?? 400
+            var delay: [String: Any] = ["on": true, "model": delayModel(d["kind"] as? String ?? ""),
+                                        "Time": min(max(time, 20), 1000).rounded()]
+            if let m = mix(d) { delay["Mix"] = m }
+            if let f = number(d, "feedback") { delay["Fdbk"] = min(max(f, 0), 100).rounded() }
+            set["Delay"] = delay
+        } else {
+            set["Delay"] = ["on": false]
+        }
+        if let m = effects["modulation"] as? [String: Any] {
+            let kind = m["kind"] as? String ?? ""
+            var mod: [String: Any] = ["on": true, "model": modulationModel(kind)]
+            if kind == "chorus", let x = mix(m) { mod["Mix"] = x }  // the others have no Mix
+            set["FX"] = mod
+        } else {
+            set["FX"] = ["on": false]
+        }
+        if let r = effects["reverb"] as? [String: Any] {
+            var reverb: [String: Any] = ["on": true]
+            if let x = mix(r) { reverb["Mix"] = x }
+            set["Reverb"] = reverb
+        }
+        return set
+    }
+
+    /// The BandBox delay for a kind of delay: tape, analog, modulated, digital.
+    static func delayModel(_ kind: String) -> String {
+        switch kind {
+        case "tape": "Echopress 900"
+        case "analog": "Analog Echo"
+        case "modulated": "Sweep Echo"
+        default: "Pure Echo"
+        }
+    }
+
+    /// The BandBox modulation for a kind: chorus, flanger, phaser, tremolo, vibe.
+    static func modulationModel(_ kind: String) -> String {
+        switch kind {
+        case "flanger": "Jetter Flanger"
+        case "phaser": "Green Phaser"
+        case "tremolo": "Tremolo"
+        case "vibe": "Minivibe"
+        default: "Chorus"
+        }
     }
 }
 

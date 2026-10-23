@@ -105,15 +105,17 @@ Stagehand acts on shows in the Log. Without a controller,
 
 **Song-made tones for Rocksmith.** The
 [Rocksmith companion](https://github.com/glebb/rs-mac-companion) sends, as a song loads, a
-SysEx message (manufacturer 0x7D, then JSON) describing the song's tones: for each one, a tone
-slot to start from and how its FX, Delay and Reverb should be set. Stagehand fills a
+SysEx message (manufacturer 0x7D, then JSON) describing the song's tones in Rocksmith's terms:
+each one's category (Clean, Crunch, Heavy, Lead) and its delay, modulation and reverb. Stagehand
+turns those into the BandBox's pedals (tape delay → Echopress 900, analog → Analog Echo, chorus
+→ Chorus, and so on, mixes kept at most 35) and fills a
 scratch tone for each (user tones "RS 1"–"RS 5", made on first use and left out of the tone
 menus): it plays the slot's tone, sets the pedals, saves it into the scratch tone and drops
 the edits, so the tones in your slots stay as they are. That takes about half a second a tone, and the
 channel jumps between your slots meanwhile. During the song PC 8–12 play the scratch tones
 (unless you bind those to something else); before they're ready, their slots. The slots
-come from the bank the song's message names (the companion picks Soft, Classic rock or Metal
-by how heavy the song is). Banks the companion names that Stagehand doesn't have yet are made
+come from the bank named by the song's style (the companion labels a song Soft, Classic rock or
+Metal by how heavy it is), and loading a song switches to it. Banks for styles that Stagehand doesn't have yet are made
 on the first song message, as copies of Main (they say so in the Log): set their slots to
 sound soft, classic rock or metal; until then those songs sound as with Main. Every other
 setting comes from your slots, so the levels stay yours. Try it without the game:
