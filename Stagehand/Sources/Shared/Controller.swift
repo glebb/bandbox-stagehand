@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var channel = 3
     @State private var editorChannel: Int?   // the guitar channel the preset editor edits; nil = the primary one
     @State private var showLog = false
+    @State private var namingRig: RigNaming?
+    @State private var confirmDeleteRig = false
     #if os(iOS)
     @State private var confirmQuit = false
     #endif
@@ -85,6 +87,48 @@ struct ContentView: View {
         #endif
     }
 
+    private enum RigNaming: Identifiable {
+        case new, rename
+        var id: Self { self }
+    }
+
+    /// The rigs: other sets of the four tone buttons. Quiet while there is only one.
+    private var rigMenu: some View {
+        Menu {
+            ForEach(assignments.rigs.indices, id: \.self) { i in
+                Button { assignments.selectRig(i) } label: {
+                    if i == assignments.current { Label(assignments.rigs[i].name, systemImage: "checkmark") } else { Text(assignments.rigs[i].name) }
+                }
+            }
+            Divider()
+            Button("New Rig from These Buttons…") { namingRig = .new }
+            Button("Rename \(assignments.rigName)…") { namingRig = .rename }
+            if assignments.rigs.count > 1 {
+                Button("Delete \(assignments.rigName)…", role: .destructive) { confirmDeleteRig = true }
+            }
+        } label: {
+            Text(assignments.rigs.count > 1 ? "Rig: \(assignments.rigName)" : "Rigs")
+                .foregroundStyle(assignments.rigs.count > 1 ? Stage.secondaryText : Stage.faintText)
+        }
+        .menuStyle(.button)
+        .buttonStyle(.plain)
+        .menuIndicator(.hidden)
+        .fixedSize()
+        .sheet(item: $namingRig) { naming in
+            NameSheet(title: naming == .new ? "New Rig" : "Rename Rig",
+                      name: naming == .new ? "" : assignments.rigName,
+                      action: naming == .new ? "Create" : "Rename") { name in
+                if naming == .new { assignments.addRig(named: name) } else { assignments.renameRig(to: name) }
+            }
+        }
+        .confirmationDialog("Delete the rig \(assignments.rigName)?", isPresented: $confirmDeleteRig, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) { assignments.deleteRig() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Its button settings are lost. The tones on the speaker stay.")
+        }
+    }
+
     private var footer: some View {
         ZStack {
             HStack(spacing: 6) {
@@ -141,6 +185,8 @@ struct ContentView: View {
                     withAnimation(.easeOut(duration: 0.3).delay(0.1)) { midiFlash = false }
                 }
                 #endif
+                rigMenu
+                    .padding(.leading, 10)
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)
                     .padding(.leading, 10)

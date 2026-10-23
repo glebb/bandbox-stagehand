@@ -64,9 +64,13 @@ final class ScratchFiller: ObservableObject {
         }
     }
 
+    /// The tone a song tone starts from: its button in the rig the song names, or in the current
+    /// rig if there is none by that name.
     private func template(_ tone: SongTonesRequest.Tone, _ channel: Int) -> Int {
-        assignments.tone(ToneSlot.all[tone.button], channel: channel)
+        assignments.tone(ToneSlot.all[tone.button], channel: channel, rig: rig)
     }
+
+    private var rig: Int { request.flatMap { assignments.rig(named: $0.rig) } ?? assignments.current }
 
     private func current(_ generation: Int) -> Bool { generation == self.generation }
 
@@ -74,6 +78,8 @@ final class ScratchFiller: ObservableObject {
         let start = Date()
         channel = client.primaryGuitarChannel
         state = .filling(done: 0, of: request.tones.count)
+        client.record("song tones from rig \(assignments.rigs[rig].name)"
+                      + (assignments.rig(named: request.rig) == nil ? " (there is no rig \(request.rig))" : ""))
         guard let scratch = await scratchTones(request.tones.count), current(generation) else {
             if current(generation) { fail("couldn't make the scratch tones") }
             return

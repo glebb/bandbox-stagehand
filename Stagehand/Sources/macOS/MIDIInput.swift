@@ -50,7 +50,8 @@ final class MIDIInput: ObservableObject {
     private let sysex = SysExReaders()
     private weak var client: BandBoxClient?
     private weak var assignments: ToneAssignments?
-    /// Fills and plays the Rocksmith companion's song tones: PC 8–12, unless bound to something else.
+    /// Fills and plays the Rocksmith companion's song tones: PC 8–12, unless bound to something
+    /// else. CC 90 picks a rig by its value (0 = the first), likewise.
     private(set) var filler: ScratchFiller?
 
     func start(client: BandBoxClient, assignments: ToneAssignments) {
@@ -157,6 +158,15 @@ final class MIDIInput: ObservableObject {
                 client.record("MIDI \(message.label) → song tone \(message.number - 7)")
                 filler.play(message.number - 8)
             }
+            return
+        }
+        if message.kind == .control, message.number == 90, !bindings.contains(where: { $0.trigger.matches(message) }) {
+            guard assignments.rigs.indices.contains(message.value) else {
+                client.record("MIDI \(message.label): no rig \(message.value + 1) (there are \(assignments.rigs.count))")
+                return
+            }
+            assignments.selectRig(message.value)
+            client.record("MIDI \(message.label) → rig \(assignments.rigName)")
             return
         }
         guard let binding = bindings.first(where: { $0.trigger.matches(message) }),

@@ -54,6 +54,10 @@ drag), tap the dots, or use ← / →.
    tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
+   **Rigs** are other sets of the four buttons (say Soft, Classic rock, Metal), for both
+   channels: *Rigs* in the footer makes one from the buttons as they are, then picks, renames
+   or deletes them. With one rig nothing else changes; with more, the footer names the
+   current one.
 2. **Tuner and mix**: a channel picker across the top (1–4, each labelled with what its
    switch is set to: Guitar, Mic, Line, USB/BT; it starts on the guitar's channel) chooses
    the channel the rest of the screen shows: its pickup type (Active, Humbucker, Single
@@ -95,7 +99,8 @@ do the same for channel 1. The **MIDI** button in the footer (its dot flashes on
 message) opens the list: click a binding, then press a switch or key, to use that instead
 (MIDI Learn). Pedals work with momentary and latching switches alike; the ⋯ menu limits a
 binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it matches a
-latching switch. Each message Stagehand acts on shows in the Log. Without a controller,
+latching switch. CC 90 picks a rig by its value (0 the first, 1 the next…). Each message
+Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
 **Song-made tones for Rocksmith.** The
@@ -106,7 +111,9 @@ scratch tone for each (user tones "RS 1"–"RS 5", made on first use and left ou
 menus): it plays the button's tone, sets the pedals, saves it into the scratch tone and drops
 the edits, so your buttons stay as they are. That takes about half a second a tone, and the
 channel jumps between your buttons meanwhile. During the song PC 8–12 play the scratch tones
-(unless you bind those to something else); before they're ready, their buttons. Every other
+(unless you bind those to something else); before they're ready, their buttons. The buttons
+come from the rig the song's message names (the companion picks Soft, Classic rock or Metal
+by how heavy the song is), or the current rig if there is none by that name. Every other
 setting comes from your buttons, so the levels stay yours. Try it without the game:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
 (`Sources/Shared/ScratchTones.swift`, `ScratchFiller.swift`).
