@@ -54,11 +54,12 @@ final class MIDIInput: ObservableObject {
     /// else. CC 90 picks a bank by its value (0 = the first), likewise.
     private(set) var filler: ScratchFiller?
 
-    func start(client: BandBoxClient, assignments: ToneAssignments) {
+    func start(client: BandBoxClient, assignments: ToneAssignments, filler: ScratchFiller) {
         guard midiClient == 0 else { return }
         self.client = client
         self.assignments = assignments
-        filler = MainActor.assumeIsolated { ScratchFiller(client: client, assignments: assignments) }
+        self.filler = filler
+        MainActor.assumeIsolated { filler.start(client: client, assignments: assignments) }
         let status = MIDIClientCreateWithBlock("Stagehand" as CFString, &midiClient) { [weak self] notification in
             guard notification.pointee.messageID == .msgSetupChanged else { return }
             DispatchQueue.main.async { self?.connectSources() }

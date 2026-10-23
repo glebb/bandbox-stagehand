@@ -21,31 +21,55 @@ final class ScratchFiller: ObservableObject {
 
     @Published private(set) var state: State = .idle
     @Published private(set) var request: SongTonesRequest?
+    /// The song tones filled for `request`, by index.
+    @Published private(set) var ready: Set<Int> = []
+    /// The guitar channel the song tones play on.
+    @Published private(set) var channel = 3
 
-    private let client: BandBoxClient
-    private let assignments: ToneAssignments
+    // Set by start (MIDIInput), so the app can own the filler and the screens can watch it.
+    private var client: BandBoxClient!
+    private var assignments: ToneAssignments!
     private var generation = 0
-    private var ready: Set<Int> = []        // scratch tones filled for `request`
     private var wanted: Int?                // the scratch tone a Program Change asked for while filling
-    private var channel = 3
 
-    init(client: BandBoxClient, assignments: ToneAssignments) {
+    func start(client: BandBoxClient, assignments: ToneAssignments) {
         self.client = client
         self.assignments = assignments
     }
 
+    /// The song tone `channel` plays, if it plays one that is filled.
+    func playing(channel: Int) -> Int? {
+        guard request != nil, channel == self.channel, let tone = client?.presets[channel],
+              let i = client.scratchTones.firstIndex(of: tone), ready.contains(i) else { return nil }
+        return i
+    }
+
+    /// The tone slot a song tone is built on.
+    func slot(_ index: Int) -> ToneSlot? {
+        request.flatMap { $0.tones.indices.contains(index) ? ToneSlot.all[$0.tones[index].slot] : nil }
+    }
+
     /// A new song: fills its tones, replacing any fill still running.
     func load(_ request: SongTonesRequest) {
+        guard let client else { return }
         makeMissingBanks(request)
+        // The tone buttons show the bank the song's tones are built from.
+        if let bank = assignments.bank(named: request.bank), bank != assignments.current {
+            assignments.selectBank(bank)
+            client.record("bank \(assignments.bankName) for \(request.song.isEmpty ? "this song" : request.song)")
+        }
+        channel = client.primaryGuitarChannel
         generation += 1
         self.request = request
         ready = []
         wanted = nil
         guard client.link == .connected, !request.tones.isEmpty else {
-            state = .failed("not connected")
+            fail(request.tones.isEmpty ? "no tones" : "not connected to the speaker")
             return
         }
         let generation = generation
+        // Filling from now, so a Program Change that comes before the task starts waits for it.
+        state = .filling(done: 0, of: request.tones.count)
         Task { await fill(request, generation) }
     }
 
@@ -61,14 +85,15 @@ final class ScratchFiller: ObservableObject {
     }
 
     /// Program Change 8 + `index`: plays that scratch tone, or its template slot until it's
-    /// filled. While filling, the last one asked for plays when the fill is done.
+    /// filled. While filling, the last one asked for plays when the fill is done, on the channel
+    /// the fill is on.
     func play(_ index: Int) {
-        guard let request, request.tones.indices.contains(index), client.link == .connected else { return }
+        guard let request, let client, request.tones.indices.contains(index), client.link == .connected else { return }
         if case .filling = state {
             wanted = index
             return
         }
-        let channel = client.primaryGuitarChannel
+        channel = client.primaryGuitarChannel
         if ready.contains(index), client.scratchTones.indices.contains(index) {
             client.setPreset(client.scratchTones[index], channel: channel)
         } else {
@@ -88,7 +113,6 @@ final class ScratchFiller: ObservableObject {
 
     private func fill(_ request: SongTonesRequest, _ generation: Int) async {
         let start = Date()
-        channel = client.primaryGuitarChannel
         state = .filling(done: 0, of: request.tones.count)
         client.record("song tones from bank \(assignments.banks[bank].name)")
         guard let scratch = await scratchTones(request.tones.count), current(generation) else {

@@ -11,9 +11,15 @@ struct TonesScreen: View {
     @EnvironmentObject private var assignments: ToneAssignments
     @State private var assigning: Int?
     @State private var choosingModel: Pedal?
+    #if os(macOS)
+    @EnvironmentObject private var song: ScratchFiller
+    #endif
 
     var body: some View {
         VStack(spacing: 10) {
+            #if os(macOS)
+            if song.request != nil, song.channel == channel { songStrip }
+            #endif
             HStack(spacing: 10) {
                 ForEach(Pedal.allCases) { pedalButton($0) }
             }
@@ -66,7 +72,9 @@ struct TonesScreen: View {
 
     private func toneButton(_ slot: ToneSlot) -> some View {
         let toneID = assignments.tone(slot, channel: channel)
-        let selected = client.presets[channel] == toneID
+        // A Rocksmith song tone lights the slot it is built on.
+        let songTone = playingSongTone.flatMap { i in songSlot(i)?.id == slot.id ? i : nil }
+        let selected = client.presets[channel] == toneID || songTone != nil
         return Pad(fill: selected ? slot.tint : Stage.toneTile,
                    border: selected ? slot.color : Stage.toneBorder,
                    borderWidth: selected ? 1.5 : 1,
@@ -78,7 +86,7 @@ struct TonesScreen: View {
                     .foregroundStyle(selected ? slot.color : Stage.text)
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
-                Text(toneName(toneID))
+                Text(songTone.map(songToneLabel) ?? toneName(toneID))
                     .font(.system(size: 12))
                     .foregroundStyle(selected ? Stage.control : Stage.mutedText)
                     .lineLimit(1)
@@ -114,6 +122,73 @@ struct TonesScreen: View {
             .presentationCompactAdaptation(.popover)
         }
     }
+
+    /// The song tone this channel plays, if it plays one (Rocksmith, macOS only).
+    private var playingSongTone: Int? {
+        #if os(macOS)
+        song.playing(channel: channel)
+        #else
+        nil
+        #endif
+    }
+
+    private func songSlot(_ index: Int) -> ToneSlot? {
+        #if os(macOS)
+        song.slot(index)
+        #else
+        nil
+        #endif
+    }
+
+    /// "♪ skid18an_dist": the Rocksmith tone playing on the slot's tone.
+    private func songToneLabel(_ index: Int) -> String {
+        #if os(macOS)
+        if let key = song.request?.tones[index].key { return "♪ \(key)" }
+        #endif
+        return "♪ song tone \(index + 1)"
+    }
+
+    #if os(macOS)
+    /// The Rocksmith song whose tones play on this channel: its tones (tap one to play it), the
+    /// one playing lit in its slot's colour, and how the fill went.
+    private var songStrip: some View {
+        HStack(spacing: 8) {
+            if let request = song.request {
+                Text("♪ " + [request.song, request.artist].filter { !$0.isEmpty }.joined(separator: " · "))
+                    .foregroundStyle(Stage.secondaryText)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .layoutPriority(-1)
+                ForEach(request.tones.indices, id: \.self) { i in
+                    let slot = ToneSlot.all[request.tones[i].slot]
+                    let playing = playingSongTone == i
+                    Text("\(i + 1) \(slot.name)")
+                        .font(.system(size: 11, weight: playing ? .semibold : .regular))
+                        .foregroundStyle(playing ? slot.color : song.ready.contains(i) ? Stage.secondaryText : Stage.faintText)
+                        .padding(.horizontal, 8)
+                        .frame(height: 20)
+                        .background(Capsule().fill(playing ? slot.tint : Stage.tile))
+                        .overlay(Capsule().strokeBorder(playing ? slot.color : Stage.tileBorder, lineWidth: 1))
+                        .fixedSize()
+                        .contentShape(Capsule())
+                        .onTapGesture { song.play(i) }
+                        .help(request.tones[i].key)
+                }
+                Spacer(minLength: 8)
+                switch song.state {
+                case let .filling(done, of):
+                    Text("Building song tones \(done)/\(of)…").foregroundStyle(Stage.amber)
+                case let .failed(reason):
+                    Text("Song tones failed: \(reason)").foregroundStyle(Color(hex: 0xE8615F)).lineLimit(1)
+                default:
+                    Text(request.bank.isEmpty ? assignments.bankName : request.bank).foregroundStyle(Stage.faintText)
+                }
+            }
+        }
+        .font(.system(size: 12))
+        .frame(height: 22)
+    }
+    #endif
 
     private func toneName(_ id: Int) -> String {
         client.tones.first { $0.id == id }?.name ?? "Tone #\(id)"
