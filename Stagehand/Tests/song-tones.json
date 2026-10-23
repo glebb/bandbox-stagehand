@@ -1,4 +1,4 @@
-{"v": 1, "kind": "song-tones", "song": "Test song", "artist": "Stagehand", "rig": "Test",
+{"v": 1, "kind": "song-tones", "song": "Test song", "artist": "Stagehand", "bank": "Test",
  "tones": [
   {"program": 8, "key": "test_clean", "base": "Clean",
    "set": {"FX": {"on": true, "model": "Chorus", "Mix": 35}, "Delay": {"on": false}, "Reverb": {"on": true, "Mix": 35}}},

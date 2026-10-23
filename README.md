@@ -46,7 +46,7 @@ drag), tap the dots, or use ← / →.
 1. **Tones and pedals**, one screen per guitar input: channel 1 (with its switch on guitar)
    and channel 3 each have their own tone and pedals. A screen shows for each channel with a
    guitar plugged in (channel 3 when none is), and the footer shows which channel it
-   controls (CH 1 / CH 3) next to the page dots. Each channel has its own four tone buttons
+   controls (CH 1 / CH 3) next to the page dots. Each channel has its own four tone slots
    (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac); channel 1 starts as a copy of channel 3's.
    Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
    selects, to open its tone in the preset editor, or to save the pedals into that tone
@@ -54,9 +54,9 @@ drag), tap the dots, or use ← / →.
    tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
    names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
    when the tone changes, unless saved.
-   **Rigs** are other sets of the four buttons (say Soft, Classic rock, Metal), for both
-   channels: *Rigs* in the footer makes one from the buttons as they are, then picks, renames
-   or deletes them. With one rig nothing else changes; with more, the footer names the
+   **Banks** are other sets of the four slots (say Soft, Classic rock, Metal), for both
+   channels: *Banks* in the footer makes one from the slots as they are, then picks, renames
+   or deletes them. With one bank nothing else changes; with more, the footer names the
    current one.
 2. **Tuner and mix**: a channel picker across the top (1–4, each labelled with what its
    switch is set to: Guitar, Mic, Line, USB/BT; it starts on the guitar's channel) chooses
@@ -72,7 +72,7 @@ drag), tap the dots, or use ← / →.
    switches the pedal on or off. Tap the tone's name to edit another tone (it plays, so
    you hear what you edit); with guitars in both channels, CH 1 / CH 3 picks the channel.
    **Save** writes the changes into the tone, **Save as…** makes a new tone with a name
-   and category (then offers to put it on a tone button), and the ⋯ menu discards the
+   and category (then offers to put it on a tone slot), and the ⋯ menu discards the
    changes, renames or deletes a tone you saved, or puts a factory tone back to its
    factory settings. Changes that aren't saved are lost when the tone changes, as on the
    tones page; the editor asks first when you pick another tone.
@@ -85,7 +85,7 @@ awake while the app is open. The traffic log is behind the Log button.
 
 ## Hands-free control (Mac)
 
-On the Mac, 1–4 select the tone buttons and 5–9 switch Comp, Dist, FX, Delay and Reverb of
+On the Mac, 1–4 select the tone slots and 5–9 switch Comp, Dist, FX, Delay and Reverb of
 channel 3 (or of channel 1 when only it has a guitar); with Shift, of channel 1.
 The **Keys 1–9** switch in the footer makes them work from any app, so you can keep
 another app in front and play with one free finger. While it's on (amber), those keys
@@ -93,28 +93,28 @@ don't type digits anywhere else; turn it off to type normally. It stays as you l
 No permission is needed.
 
 The Mac app also takes **MIDI**, from any connected device or app, with Stagehand in
-front or not. By default, on any MIDI channel, Program Change 0–3 select the tone buttons
+front or not. By default, on any MIDI channel, Program Change 0–3 select the tone slots
 and CC 80–84 switch Comp, Dist, FX, Delay and Reverb, as keys 1–9 do; PC 4–7 and CC 85–89
 do the same for channel 1. The **MIDI** button in the footer (its dot flashes on each
 message) opens the list: click a binding, then press a switch or key, to use that instead
 (MIDI Learn). Pedals work with momentary and latching switches alike; the ⋯ menu limits a
 binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it matches a
-latching switch. CC 90 picks a rig by its value (0 the first, 1 the next…). Each message
+latching switch. CC 90 picks a bank by its value (0 the first, 1 the next…). Each message
 Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
 **Song-made tones for Rocksmith.** The
 [Rocksmith companion](https://github.com/glebb/rs-mac-companion) sends, as a song loads, a
 SysEx message (manufacturer 0x7D, then JSON) describing the song's tones: for each one, a tone
-button to start from and how its FX, Delay and Reverb should be set. Stagehand fills a
+slot to start from and how its FX, Delay and Reverb should be set. Stagehand fills a
 scratch tone for each (user tones "RS 1"–"RS 5", made on first use and left out of the tone
-menus): it plays the button's tone, sets the pedals, saves it into the scratch tone and drops
-the edits, so your buttons stay as they are. That takes about half a second a tone, and the
-channel jumps between your buttons meanwhile. During the song PC 8–12 play the scratch tones
-(unless you bind those to something else); before they're ready, their buttons. The buttons
-come from the rig the song's message names (the companion picks Soft, Classic rock or Metal
-by how heavy the song is), or the current rig if there is none by that name. Every other
-setting comes from your buttons, so the levels stay yours. Try it without the game:
+menus): it plays the slot's tone, sets the pedals, saves it into the scratch tone and drops
+the edits, so the tones in your slots stay as they are. That takes about half a second a tone, and the
+channel jumps between your slots meanwhile. During the song PC 8–12 play the scratch tones
+(unless you bind those to something else); before they're ready, their slots. The slots
+come from the bank the song's message names (the companion picks Soft, Classic rock or Metal
+by how heavy the song is), or the current bank if there is none by that name. Every other
+setting comes from your slots, so the levels stay yours. Try it without the game:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
 (`Sources/Shared/ScratchTones.swift`, `ScratchFiller.swift`).
 

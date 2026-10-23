@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Runs Tests/main.swift: the code that needs no speaker or window (SysEx, song tones, planning, rigs).
+# Runs Tests/main.swift: the code that needs no speaker or window (SysEx, song tones, planning, banks).
 set -euo pipefail
 cd "$(dirname "$0")"
 mkdir -p build

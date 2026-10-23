@@ -1,4 +1,4 @@
-// Answers what the Rocksmith scratch tones need from the speaker (rs-mac-companion rig-plan.md,
+// Answers what the Rocksmith scratch tones need from the speaker (rs-mac-companion song-tones-plan.md,
 // step 3), in one run with a guitar in channel CH:
 //   1. Can 0x3443 read any tone's details, or only the playing tone's?
 //   2. Can a tone that isn't playing be edited (0x3445 op 01 / 02 / 04) and saved (0x3446 op 04)

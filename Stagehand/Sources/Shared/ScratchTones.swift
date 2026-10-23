@@ -1,15 +1,15 @@
 import Foundation
 
-// Song-made tones for Rocksmith (rs-mac-companion's rig-plan.md). While a song loads, the
+// Song-made tones for Rocksmith (rs-mac-companion's song-tones-plan.md). While a song loads, the
 // companion sends one SysEx: manufacturer 0x7D, then a JSON text naming each of the song's
 // tones, in the order the song first plays them:
 //
-//   {"v": 1, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "rig": "Classic rock",
+//   {"v": 1, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "bank": "Classic rock",
 //    "tones": [{"program": 8, "key": "skid18an_clean", "base": "Clean",
 //               "set": {"FX": {"on": true, "model": "Chorus", "Mix": 35}, "Delay": {"on": false},
 //                       "Reverb": {"on": true, "Mix": 25}}}, ...]}
 //
-// Tone i becomes scratch tone i, which PC 8 + i plays. Each one is a copy of the tone button
+// Tone i becomes scratch tone i, which PC 8 + i plays. Each one is a copy of the tone slot
 // named by "base" (its template) with only the FX, Delay and Reverb pedals changed, so it keeps
 // the template's level. Everything else in "set" is refused.
 
@@ -18,14 +18,14 @@ struct SongTonesRequest: Equatable {
     static let manufacturer: UInt8 = 0x7D
     static let firstProgram = 8
     static let maxTones = 5           // Rocksmith's Base and A–D
-    /// The tone buttons by the names the companion uses for them, in ToneSlot order.
-    static let buttons = ["Clean", "Crunch", "Heavy", "Lead"]
+    /// The tone slots by the names the companion uses for them, in ToneSlot order.
+    static let slots = ["Clean", "Crunch", "Heavy", "Lead"]
     /// The only pedals a song may change: the others set the tone's level.
     static let pedals: [String: EffectSlot] = ["FX": .fx, "Delay": .delay, "Reverb": .reverb]
 
     struct Tone: Equatable {
         let key: String
-        let button: Int                     // the template: index into ToneSlot.all
+        let slot: Int                       // the template: index into ToneSlot.all
         let changes: [EffectSlot: Change]
     }
 
@@ -38,7 +38,7 @@ struct SongTonesRequest: Equatable {
 
     let song: String
     let artist: String
-    let rig: String
+    let bank: String
     let tones: [Tone]
     /// What was refused or guessed, for the log.
     let warnings: [String]
@@ -58,8 +58,8 @@ struct SongTonesRequest: Equatable {
                 warnings.append("\(key): program \(program), but scratch tone \(i + 1) plays on PC \(firstProgram + i)")
             }
             let base = t["base"] as? String ?? ""
-            let button = buttons.firstIndex { $0.caseInsensitiveCompare(base) == .orderedSame } ?? {
-                warnings.append("\(key): no tone button \"\(base)\", using \(buttons[0])")
+            let slot = slots.firstIndex { $0.caseInsensitiveCompare(base) == .orderedSame } ?? {
+                warnings.append("\(key): no tone slot \"\(base)\", using \(slots[0])")
                 return 0
             }()
             var changes: [EffectSlot: Change] = [:]
@@ -71,10 +71,10 @@ struct SongTonesRequest: Equatable {
                 guard let fields = value as? [String: Any], let change = change(slot, fields, key, &warnings) else { continue }
                 changes[slot] = change
             }
-            return Tone(key: key, button: button, changes: changes)
+            return Tone(key: key, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
-                                rig: json["rig"] as? String ?? "", tones: tones, warnings: warnings)
+                                bank: json["bank"] as? String ?? "", tones: tones, warnings: warnings)
     }
 
     private static func change(_ slot: EffectSlot, _ fields: [String: Any], _ key: String,
@@ -99,12 +99,12 @@ struct SongTonesRequest: Equatable {
 
     /// "Classic rock: 1 skid18an_clean (Clean, FX Chorus), 2 …"
     var summary: String {
-        "\(rig.isEmpty ? "no rig" : rig): " + tones.enumerated().map { i, t in
+        "\(bank.isEmpty ? "no bank" : bank): " + tones.enumerated().map { i, t in
             let on = EffectSlot.allCases.compactMap { slot -> String? in
                 guard let c = t.changes[slot], c.on else { return nil }
                 return c.model.flatMap { slot.model($0)?.name }.map { "\(slot.name) \($0)" } ?? slot.name
             }
-            return "\(i + 1) \(t.key) (\(Self.buttons[t.button])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + ")"
+            return "\(i + 1) \(t.key) (\(Self.slots[t.slot])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + ")"
         }.joined(separator: ", ")
     }
 }

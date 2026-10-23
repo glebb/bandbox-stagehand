@@ -231,39 +231,39 @@ struct ToneSlot: Identifiable {
     ]
 }
 
-/// A rig: a named set of the tone buttons, per guitar channel (tone IDs and button names).
-struct Rig: Codable, Equatable {
+/// A bank: a named set of the four tone slots, per guitar channel (tone IDs and slot names).
+struct Bank: Codable, Equatable {
     var name: String
     var tones: [Int: [Int]]
     var names: [Int: [String]]
 }
 
 /// Each guitar channel's button tones and the names the user gave them ("" = the slot's own name),
-/// in the current rig. Channel 3 keeps the settings saved before there were channels; channel 1
-/// starts as a copy. With one rig ("Main", what there was before rigs) nothing else shows; more
-/// rigs are other sets of the four buttons, picked in the footer, by CC 90, or by a Rocksmith
+/// in the current bank. Channel 3 keeps the settings saved before there were channels; channel 1
+/// starts as a copy. With one bank ("Main", what there was before banks) nothing else shows; more
+/// banks are other sets of the four slots, picked in the footer, by CC 90, or by a Rocksmith
 /// song's tones (ScratchFiller).
 final class ToneAssignments: ObservableObject {
     @Published private var tones: [Int: [Int]] {
         didSet {
             for (channel, t) in tones { UserDefaults.standard.set(t, forKey: Self.key("toneSlots", channel)) }
-            rigs[current].tones = tones
+            banks[current].tones = tones
         }
     }
 
     @Published private var names: [Int: [String]] {
         didSet {
             for (channel, n) in names { UserDefaults.standard.set(n, forKey: Self.key("toneSlotNames", channel)) }
-            rigs[current].names = names
+            banks[current].names = names
         }
     }
 
-    @Published private(set) var rigs: [Rig] {
-        didSet { UserDefaults.standard.set(try? JSONEncoder().encode(rigs), forKey: "rigs") }
+    @Published private(set) var banks: [Bank] {
+        didSet { UserDefaults.standard.set(try? JSONEncoder().encode(banks), forKey: "banks") }
     }
 
     @Published private(set) var current: Int {
-        didSet { UserDefaults.standard.set(current, forKey: "currentRig") }
+        didSet { UserDefaults.standard.set(current, forKey: "currentBank") }
     }
 
     private static func key(_ base: String, _ channel: Int) -> String {
@@ -282,13 +282,15 @@ final class ToneAssignments: ObservableObject {
         let names3 = savedNames(3) ?? Array(repeating: "", count: count)
         let tones = [3: tones3, 1: savedTones(1) ?? tones3]
         let names = [3: names3, 1: savedNames(1) ?? names3]
-        var rigs = UserDefaults.standard.data(forKey: "rigs").flatMap { try? JSONDecoder().decode([Rig].self, from: $0) } ?? []
-        if rigs.isEmpty { rigs = [Rig(name: "Main", tones: tones, names: names)] }
-        let current = min(max(UserDefaults.standard.integer(forKey: "currentRig"), 0), rigs.count - 1)
-        self.rigs = rigs
+        // "rigs" / "currentRig": what banks were called in a test build.
+        let defaults = UserDefaults.standard
+        var banks = (defaults.data(forKey: "banks") ?? defaults.data(forKey: "rigs")).flatMap { try? JSONDecoder().decode([Bank].self, from: $0) } ?? []
+        if banks.isEmpty { banks = [Bank(name: "Main", tones: tones, names: names)] }
+        let current = min(max(defaults.object(forKey: "currentBank") as? Int ?? defaults.integer(forKey: "currentRig"), 0), banks.count - 1)
+        self.banks = banks
         self.current = current
-        self.tones = rigs[current].tones
-        self.names = rigs[current].names
+        self.tones = banks[current].tones
+        self.names = banks[current].names
     }
 
     func tone(_ slot: ToneSlot, channel: Int) -> Int { tones[channel]?[slot.id] ?? slot.defaultTone }
@@ -306,44 +308,44 @@ final class ToneAssignments: ObservableObject {
                 set: { self.names[channel]?[slot.id] = $0 })
     }
 
-    // MARK: Rigs
+    // MARK: Banks
 
-    var rigName: String { rigs[current].name }
+    var bankName: String { banks[current].name }
 
-    /// The rig called `name` (any case), if there is one.
-    func rig(named name: String) -> Int? {
-        rigs.firstIndex { $0.name.caseInsensitiveCompare(name.trimmingCharacters(in: .whitespaces)) == .orderedSame }
+    /// The bank called `name` (any case), if there is one.
+    func bank(named name: String) -> Int? {
+        banks.firstIndex { $0.name.caseInsensitiveCompare(name.trimmingCharacters(in: .whitespaces)) == .orderedSame }
     }
 
-    /// A button's tone in another rig, without switching to it.
-    func tone(_ slot: ToneSlot, channel: Int, rig: Int) -> Int {
-        guard rigs.indices.contains(rig) else { return tone(slot, channel: channel) }
-        return rigs[rig].tones[channel]?[slot.id] ?? rigs[rig].tones[3]?[slot.id] ?? slot.defaultTone
+    /// A button's tone in another bank, without switching to it.
+    func tone(_ slot: ToneSlot, channel: Int, bank: Int) -> Int {
+        guard banks.indices.contains(bank) else { return tone(slot, channel: channel) }
+        return banks[bank].tones[channel]?[slot.id] ?? banks[bank].tones[3]?[slot.id] ?? slot.defaultTone
     }
 
-    func selectRig(_ index: Int) {
-        guard rigs.indices.contains(index), index != current else { return }
+    func selectBank(_ index: Int) {
+        guard banks.indices.contains(index), index != current else { return }
         current = index
-        tones = rigs[index].tones
-        names = rigs[index].names
+        tones = banks[index].tones
+        names = banks[index].names
     }
 
-    /// A new rig with the buttons as they are now, and switches to it.
-    func addRig(named name: String) {
-        rigs.append(Rig(name: name, tones: tones, names: names))
-        selectRig(rigs.count - 1)
+    /// A new bank with the buttons as they are now, and switches to it.
+    func addBank(named name: String) {
+        banks.append(Bank(name: name, tones: tones, names: names))
+        selectBank(banks.count - 1)
     }
 
-    func renameRig(to name: String) { rigs[current].name = name }
+    func renameBank(to name: String) { banks[current].name = name }
 
-    /// Deletes the current rig (not the last one) and switches to the one before it.
-    func deleteRig() {
-        guard rigs.count > 1 else { return }
+    /// Deletes the current bank (not the last one) and switches to the one before it.
+    func deleteBank() {
+        guard banks.count > 1 else { return }
         let gone = current
         current = max(gone - 1, 0)
-        rigs.remove(at: gone)
-        tones = rigs[current].tones
-        names = rigs[current].names
+        banks.remove(at: gone)
+        tones = banks[current].tones
+        names = banks[current].names
     }
 }
 

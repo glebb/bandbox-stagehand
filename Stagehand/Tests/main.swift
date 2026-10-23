@@ -1,5 +1,5 @@
 // Tests for the parts that need no speaker: SysEx reassembly, reading the Rocksmith companion's
-// song tones (ScratchTones.swift), planning a scratch tone's writes, and rigs. Run: ./test.sh
+// song tones (ScratchTones.swift), planning a scratch tone's writes, and banks. Run: ./test.sh
 import Foundation
 
 var failures = 0
@@ -21,7 +21,7 @@ func umpSysEx(_ data: [UInt8]) -> [UInt32] {
 
 func message(_ json: String) -> [UInt8] { [SongTonesRequest.manufacturer] + Array(json.utf8) }
 
-let song = #"{"artist":"Skid Row","kind":"song-tones","rig":"Classic rock","song":"18 And Life","tones":["#
+let song = #"{"artist":"Skid Row","kind":"song-tones","bank":"Classic rock","song":"18 And Life","tones":["#
     + #"{"base":"Clean","key":"skid18an_clean","program":8,"set":{"Delay":{"on":false},"FX":{"Mix":35,"model":"Chorus","on":true},"Reverb":{"Mix":25,"on":true}}},"#
     + #"{"base":"Heavy","key":"skid18an_dist","program":9,"set":{"Delay":{"Fdbk":30,"Mix":80,"Time":5000,"model":"Analog Echo","on":true},"FX":{"on":false}}},"#
     + #"{"base":"Lead","key":"skid18an_solo","program":10,"set":{"Amp":{"Drive":100},"Delay":{"model":"Space Echo","on":true},"FX":{"Bogus":3,"on":true}}}"#
@@ -45,8 +45,8 @@ do {
 let request = SongTonesRequest.parse(message(song))
 check(request != nil, "the song tones parse")
 if let r = request {
-    check(r.song == "18 And Life" && r.rig == "Classic rock" && r.tones.count == 3, "header and three tones")
-    check(r.tones.map(\.button) == [0, 2, 3], "templates Clean, Heavy, Lead")
+    check(r.song == "18 And Life" && r.bank == "Classic rock" && r.tones.count == 3, "header and three tones")
+    check(r.tones.map(\.slot) == [0, 2, 3], "templates Clean, Heavy, Lead")
     check(r.tones[0].changes[.fx] == .init(on: true, model: 0x0B, knobs: ["Mix": 35]), "FX Chorus at Mix 35")
     check(r.tones[0].changes[.delay] == .init(on: false), "delay off")
     check(r.tones[2].changes[.amp] == nil, "the amp can't be changed")
@@ -121,28 +121,28 @@ check(ScratchPlan.Edit.model(slot: 3, model: 0x0706).value(channel: 1, tone: 0x4
 check(ScratchPlan.Edit.bypass(slot: 7, model: 0x1B, bypassed: true, params: [EffectParam(id: 4, value: 20)]).value(channel: 3, tone: 0x40)
       == [3, 0x40, 1, 7, 0x1B, 0, 1, 1, 4] + BandBoxProtocol.f32(20), "op 01 bytes")
 
-// Rigs (ToneAssignments): this test binary's own defaults, cleared before and after.
+// Banks (ToneAssignments): this test binary's own defaults, cleared before and after.
 let domain = ProcessInfo.processInfo.processName
 UserDefaults.standard.removePersistentDomain(forName: domain)
-UserDefaults.standard.set([5, 6, 7, 8], forKey: "toneSlots")   // buttons saved before there were rigs
+UserDefaults.standard.set([5, 6, 7, 8], forKey: "toneSlots")   // buttons saved before there were banks
 do {
     let a = ToneAssignments()
     let clean = ToneSlot.all[0]
-    check(a.rigs.map(\.name) == ["Main"] && a.tone(clean, channel: 3) == 5, "the old buttons become the rig Main")
-    a.addRig(named: "Metal")
-    check(a.rigName == "Metal" && a.tone(clean, channel: 3) == 5, "a new rig starts as a copy and is current")
+    check(a.banks.map(\.name) == ["Main"] && a.tone(clean, channel: 3) == 5, "the old buttons become the bank Main")
+    a.addBank(named: "Metal")
+    check(a.bankName == "Metal" && a.tone(clean, channel: 3) == 5, "a new bank starts as a copy and is current")
     a.assign(30, to: 0, channel: 3)
-    check(a.tone(clean, channel: 3, rig: 0) == 5 && a.tone(clean, channel: 3, rig: 1) == 30, "assigning changes only the current rig")
-    check(a.rig(named: " metal") == 1 && a.rig(named: "Soft") == nil, "rigs are found by name, any case")
+    check(a.tone(clean, channel: 3, bank: 0) == 5 && a.tone(clean, channel: 3, bank: 1) == 30, "assigning changes only the current bank")
+    check(a.bank(named: " metal") == 1 && a.bank(named: "Soft") == nil, "banks are found by name, any case")
     let again = ToneAssignments()
-    check(again.rigName == "Metal" && again.tone(clean, channel: 3) == 30 && again.rigs.count == 2, "rigs are kept")
-    a.selectRig(0)
+    check(again.bankName == "Metal" && again.tone(clean, channel: 3) == 30 && again.banks.count == 2, "banks are kept")
+    a.selectBank(0)
     check(a.tone(clean, channel: 3) == 5, "back to Main")
-    a.selectRig(1)
-    a.deleteRig()
-    check(a.rigs.map(\.name) == ["Main"] && a.rigName == "Main" && a.tone(clean, channel: 3) == 5, "deleting goes back to the one before")
-    a.deleteRig()
-    check(a.rigs.count == 1, "the last rig stays")
+    a.selectBank(1)
+    a.deleteBank()
+    check(a.banks.map(\.name) == ["Main"] && a.bankName == "Main" && a.tone(clean, channel: 3) == 5, "deleting goes back to the one before")
+    a.deleteBank()
+    check(a.banks.count == 1, "the last bank stays")
 }
 UserDefaults.standard.removePersistentDomain(forName: domain)
 

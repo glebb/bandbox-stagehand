@@ -102,7 +102,7 @@ struct TonesScreen: View {
         #endif
         .popover(isPresented: Binding(get: { assigning == slot.id },
                                       set: { if !$0 { assigning = nil } })) {
-            TonePicker(title: "\(assignments.name(slot, channel: channel)) button", current: toneID) {
+            TonePicker(title: "\(assignments.name(slot, channel: channel)) slot", current: toneID) {
                 assignments.assign($0, to: slot.id, channel: channel)
                 client.setPreset($0, channel: channel)
                 assigning = nil

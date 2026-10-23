@@ -17,8 +17,8 @@ struct ContentView: View {
     @State private var channel = 3
     @State private var editorChannel: Int?   // the guitar channel the preset editor edits; nil = the primary one
     @State private var showLog = false
-    @State private var namingRig: RigNaming?
-    @State private var confirmDeleteRig = false
+    @State private var namingBank: BankNaming?
+    @State private var confirmDeleteBank = false
     #if os(iOS)
     @State private var confirmQuit = false
     #endif
@@ -87,45 +87,45 @@ struct ContentView: View {
         #endif
     }
 
-    private enum RigNaming: Identifiable {
+    private enum BankNaming: Identifiable {
         case new, rename
         var id: Self { self }
     }
 
-    /// The rigs: other sets of the four tone buttons. Quiet while there is only one.
-    private var rigMenu: some View {
+    /// The banks: other sets of the four tone slots. Quiet while there is only one.
+    private var bankMenu: some View {
         Menu {
-            ForEach(assignments.rigs.indices, id: \.self) { i in
-                Button { assignments.selectRig(i) } label: {
-                    if i == assignments.current { Label(assignments.rigs[i].name, systemImage: "checkmark") } else { Text(assignments.rigs[i].name) }
+            ForEach(assignments.banks.indices, id: \.self) { i in
+                Button { assignments.selectBank(i) } label: {
+                    if i == assignments.current { Label(assignments.banks[i].name, systemImage: "checkmark") } else { Text(assignments.banks[i].name) }
                 }
             }
             Divider()
-            Button("New Rig from These Buttons…") { namingRig = .new }
-            Button("Rename \(assignments.rigName)…") { namingRig = .rename }
-            if assignments.rigs.count > 1 {
-                Button("Delete \(assignments.rigName)…", role: .destructive) { confirmDeleteRig = true }
+            Button("New Bank from Current Slots…") { namingBank = .new }
+            Button("Rename \(assignments.bankName)…") { namingBank = .rename }
+            if assignments.banks.count > 1 {
+                Button("Delete \(assignments.bankName)…", role: .destructive) { confirmDeleteBank = true }
             }
         } label: {
-            Text(assignments.rigs.count > 1 ? "Rig: \(assignments.rigName)" : "Rigs")
-                .foregroundStyle(assignments.rigs.count > 1 ? Stage.secondaryText : Stage.faintText)
+            Text(assignments.banks.count > 1 ? "Bank: \(assignments.bankName)" : "Banks")
+                .foregroundStyle(assignments.banks.count > 1 ? Stage.secondaryText : Stage.faintText)
         }
         .menuStyle(.button)
         .buttonStyle(.plain)
         .menuIndicator(.hidden)
         .fixedSize()
-        .sheet(item: $namingRig) { naming in
-            NameSheet(title: naming == .new ? "New Rig" : "Rename Rig",
-                      name: naming == .new ? "" : assignments.rigName,
+        .sheet(item: $namingBank) { naming in
+            NameSheet(title: naming == .new ? "New Bank" : "Rename Bank",
+                      name: naming == .new ? "" : assignments.bankName,
                       action: naming == .new ? "Create" : "Rename") { name in
-                if naming == .new { assignments.addRig(named: name) } else { assignments.renameRig(to: name) }
+                if naming == .new { assignments.addBank(named: name) } else { assignments.renameBank(to: name) }
             }
         }
-        .confirmationDialog("Delete the rig \(assignments.rigName)?", isPresented: $confirmDeleteRig, titleVisibility: .visible) {
-            Button("Delete", role: .destructive) { assignments.deleteRig() }
+        .confirmationDialog("Delete the bank \(assignments.bankName)?", isPresented: $confirmDeleteBank, titleVisibility: .visible) {
+            Button("Delete", role: .destructive) { assignments.deleteBank() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Its button settings are lost. The tones on the speaker stay.")
+            Text("Its slots are lost. The tones on the speaker stay.")
         }
     }
 
@@ -185,7 +185,7 @@ struct ContentView: View {
                     withAnimation(.easeOut(duration: 0.3).delay(0.1)) { midiFlash = false }
                 }
                 #endif
-                rigMenu
+                bankMenu
                     .padding(.leading, 10)
                 Button("Log") { showLog = true }
                     .buttonStyle(.plain)

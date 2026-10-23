@@ -7,7 +7,7 @@ struct MIDIBinding: Hashable, Codable {
     var action: StageAction
     var mode: PedalMode = .auto
 
-    /// Any channel. PC 0–3 select the primary guitar channel's tone buttons and PC 4–7
+    /// Any channel. PC 0–3 select the primary guitar channel's tone slots and PC 4–7
     /// channel 1's; CC 80–84 switch the primary channel's Comp, Dist, FX, Delay and Reverb
     /// and CC 85–89 channel 1's. CC 80–89 are general-purpose controllers nothing else uses.
     static let defaults: [MIDIBinding] = StageAction.all.enumerated().map { i, action in
@@ -51,7 +51,7 @@ final class MIDIInput: ObservableObject {
     private weak var client: BandBoxClient?
     private weak var assignments: ToneAssignments?
     /// Fills and plays the Rocksmith companion's song tones: PC 8–12, unless bound to something
-    /// else. CC 90 picks a rig by its value (0 = the first), likewise.
+    /// else. CC 90 picks a bank by its value (0 = the first), likewise.
     private(set) var filler: ScratchFiller?
 
     func start(client: BandBoxClient, assignments: ToneAssignments) {
@@ -161,12 +161,12 @@ final class MIDIInput: ObservableObject {
             return
         }
         if message.kind == .control, message.number == 90, !bindings.contains(where: { $0.trigger.matches(message) }) {
-            guard assignments.rigs.indices.contains(message.value) else {
-                client.record("MIDI \(message.label): no rig \(message.value + 1) (there are \(assignments.rigs.count))")
+            guard assignments.banks.indices.contains(message.value) else {
+                client.record("MIDI \(message.label): no bank \(message.value + 1) (there are \(assignments.banks.count))")
                 return
             }
-            assignments.selectRig(message.value)
-            client.record("MIDI \(message.label) → rig \(assignments.rigName)")
+            assignments.selectBank(message.value)
+            client.record("MIDI \(message.label) → bank \(assignments.bankName)")
             return
         }
         guard let binding = bindings.first(where: { $0.trigger.matches(message) }),

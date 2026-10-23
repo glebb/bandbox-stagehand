@@ -4,9 +4,9 @@ import Foundation
 ///
 /// The speaker edits only the tone a channel plays, and saving into another tone copies the
 /// playing tone there with its edits and name (protocol-notes.md, Tone actions). So for each
-/// song tone the channel plays its template button, gets the song's pedal changes, and is saved
+/// song tone the channel plays its template slot, gets the song's pedal changes, and is saved
 /// into the scratch tone, which is then renamed back; the template's edits are dropped. About
-/// half a second a tone, while the song loads; the channel jumps between the buttons meanwhile.
+/// half a second a tone, while the song loads; the channel jumps between the slots meanwhile.
 ///
 /// The five scratch tones ("RS 1" … "RS 5", category Others) are made on first use with save as
 /// and kept in `BandBoxClient.scratchTones`; one deleted in the JBL app is made again.
@@ -48,7 +48,7 @@ final class ScratchFiller: ObservableObject {
         Task { await fill(request, generation) }
     }
 
-    /// Program Change 8 + `index`: plays that scratch tone, or its template button until it's
+    /// Program Change 8 + `index`: plays that scratch tone, or its template slot until it's
     /// filled. While filling, the last one asked for plays when the fill is done.
     func play(_ index: Int) {
         guard let request, request.tones.indices.contains(index), client.link == .connected else { return }
@@ -64,13 +64,13 @@ final class ScratchFiller: ObservableObject {
         }
     }
 
-    /// The tone a song tone starts from: its button in the rig the song names, or in the current
-    /// rig if there is none by that name.
+    /// The tone a song tone starts from: its slot in the bank the song names, or in the current
+    /// bank if there is none by that name.
     private func template(_ tone: SongTonesRequest.Tone, _ channel: Int) -> Int {
-        assignments.tone(ToneSlot.all[tone.button], channel: channel, rig: rig)
+        assignments.tone(ToneSlot.all[tone.slot], channel: channel, bank: bank)
     }
 
-    private var rig: Int { request.flatMap { assignments.rig(named: $0.rig) } ?? assignments.current }
+    private var bank: Int { request.flatMap { assignments.bank(named: $0.bank) } ?? assignments.current }
 
     private func current(_ generation: Int) -> Bool { generation == self.generation }
 
@@ -78,8 +78,8 @@ final class ScratchFiller: ObservableObject {
         let start = Date()
         channel = client.primaryGuitarChannel
         state = .filling(done: 0, of: request.tones.count)
-        client.record("song tones from rig \(assignments.rigs[rig].name)"
-                      + (assignments.rig(named: request.rig) == nil ? " (there is no rig \(request.rig))" : ""))
+        client.record("song tones from bank \(assignments.banks[bank].name)"
+                      + (assignments.bank(named: request.bank) == nil ? " (there is no bank \(request.bank))" : ""))
         guard let scratch = await scratchTones(request.tones.count), current(generation) else {
             if current(generation) { fail("couldn't make the scratch tones") }
             return
@@ -119,7 +119,7 @@ final class ScratchFiller: ObservableObject {
             guard current(generation) else { return }
             ready.insert(i)
             state = .filling(done: i + 1, of: request.tones.count)
-            client.record("song tone \(i + 1) \(tone.key): \(ToneSlot.all[tone.button].name) + \(edits.count) writes → \(Self.name(i))")
+            client.record("song tone \(i + 1) \(tone.key): \(ToneSlot.all[tone.slot].name) + \(edits.count) writes → \(Self.name(i))")
         }
         state = .ready
         client.record(String(format: "song tones ready: %d tones, %d writes, %.1f s", request.tones.count, writes,
@@ -131,7 +131,7 @@ final class ScratchFiller: ObservableObject {
 
     private func fail(_ reason: String) {
         state = .failed(reason)
-        client.record("! song tones: \(reason); Program Change 8–12 play the template buttons")
+        client.record("! song tones: \(reason); Program Change 8–12 play the template slots")
         if let wanted { self.wanted = nil; play(wanted) }
     }
 
