@@ -44,6 +44,13 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var stemTypes: [Int: StemType] = [:]   // stem channels 1-2
     @Published private(set) var stemLevels: [Int: Int] = [:]       // stem channels 1-3 (3 = Others)
     @Published private(set) var log: [String] = []
+    /// The user tones Stagehand fills for Rocksmith songs (ScratchFiller), scratch tone 1 first.
+    /// They are left out of the tone menus.
+    @Published var scratchTones: [Int] = UserDefaults.standard.array(forKey: "scratchTones") as? [Int] ?? [] {
+        didSet { UserDefaults.standard.set(scratchTones, forKey: "scratchTones") }
+    }
+    /// Called with every record the speaker sends, after it is applied (ScratchFiller waits on them).
+    var recordObservers: [UUID: (PropertyRecord) -> Void] = [:]
 
     static let levelRange = 0...32       // the volume knob has 32 clicks: 0 to 32
     static let channels = 1...4
@@ -216,6 +223,9 @@ final class BandBoxClient: NSObject, ObservableObject {
         send(BandBoxProtocol.set(Property.effectBlock, [UInt8(channel), UInt8(details.id), op.rawValue] + rest), label, coalesce: key)
     }
 
+    /// Queues a message as it is, after the writes already queued (for ScratchFiller).
+    func sendRaw(_ data: Data, _ label: String? = nil) { send(data, label) }
+
     private func toneName(_ id: Int) -> String { tones.first { $0.id == id }?.name ?? "#\(id)" }
 
     var masterVolume: Int? { levels[0] }
@@ -323,7 +333,10 @@ final class BandBoxClient: NSObject, ObservableObject {
         if status != 0 {
             record("! speaker returned status \(String(format: "0x%04x", status)) for type \(msg.type)")
         }
-        for r in records { apply(r) }
+        for r in records {
+            apply(r)
+            for observe in recordObservers.values { observe(r) }
+        }
     }
 
     private func apply(_ r: PropertyRecord) {
@@ -372,7 +385,8 @@ final class BandBoxClient: NSObject, ObservableObject {
             }
             toneDetails[channel] = details
         case Property.toneAction where r.value.count >= 4:
-            toneActionDone(channel: Int(r.value[0]), ToneAction(rawValue: r.value[1]), tone: Int(r.value[2]), target: Int(r.value[3]))
+            toneActionDone(channel: Int(r.value[0]), ToneAction(rawValue: r.value[1]), tone: Int(r.value[2]), target: Int(r.value[3]),
+                           name: String(decoding: r.value.dropFirst(6), as: UTF8.self))
         case Property.channelInfo where r.value.count >= 3:
             // n plugged type: the input type also keys the channel's volume, (n, type).
             let channel = Int(r.value[0])
@@ -429,7 +443,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     }
 
     /// Follows up the speaker's echo of a tone action (ch op NN target …), as the JBL app does.
-    private func toneActionDone(channel: Int, _ action: ToneAction?, tone: Int, target: Int) {
+    private func toneActionDone(channel: Int, _ action: ToneAction?, tone: Int, target: Int, name: String) {
         let playing = Self.guitarChannels.filter { presets[$0] == tone }
         switch action {
         case .save:
@@ -441,7 +455,8 @@ final class BandBoxClient: NSObject, ObservableObject {
             send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
         case .saveAs:
             // The echo has ff for the tone and the new tone's ID as target.
-            createdTone = CreatedTone(channel: channel, id: target)
+            // A scratch tone isn't the player's: don't offer it for a tone button.
+            if !ScratchFiller.isScratchName(name) { createdTone = CreatedTone(channel: channel, id: target) }
             send(BandBoxProtocol.get([Property.presetLibrary]))
             setPreset(target, channel: channel)
         case .rename:

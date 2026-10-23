@@ -1,0 +1,97 @@
+[09:27:16.248] searching for the speaker…
+[09:27:18.742] connected to JBL BandBox Trio
+[09:27:18.743] ← 0x0001 = 00 01
+[09:27:18.832] ← 0x0006 = 4a 42 4c 20 42 61 6e 64 42 6f 78 20 54 72 69 6f
+[09:27:18.832] ← 0x000d = e4
+[09:27:18.832] ← 0x3085 = 00
+[09:27:18.833] ← 0x3100 = 00
+[09:27:18.833] ← 0x3103 = 30 11
+[09:27:18.833] ← 0x2d42 = 14
+[09:27:18.892] ← 0x3406 = 00 00 0d
+[09:27:18.981] ← 0x3406 = 02 03 0b
+[09:27:19.013] ← 0x3406 = 03 02 03
+[09:27:19.073] ← 0x3401 = 01 00 02
+[09:27:19.074] ← 0x3401 = 02 00 01
+[09:27:19.074] ← 0x3401 = 03 01 02
+[09:27:19.074] ← 0x3401 = 04 00 04
+[09:27:19.162] ← 0x3081 = 01 01
+[09:27:19.163] ← 0x3081 = 02 02
+[09:27:19.193] ← 0x3082 = 01 20
+[09:27:19.193] ← 0x3082 = 02 20
+[09:27:19.193] ← 0x3082 = 03 20
+[09:27:19.253] ← tone categories: 8
+[09:27:19.344] ← tone library: 33 tones
+[09:27:19.432] ← 0x3442 = 01 11
+[09:27:19.448] ← 0x3442 = 03 37
+[09:27:19.493] ← 0x3403 = 01 00
+[09:27:19.493] ← 0x3403 = 03 00
+[09:27:19.553] ← 0x3406 = 01 02 0e
+[09:27:19.613] ← 0x3406 = 02 01 0b
+[09:27:19.673] ← 0x3406 = 04 04 08
+[09:27:19.764] ← tone High Gain Lead: 8 effect blocks
+[09:27:19.853] ← tone RS 1: 8 effect blocks
+[09:27:23.197] MIDI sources: Stagehand test
+[09:27:23.952] MIDI song tones for Test song: Test: 1 test_clean (Clean, FX Chorus, Reverb), 2 test_heavy (Heavy, Delay Analog Echo), 3 test_lead (Lead, Delay Pure Echo)
+[09:27:24.023] → channel 3 preset #57
+[09:27:24.024] ← 0x3446 = 03 09 ff 39 07 04 52 53 20 33
+[09:27:24.045] made scratch tone RS 3 (57)
+[09:27:24.085] ← tone library: 34 tones
+[09:27:24.114] ← 0x3442 = 03 39
+[09:27:24.128] ← 0x3442 = 03 01
+[09:27:24.158] ← tone RS 3: 8 effect blocks
+[09:27:24.193] ← tone Clean Comping: 8 effect blocks
+[09:27:24.219] ← tone Clean Comping: 8 effect blocks
+[09:27:24.279] ← 0x3445 = 03 01 01 05 ff ff 00 00
+[09:27:24.344] ← 0x3446 = 03 04 37 37 ff 00
+[09:27:24.399] ← tone Clean Comping: 8 effect blocks
+[09:27:24.428] ← 0x3446 = 03 03 37 ff ff 04 52 53 20 31
+[09:27:24.457] MIDI PC 8 · ch 1 → song tone 1
+[09:27:24.490] ← tone library: 34 tones
+[09:27:24.533] ← tone RS 1: 8 effect blocks
+[09:27:24.548] ← 0x3446 = 03 08 01 ff ff 00
+[09:27:24.562] song tone 1 test_clean: Clean + 3 writes → RS 1
+[09:27:24.578] ← 0x3442 = 03 01
+[09:27:24.609] ← tone Clean Comping: 8 effect blocks
+[09:27:24.638] ← 0x3442 = 03 16
+[09:27:24.698] ← tone US Metal: 8 effect blocks
+[09:27:24.719] ← tone US Metal: 8 effect blocks
+[09:27:24.761] ← 0x3445 = 03 16 00 06 15 00 ff 03 01 00 00 db 43 02 00 00 00 42 00 00 00 1c 42
+[09:27:24.879] ← 0x3445 = 03 16 01 06 ff ff 00 00
+[09:27:24.912] ← 0x3446 = 03 04 38 38 ff 00
+[09:27:24.960] ← tone US Metal: 8 effect blocks
+[09:27:24.984] ← 0x3446 = 03 03 38 ff ff 04 52 53 20 32
+[09:27:25.045] ← tone library: 34 tones
+[09:27:25.077] ← tone RS 2: 8 effect blocks
+[09:27:25.093] ← 0x3446 = 03 08 16 ff ff 00
+[09:27:25.109] song tone 2 test_heavy: Heavy + 5 writes → RS 2
+[09:27:25.110] ← 0x3442 = 03 16
+[09:27:25.152] ← tone US Metal: 8 effect blocks
+[09:27:25.207] ← 0x3442 = 03 11
+[09:27:25.274] ← tone High Gain Lead: 8 effect blocks
+[09:27:25.312] ← tone High Gain Lead: 8 effect blocks
+[09:27:25.448] ← 0x3446 = 03 04 39 39 ff 00
+[09:27:25.524] ← tone High Gain Lead: 8 effect blocks
+[09:27:25.568] ← 0x3446 = 03 03 39 ff ff 04 52 53 20 33
+[09:27:25.630] ← tone library: 34 tones
+[09:27:25.658] ← tone RS 3: 8 effect blocks
+[09:27:25.673] ← 0x3446 = 03 08 11 ff ff 00
+[09:27:25.674] ← 0x3442 = 03 11
+[09:27:25.685] song tone 3 test_lead: Lead + 3 writes → RS 3
+[09:27:25.685] song tones ready: 3 tones, 11 writes, 1.7 s
+[09:27:25.685] → channel 3 preset RS 1
+[09:27:25.721] ← tone High Gain Lead: 8 effect blocks
+[09:27:25.750] ← 0x3442 = 03 37
+[09:27:25.795] ← tone RS 1: 8 effect blocks
+[09:27:33.473] MIDI PC 9 · ch 1 → song tone 2
+[09:27:33.473] → channel 3 preset RS 2
+[09:27:33.532] ← 0x3442 = 03 38
+[09:27:33.595] ← tone RS 2: 8 effect blocks
+[09:27:42.481] MIDI PC 10 · ch 1 → song tone 3
+[09:27:42.482] → channel 3 preset RS 3
+[09:27:42.534] ← 0x3442 = 03 39
+[09:27:42.580] ← tone RS 3: 8 effect blocks
+[09:27:51.492] MIDI PC 8 · ch 1 → song tone 1
+[09:27:51.492] → channel 3 preset RS 1
+[09:27:51.550] ← 0x3442 = 03 37
+[09:27:51.608] ← tone RS 1: 8 effect blocks
+[09:27:59.780] MIDI sources: none

@@ -1,0 +1,9 @@
+{"v": 1, "kind": "song-tones", "song": "Test song", "artist": "Stagehand", "rig": "Test",
+ "tones": [
+  {"program": 8, "key": "test_clean", "base": "Clean",
+   "set": {"FX": {"on": true, "model": "Chorus", "Mix": 35}, "Delay": {"on": false}, "Reverb": {"on": true, "Mix": 35}}},
+  {"program": 9, "key": "test_heavy", "base": "Heavy",
+   "set": {"FX": {"on": false}, "Delay": {"on": true, "model": "Analog Echo", "Time": 400, "Mix": 30, "Fdbk": 30}}},
+  {"program": 10, "key": "test_lead", "base": "Lead",
+   "set": {"FX": {"on": false}, "Delay": {"on": true, "model": "Pure Echo", "Time": 650, "Mix": 35, "Fdbk": 40}}}
+ ]}

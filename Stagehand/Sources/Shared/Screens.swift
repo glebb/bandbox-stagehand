@@ -427,7 +427,7 @@ extension BandBoxClient {
     var groupedTones: [(category: String, tones: [Tone])] {
         var order: [Int] = []
         var byCategory: [Int: [Tone]] = [:]
-        for tone in tones {
+        for tone in tones where !scratchTones.contains(tone.id) {
             if byCategory[tone.categoryID] == nil { order.append(tone.categoryID) }
             byCategory[tone.categoryID, default: []].append(tone)
         }

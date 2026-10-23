@@ -50,11 +50,14 @@ final class MIDIInput: ObservableObject {
     private let sysex = SysExReaders()
     private weak var client: BandBoxClient?
     private weak var assignments: ToneAssignments?
+    /// Fills and plays the Rocksmith companion's song tones: PC 8–12, unless bound to something else.
+    private(set) var filler: ScratchFiller?
 
     func start(client: BandBoxClient, assignments: ToneAssignments) {
         guard midiClient == 0 else { return }
         self.client = client
         self.assignments = assignments
+        filler = MainActor.assumeIsolated { ScratchFiller(client: client, assignments: assignments) }
         let status = MIDIClientCreateWithBlock("Stagehand" as CFString, &midiClient) { [weak self] notification in
             guard notification.pointee.messageID == .msgSetupChanged else { return }
             DispatchQueue.main.async { self?.connectSources() }
@@ -132,6 +135,7 @@ final class MIDIInput: ObservableObject {
         songTones = request
         client?.record("MIDI song tones for \(request.song.isEmpty ? "a song" : request.song): \(request.summary)")
         request.warnings.forEach { client?.record("! song tones: \($0)") }
+        MainActor.assumeIsolated { filler?.load(request) }
     }
 
     private func handle(_ message: MIDIMessage) {
@@ -145,8 +149,17 @@ final class MIDIInput: ObservableObject {
             client?.record("MIDI \(message.label) learned for \(action.label)")
             return
         }
-        guard enabled, let client, let assignments,
-              let binding = bindings.first(where: { $0.trigger.matches(message) }),
+        guard enabled, let client, let assignments else { return }
+        if message.kind == .program, (8...12).contains(message.number),
+           !bindings.contains(where: { $0.trigger.matches(message) }), let filler {
+            MainActor.assumeIsolated {
+                guard filler.request != nil else { return }
+                client.record("MIDI \(message.label) → song tone \(message.number - 7)")
+                filler.play(message.number - 8)
+            }
+            return
+        }
+        guard let binding = bindings.first(where: { $0.trigger.matches(message) }),
               let press = reader.press(message, mode: binding.mode) else { return }
         client.record("MIDI \(message.label) → \(binding.action.label)")
         switch press {

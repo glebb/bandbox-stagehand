@@ -98,12 +98,18 @@ binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it m
 latching switch. Each message Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
-**Song-made tones for Rocksmith (in progress).** The
-[Rocksmith companion](https://github.com/glebb/rs-mac-companion) can send, as a song loads,
-a SysEx message (manufacturer 0x7D, then JSON) describing the song's tones: for each one, a
-tone button to start from and how its FX, Delay and Reverb should be set. Stagehand reads it
-and logs it; filling scratch tones on the speaker from it, played with PC 8–12, comes next
-(`Sources/Shared/ScratchTones.swift`).
+**Song-made tones for Rocksmith.** The
+[Rocksmith companion](https://github.com/glebb/rs-mac-companion) sends, as a song loads, a
+SysEx message (manufacturer 0x7D, then JSON) describing the song's tones: for each one, a tone
+button to start from and how its FX, Delay and Reverb should be set. Stagehand fills a
+scratch tone for each (user tones "RS 1"–"RS 5", made on first use and left out of the tone
+menus): it plays the button's tone, sets the pedals, saves it into the scratch tone and drops
+the edits, so your buttons stay as they are. That takes about half a second a tone, and the
+channel jumps between your buttons meanwhile. During the song PC 8–12 play the scratch tones
+(unless you bind those to something else); before they're ready, their buttons. Every other
+setting comes from your buttons, so the levels stay yours. Try it without the game:
+`swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
+(`Sources/Shared/ScratchTones.swift`, `ScratchFiller.swift`).
 
 ## Getting it
 
