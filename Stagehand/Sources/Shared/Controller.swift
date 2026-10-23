@@ -157,7 +157,11 @@ struct ContentView: View {
                 Text(client.deviceName ?? "JBL BandBox Trio")
                 Spacer()
                 if let battery = client.battery {
-                    Text("\(battery)%").monospacedDigit()
+                    HStack(spacing: 3) {
+                        if client.externalPower { Image(systemName: "bolt.fill").font(.system(size: 9)) }
+                        Text("\(battery)%").monospacedDigit()
+                    }
+                    .help(client.externalPower ? "Battery \(battery)%, on the wall power" : "Battery \(battery)%")
                 }
                 #if os(macOS)
                 // While on, 1–9 work from any app (and stop typing digits elsewhere).

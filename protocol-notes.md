@@ -54,7 +54,7 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x0004 | 2 | `11 21` | Firmware version | app capture |
 | 0x0006 | 16 | "JBL BandBox Trio" | Model name (ASCII) | app capture |
 | 0x0008 | 16 | ASCII | Serial number | app capture |
-| 0x000d | 1 | `64` (100) | **Battery %** | listen + app capture |
+| 0x000d | 1 | `64` (100), `e4` | **Battery %** in bits 0–6; bit 7 set **on the wall power** (`e4` = full and plugged in) | listen + app capture, Mac log |
 | 0x0031 | 16 | sec,min,hour,?,day,month,year(u16),?,"+03:00",dst | Date/time; the app SETs it on connect | app capture |
 | 0x3100 | 1 | `00`/`01` | **Tuner off/on**. GET works too. **Verified from the Mac**: SET → OK reply + EVENT confirming the new state A tuner turned on with SET **switches itself off after ~11 s**; repeating SET 0x3100 = 01 every 5 s keeps it on (tested 36 s). Turned on from the speaker's button, it stayed on. Selecting a channel on the speaker, or plugging or unplugging a jack, **turns it off** (EVENT 0x3100 = 00); the next keep-alive SET turns it back on | app capture + Mac test, `captures/tuner.decoded.txt` |
 | 0x3101, 0x3102, 0x3104, 0x3107 | 1 | `00` | Tuner readings? All 0 when nothing was played | app capture |

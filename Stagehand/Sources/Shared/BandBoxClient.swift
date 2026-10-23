@@ -16,6 +16,8 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var link: Link = .searching
     @Published private(set) var deviceName: String?
     @Published private(set) var battery: Int?
+    /// On the wall power: 0x000D's top bit (the rest is the level).
+    @Published private(set) var externalPower = false
     /// Guitar channel (1 or 3) → its current tone id; each guitar input has its own tone.
     @Published private(set) var presets: [Int: Int] = [:]
     @Published private(set) var tones: [Tone] = []
@@ -431,7 +433,8 @@ final class BandBoxClient: NSObject, ObservableObject {
         case Property.level where r.value.count >= 3:
             levels[UInt16(r.value[0]) << 8 | UInt16(r.value[1])] = Int(r.value[2])
         case Property.battery where !r.value.isEmpty:
-            battery = Int(r.value[0])
+            battery = Int(r.value[0] & 0x7F)
+            externalPower = r.value[0] & 0x80 != 0
         case Property.modelName:
             deviceName = String(decoding: r.value, as: UTF8.self)
         case Property.keepAlive:
