@@ -131,7 +131,10 @@ struct KnownBlock: Equatable, Codable {
 }
 
 /// How a scratch tone is filled: what it should hold (its template with the song's changes),
-/// and the 0x3445 writes that get it there from what it holds now.
+/// and the 0x3445 writes that get it there. Edits always go to the tone the channel plays, and
+/// a save into another tone copies the playing tone there (protocol-notes.md, Tone actions), so
+/// a scratch tone is filled by selecting its template, making the writes from the template's
+/// blocks to the target, and saving into the scratch tone; then the template's edits are dropped.
 enum ScratchPlan {
     enum Edit: Equatable {
         case model(slot: Int, model: UInt16)

@@ -21,7 +21,8 @@ setvbuf(stdout, nil, _IOLBF, 0)
 
 let args = Array(CommandLine.arguments.dropFirst())
 let cleanupOnly = args.first == "cleanup"
-let channel = cleanupOnly ? 3 : args.first.flatMap(Int.init) ?? 3
+let listenMode = args.first == "listen"     // `listen [CH]`: the two by-ear questions, see below
+let channel = cleanupOnly ? 3 : (listenMode ? args.dropFirst().first : args.first).flatMap(Int.init) ?? 3
 let fillCap = args.count > 1 ? Int(args[1]) ?? 64 : 64
 let probePrefix = "Probe"
 
@@ -320,6 +321,73 @@ Thread.sleep(forTimeInterval: 0.5)
 if cleanupOnly {
     deleteProbeTones()
     log("left: " + library().filter(\.isUser).map { "\($0.id) \($0.name)" }.joined(separator: ", "))
+    exit(0)
+}
+
+// Listen: are edits to a tone that isn't playing heard on the playing one, and does saving that
+// tone take the playing tone's other blocks? A copy of a factory tone with another amp and cab
+// gets a loud delay, reverb and tremolo while you strum on your own tone, then is saved and
+// played once, so you hear what the edits sound like. The Mac says what is happening.
+if listenMode {
+    let tones = library()
+    guard let playing = current(), let mine = details(playing), let playingTone = tones.first(where: { $0.id == playing }) else {
+        log("! no tone on channel \(channel)"); exit(1)
+    }
+    var source: (tone: Tone, details: ToneDetails)?
+    for t in tones where !t.isUser && t.id != playing {
+        guard let d = details(t.id) else { continue }
+        if d.block(.amp)?.model != mine.block(.amp)?.model, d.block(.cab)?.model != mine.block(.cab)?.model { source = (t, d); break }
+    }
+    guard let source, let made = saveAs(source.tone.id, name: "\(probePrefix) L") else { log("! no tone to copy"); exit(1) }
+    let probe = made.id
+    select(playing)
+    guard let before = details(probe), let delay = before.block(.delay), let reverb = before.block(.reverb) else {
+        deleteProbeTones(); exit(1)
+    }
+    finding("you play \(playing) \(playingTone.name); the test tone \(probe) is a copy of \(source.tone.id) \(source.tone.name)")
+    func say(_ text: String, wait: Double) { log("say: \(text)"); speak(text); Thread.sleep(forTimeInterval: wait) }
+
+    say("Start strumming and keep strumming. This is your own tone, unchanged.", wait: 7)
+    log("== phase 1: edits to the test tone")
+    say("One. Changes to the other tone, now.", wait: 1.5)
+    link.send(setParam(probe, delay, 0, 100), "delay Mix 100")
+    link.send(setParam(probe, delay, 1, 700), "delay Time 700")
+    link.send(setParam(probe, delay, 2, 70), "delay Fdbk 70")
+    var on = delay; on.bypassed = false
+    link.send(edit(probe, .bypass, on.bytes), "delay on")
+    link.send(setParam(probe, reverb, 4, 100), "reverb Mix 100")
+    var wet = reverb; wet.bypassed = false
+    link.send(edit(probe, .bypass, wet.bytes), "reverb on")
+    link.send(edit(probe, .model, [UInt8(EffectSlot.fx.rawValue), 0x13, 0x00, 0xFF, 0x00]), "FX Tremolo")
+    link.send(edit(probe, .bypass, EffectBlock(slot: EffectSlot.fx.rawValue, model: 0x13, bypassed: false, params: []).bytes), "FX on")
+    Thread.sleep(forTimeInterval: 6)
+    log("== phase 2: save the test tone")
+    say("Two. Saving the other tone, now.", wait: 1.5)
+    _ = save(probe)
+    Thread.sleep(forTimeInterval: 6)
+    log("== phase 3: play the test tone")
+    say("Three. Now the edited tone itself: tremolo, echo and reverb.", wait: 0.5)
+    select(probe)
+    Thread.sleep(forTimeInterval: 7)
+    log("== phase 4: back to your tone")
+    say("Four. Back to your own tone.", wait: 0.5)
+    select(playing)
+    Thread.sleep(forTimeInterval: 4)
+    say("Stop. Done.", wait: 0)
+
+    if let after = details(probe) {
+        for slot in [EffectSlot.gate, .compressor, .distortion, .amp, .cab] {
+            let a = after.block(slot), fromSource = a == source.details.block(slot), fromMine = a == mine.block(slot)
+            finding("after the save, \(slot.name) is " + (fromSource && fromMine ? "the same in both tones" :
+                fromSource ? "the copied tone's (kept)" : fromMine ? "YOUR tone's (taken from the playing tone)" : "neither: \(blockLine(a))"))
+        }
+        let edited = after.block(.delay)?.bypassed == false && after.block(.fx)?.model == 0x13
+        finding("the edits are \(edited ? "in" : "NOT in") the saved test tone; its name is now \(after.name)")
+    }
+    deleteProbeTones()
+    select(playing)
+    print("\nFindings:")
+    findings.forEach { print("  \($0)") }
     exit(0)
 }
 
