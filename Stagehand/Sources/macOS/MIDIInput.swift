@@ -65,18 +65,21 @@ final class MIDIInput: ObservableObject {
             DispatchQueue.main.async { self?.connectSources() }
         }
         guard status == noErr else { return client.record("! MIDI unavailable (\(status))") }
-        // Called on CoreMIDI's own thread: parse there, act on the main thread.
+        // Called on CoreMIDI's own thread: parse there, act on the main thread, packet by packet
+        // in the order they came (a song's SysEx before the Program Change that plays its tone).
         // The source's endpoint comes as the connection's refCon, so each source has its own SysEx.
         let sysex = self.sysex
         MIDIInputPortCreateWithProtocol(midiClient, "Stagehand in" as CFString, ._1_0, &port) { [weak self] list, refCon in
-            let packets = list.unsafeSequence().map { Array($0.words()) }
-            let messages = packets.flatMap { MIDIMessage.parse($0) }
             let source = Int(bitPattern: refCon)
-            let sysexMessages = packets.flatMap { sysex.feed($0, source: source) }
-            guard !messages.isEmpty || !sysexMessages.isEmpty else { return }
+            let packets = list.unsafeSequence().map { Array($0.words()) }.map { words in
+                (sysex: sysex.feed(words, source: source), messages: MIDIMessage.parse(words))
+            }
+            guard packets.contains(where: { !$0.sysex.isEmpty || !$0.messages.isEmpty }) else { return }
             DispatchQueue.main.async {
-                messages.forEach { self?.handle($0) }
-                sysexMessages.forEach { self?.handleSysEx($0) }
+                for packet in packets {
+                    packet.sysex.forEach { self?.handleSysEx($0) }
+                    packet.messages.forEach { self?.handle($0) }
+                }
             }
         }
         connectSources()
