@@ -330,10 +330,16 @@ final class ToneAssignments: ObservableObject {
         names = banks[index].names
     }
 
-    /// A new bank with the buttons as they are now, and switches to it.
+    /// A new bank with the slots as they are now, and switches to it.
     func addBank(named name: String) {
         banks.append(Bank(name: name, tones: tones, names: names))
         selectBank(banks.count - 1)
+    }
+
+    /// A new bank as a copy of bank `source`, without switching to it.
+    func addBank(named name: String, copying source: Int) {
+        guard banks.indices.contains(source) else { return }
+        banks.append(Bank(name: name, tones: banks[source].tones, names: banks[source].names))
     }
 
     func renameBank(to name: String) { banks[current].name = name }

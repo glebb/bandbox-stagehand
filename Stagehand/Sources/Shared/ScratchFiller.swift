@@ -36,6 +36,7 @@ final class ScratchFiller: ObservableObject {
 
     /// A new song: fills its tones, replacing any fill still running.
     func load(_ request: SongTonesRequest) {
+        makeMissingBanks(request)
         generation += 1
         self.request = request
         ready = []
@@ -46,6 +47,17 @@ final class ScratchFiller: ObservableObject {
         }
         let generation = generation
         Task { await fill(request, generation) }
+    }
+
+    /// Makes the banks the companion may name and Stagehand doesn't have yet, as copies of Main
+    /// (or of the current bank if there's no Main), for the player to set up. Until they do, the
+    /// songs that use them sound as with Main.
+    private func makeMissingBanks(_ request: SongTonesRequest) {
+        let source = assignments.bank(named: "Main") ?? assignments.current
+        for name in request.banks + [request.bank] where !name.isEmpty && assignments.bank(named: name) == nil {
+            assignments.addBank(named: name, copying: source)
+            client.record("made bank \(name), a copy of \(assignments.banks[source].name): set its slots for these songs")
+        }
     }
 
     /// Program Change 8 + `index`: plays that scratch tone, or its template slot until it's
@@ -78,8 +90,7 @@ final class ScratchFiller: ObservableObject {
         let start = Date()
         channel = client.primaryGuitarChannel
         state = .filling(done: 0, of: request.tones.count)
-        client.record("song tones from bank \(assignments.banks[bank].name)"
-                      + (assignments.bank(named: request.bank) == nil ? " (there is no bank \(request.bank))" : ""))
+        client.record("song tones from bank \(assignments.banks[bank].name)")
         guard let scratch = await scratchTones(request.tones.count), current(generation) else {
             if current(generation) { fail("couldn't make the scratch tones") }
             return

@@ -5,6 +5,7 @@ import Foundation
 // tones, in the order the song first plays them:
 //
 //   {"v": 1, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "bank": "Classic rock",
+//    "banks": ["Soft", "Classic rock", "Metal"],
 //    "tones": [{"program": 8, "key": "skid18an_clean", "base": "Clean",
 //               "set": {"FX": {"on": true, "model": "Chorus", "Mix": 35}, "Delay": {"on": false},
 //                       "Reverb": {"on": true, "Mix": 25}}}, ...]}
@@ -39,6 +40,8 @@ struct SongTonesRequest: Equatable {
     let song: String
     let artist: String
     let bank: String
+    /// Every bank the companion may name; Stagehand makes the missing ones (ScratchFiller).
+    let banks: [String]
     let tones: [Tone]
     /// What was refused or guessed, for the log.
     let warnings: [String]
@@ -74,7 +77,13 @@ struct SongTonesRequest: Equatable {
             return Tone(key: key, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
-                                bank: json["bank"] as? String ?? "", tones: tones, warnings: warnings)
+                                bank: json["bank"] as? String ?? "", banks: names(json["banks"]), tones: tones, warnings: warnings)
+    }
+
+    /// Bank names: text, trimmed, not empty, at most 16.
+    private static func names(_ value: Any?) -> [String] {
+        let list = (value as? [Any] ?? []).compactMap { ($0 as? String)?.trimmingCharacters(in: .whitespaces) }
+        return Array(list.filter { !$0.isEmpty }.prefix(16))
     }
 
     private static func change(_ slot: EffectSlot, _ fields: [String: Any], _ key: String,

@@ -113,7 +113,9 @@ the edits, so the tones in your slots stay as they are. That takes about half a 
 channel jumps between your slots meanwhile. During the song PC 8–12 play the scratch tones
 (unless you bind those to something else); before they're ready, their slots. The slots
 come from the bank the song's message names (the companion picks Soft, Classic rock or Metal
-by how heavy the song is), or the current bank if there is none by that name. Every other
+by how heavy the song is). Banks the companion names that Stagehand doesn't have yet are made
+on the first song message, as copies of Main (they say so in the Log): set their slots to
+sound soft, classic rock or metal; until then those songs sound as with Main. Every other
 setting comes from your slots, so the levels stay yours. Try it without the game:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
 (`Sources/Shared/ScratchTones.swift`, `ScratchFiller.swift`).

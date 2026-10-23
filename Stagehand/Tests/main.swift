@@ -21,7 +21,7 @@ func umpSysEx(_ data: [UInt8]) -> [UInt32] {
 
 func message(_ json: String) -> [UInt8] { [SongTonesRequest.manufacturer] + Array(json.utf8) }
 
-let song = #"{"artist":"Skid Row","kind":"song-tones","bank":"Classic rock","song":"18 And Life","tones":["#
+let song = #"{"artist":"Skid Row","kind":"song-tones","bank":"Classic rock","banks":["Soft"," Classic rock","Metal","",3],"song":"18 And Life","tones":["#
     + #"{"base":"Clean","key":"skid18an_clean","program":8,"set":{"Delay":{"on":false},"FX":{"Mix":35,"model":"Chorus","on":true},"Reverb":{"Mix":25,"on":true}}},"#
     + #"{"base":"Heavy","key":"skid18an_dist","program":9,"set":{"Delay":{"Fdbk":30,"Mix":80,"Time":5000,"model":"Analog Echo","on":true},"FX":{"on":false}}},"#
     + #"{"base":"Lead","key":"skid18an_solo","program":10,"set":{"Amp":{"Drive":100},"Delay":{"model":"Space Echo","on":true},"FX":{"Bogus":3,"on":true}}}"#
@@ -46,6 +46,7 @@ let request = SongTonesRequest.parse(message(song))
 check(request != nil, "the song tones parse")
 if let r = request {
     check(r.song == "18 And Life" && r.bank == "Classic rock" && r.tones.count == 3, "header and three tones")
+    check(r.banks == ["Soft", "Classic rock", "Metal"], "the bank names")
     check(r.tones.map(\.slot) == [0, 2, 3], "templates Clean, Heavy, Lead")
     check(r.tones[0].changes[.fx] == .init(on: true, model: 0x0B, knobs: ["Mix": 35]), "FX Chorus at Mix 35")
     check(r.tones[0].changes[.delay] == .init(on: false), "delay off")
@@ -136,6 +137,10 @@ do {
     check(a.bank(named: " metal") == 1 && a.bank(named: "Soft") == nil, "banks are found by name, any case")
     let again = ToneAssignments()
     check(again.bankName == "Metal" && again.tone(clean, channel: 3) == 30 && again.banks.count == 2, "banks are kept")
+    a.addBank(named: "Soft", copying: 0)
+    check(a.bankName == "Metal" && a.tone(clean, channel: 3, bank: 2) == 5, "a copy of Main, without switching to it")
+    a.selectBank(2)
+    a.deleteBank()
     a.selectBank(0)
     check(a.tone(clean, channel: 3) == 5, "back to Main")
     a.selectBank(1)
