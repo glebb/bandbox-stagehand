@@ -133,6 +133,18 @@ top of `Sources/Shared/SongTones/SongTonesRequest.swift`. The RS Companion's
 [spec](https://github.com/glebb/rs-mac-companion/blob/main/docs/song-tone-messages.md) is
 written from the sender's side.
 
+How a song tone is built:
+1. The song's style names a bank, say Metal. Stagehand switches to it, and makes it first as a
+   copy of Main if there's none by that name (the Log says so).
+2. Each tone starts from the slot of its category in that bank: a Heavy tone in a Metal song
+   from the Metal bank's Heavy slot. The slot gives the amp, drive and levels.
+3. The song's delay, modulation and reverb go on top, and the result is saved as "Song 1"–"Song 5".
+   Your slot tones stay as they are.
+4. During the song, each tone's Program Change plays its Song tone.
+
+So until you set up a bank's slots (to sound soft, classic rock or metal, say), the songs with
+that style sound as with Main.
+
 Stagehand turns the effects into the BandBox's pedals (tape delay → Echopress 900, analog →
 Analog Echo, chorus → Chorus, and so on, mixes kept at most 35) and fills a tone of its own for
 each: user tones "Song 1"–"Song 5", made on first use and left out of the tone menus. It plays
@@ -140,10 +152,7 @@ the slot's tone, sets the pedals, saves it into the song tone and drops the edit
 in your slots stay as they are. That takes about half a second a tone, and the channel jumps
 between your slots meanwhile. The Program Changes the message names then play them (unless you
 bind those to something else; before they're ready, their slots), and the tones page shows the
-song with the playing tone lit. Loading a song switches to its style's bank; banks for styles
-Stagehand doesn't have yet are made on the first message, as copies of Main (they say so in the
-Log): set their slots to sound soft, classic rock or metal, say; until then those songs sound as
-with Main. Every other setting comes from your slots, so the levels stay yours. Off, Stagehand
+song with the playing tone lit. Every other setting comes from your slots, so the levels stay yours. Off, Stagehand
 ignores the messages, leaves those Program Changes to the bindings and makes no tones. Try it
 without another app:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
