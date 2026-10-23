@@ -32,10 +32,21 @@ footswitch, so you can change sound without taking your hands off the guitar for
   model and knob, with save, save as, rename, delete and factory reset.
 - **Tune and mix**: tuner, pickup type, channel and master volumes.
 - **STEM AI**: on/off, what the two stem channels hold, and their volumes.
+- **Banks**: other sets of the four tone buttons (say Soft, Classic rock, Metal), switched in
+  the footer or by MIDI.
 - **Hands-free on the Mac**: number keys that work from any app, and MIDI control from a
   footswitch, keyboard or another app, with MIDI Learn.
+- **Song tones** (optional, Mac): another app describes a song's tones in a MIDI message,
+  and Stagehand builds a tone for each from your own and plays it on cue. The
+  [RS Companion](https://github.com/glebb/rs-mac-companion) does this for Rocksmith songs.
 - Runs on the **Mac and the iPhone**, talking to the speaker over Bluetooth; no JBL app or
   network needed.
+
+**Scope.** Stagehand is a controller for the BandBox, and that's its whole job. Everything
+from outside comes in through generic interfaces that any app or device can use: keys, MIDI
+bindings, CC 90 for banks, and the documented Song tones message. Nothing in Stagehand depends
+on one particular sender. Features beyond controlling the speaker, such as Song tones, are
+optional, and with them off Stagehand is a plain controller.
 
 ## The screens
 
@@ -56,8 +67,10 @@ drag), tap the dots, or use ← / →.
    when the tone changes, unless saved.
    **Banks** are other sets of the four slots (say Soft, Classic rock, Metal), for both
    channels: *Banks* in the footer makes one from the slots as they are, then picks, renames
-   or deletes them. With one bank nothing else changes; with more, the footer names the
-   current one.
+   or deletes them. CC 90 picks one by MIDI, and a song's style can pick one (Song tones,
+   below). With one bank nothing else changes; with more, the footer names the current one.
+   While a song's tones play, a strip above the pedals names the song and its tones, and the
+   slot the playing tone is built on lights up.
 2. **Tuner and mix**: a channel picker across the top (1–4, each labelled with what its
    switch is set to: Guitar, Mic, Line, USB/BT; it starts on the guitar's channel) chooses
    the channel the rest of the screen shows: its pickup type (Active, Humbucker, Single
@@ -103,15 +116,22 @@ latching switch. CC 90 picks a bank by its value (0 the first, 1 the next…). E
 Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
-**Song tones** (optional, macOS; switch it on in the MIDI settings). Another app can describe a
-song's tones in one SysEx message (manufacturer 0x7D, then JSON), and Stagehand makes a tone for
-each and plays them by Program Change. The
+### Song tones
+
+Optional and Mac only. Switch it on in the MIDI settings.
+
+Another app can describe a song's tones in one SysEx message (manufacturer 0x7D, then JSON),
+and Stagehand makes a tone for each and plays them by Program Change. The
 [RS Companion](https://github.com/glebb/rs-mac-companion) sends one as a Rocksmith song loads; a
-setlist or backing-track app could as well. Each tone names a category (Clean, Crunch, Heavy,
-Lead: the slot it starts from), its delay, modulation and reverb in plain terms (tape or analog
-delay, chorus, phaser…), and the Program Change that plays it; the song names a style, the bank
-the slots come from. The format is at the top of
-`Sources/Shared/SongTones/SongTonesRequest.swift`.
+setlist or backing-track app could as well. Each tone gives:
+- a category (Clean, Crunch, Heavy or Lead), which is the slot it starts from;
+- its delay, modulation and reverb in plain terms (tape or analog delay, chorus, phaser…);
+- the Program Change that plays it.
+
+The song itself gives a style, which names the bank the slots come from. The format is at the
+top of `Sources/Shared/SongTones/SongTonesRequest.swift`. The RS Companion's
+[spec](https://github.com/glebb/rs-mac-companion/blob/main/docs/song-tone-messages.md) is
+written from the sender's side.
 
 Stagehand turns the effects into the BandBox's pedals (tape delay → Echopress 900, analog →
 Analog Echo, chorus → Chorus, and so on, mixes kept at most 35) and fills a tone of its own for
@@ -127,7 +147,18 @@ with Main. Every other setting comes from your slots, so the levels stay yours. 
 ignores the messages, leaves those Program Changes to the bindings and makes no tones. Try it
 without another app:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
-(`Sources/Shared/SongTones/`).
+(`Sources/Shared/SongTones/`; how it came about: [song-tones-plan.md](song-tones-plan.md)).
+
+## Not yet
+
+Ideas, not promises:
+- **MIDI on the iPhone.** CoreMIDI runs there too, but Bluetooth MIDI needs its own pairing
+  screen. That would also bring Song tones to the iPhone.
+- **More MIDI actions:** an expression pedal for volume, next / previous tone, cycling a
+  pedal's model, and lights on the controller that show what's on
+  ([midi-plan.md](midi-plan.md)).
+- **More of the JBL app's features:** the looper, drums and EQ, which are still being mapped
+  out (`capture-app-features.sh`).
 
 ## Getting it
 
@@ -222,11 +253,19 @@ takes one of the three sideloaded-app slots.
 
 ## Code and artwork
 
-The code is shared: `Sources/Shared` holds the protocol, client and screens, and
-`Sources/macOS` / `Sources/iOS` each hold an app's entry point; the Mac's also holds the
-global keys and the MIDI input and sheet. `project.yml` describes
-the iPhone project for XcodeGen.
-`./test.sh` runs the tests of the parts that need no speaker (`Tests/main.swift`).
+The code is shared:
+- `Sources/Shared` holds the protocol, client and screens.
+- `Sources/Shared/SongTones` holds the optional Song tones feature: the message, the filler
+  and the song strip. The client gives it only generic hooks (reserved tones, record
+  observers, raw sends).
+- `Sources/macOS` and `Sources/iOS` each hold an app's entry point. The Mac's also holds the
+  global keys and the MIDI input and sheet.
+
+`project.yml` describes the iPhone project for XcodeGen. `./test.sh` runs the tests of the parts
+that need no speaker (`Tests/main.swift`).
+
+How the bigger features were planned: [midi-plan.md](midi-plan.md),
+[preset-editor-plan.md](preset-editor-plan.md), [song-tones-plan.md](song-tones-plan.md).
 
 The logo is set in [Yellowtail](https://fonts.google.com/specimen/Yellowtail)
 (`Fonts/`, Apache 2.0). `swift render-art.swift` redraws the iPhone and Mac icons and
