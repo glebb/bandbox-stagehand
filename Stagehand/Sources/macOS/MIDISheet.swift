@@ -6,6 +6,7 @@ struct MIDISheet: View {
     @EnvironmentObject private var midi: MIDIInput
     @EnvironmentObject private var client: BandBoxClient
     @EnvironmentObject private var assignments: ToneAssignments
+    @EnvironmentObject private var songTones: ScratchFiller
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -29,6 +30,22 @@ struct MIDISheet: View {
                 // Like the keys: plain 1–9 for the main guitar channel, Shift for channel 1.
                 column(.primary, title: "Guitar channel (CH 3, or CH 1 if it's the only guitar)")
                 column(.channel1, title: "Channel 1")
+            }
+            .opacity(midi.enabled ? 1 : 0.5)
+
+            Divider()
+            HStack(alignment: .firstTextBaseline, spacing: 12) {
+                Toggle("Song tones", isOn: $songTones.enabled)
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Stage.secondaryText)
+                Text("Another app (e.g. the RS Companion for Rocksmith) can describe a song's tones in a SysEx "
+                     + "message: Stagehand makes a tone for each from your slots, in up to five tones of its own "
+                     + "(Song 1–5), and the Program Changes the message names play them.")
+                    .font(.system(size: 11))
+                    .foregroundStyle(Stage.faintText)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .opacity(midi.enabled ? 1 : 0.5)
 

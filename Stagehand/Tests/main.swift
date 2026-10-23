@@ -81,9 +81,18 @@ if let r = SongTonesRequest.parse(message(song2)) {
           && r.tones[2].changes[.fx]?.knobs == [:], "v2: phaser, without a mix")
     check(r.tones[2].changes[.delay]?.knobs["Time"] == 1000, "v2: time at most 1000 ms")
     check(r.warnings.isEmpty, "v2: no warnings (\(r.warnings))")
+    check(r.tones.map(\.program) == [8, 9, 10], "v2: the message's programs")
 } else {
     check(false, "v2 parses")
 }
+
+// Programs: as the message names them, 8 + index when it doesn't, kept to 0-127.
+let programs = #"{"v":2,"kind":"song-tones","tones":[{"program":20,"category":"Clean"},{"category":"Lead"},{"program":200,"category":"Heavy"}]}"#
+check(SongTonesRequest.parse(message(programs))?.tones.map(\.program) == [20, 9, 127], "programs 20, 8 + 1, at most 127")
+
+// Scratch tone names: "Song n", and "RS n" from before.
+check(ScratchFiller.isScratchName("Song 1") && ScratchFiller.isScratchName("RS 5"), "scratch names, new and old")
+check(!ScratchFiller.isScratchName("Song 6") && !ScratchFiller.isScratchName("My Song 1"), "other names aren't")
 
 // Planning. A template like Brit Crunch: every slot, FX Green Phaser on, delay Pure Echo off.
 func block(_ slot: EffectSlot, _ model: UInt16, on: Bool, _ params: [(UInt8, Float)]) -> EffectBlock {

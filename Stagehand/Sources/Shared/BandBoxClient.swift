@@ -46,12 +46,11 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var stemTypes: [Int: StemType] = [:]   // stem channels 1-2
     @Published private(set) var stemLevels: [Int: Int] = [:]       // stem channels 1-3 (3 = Others)
     @Published private(set) var log: [String] = []
-    /// The user tones Stagehand fills for Rocksmith songs (ScratchFiller), scratch tone 1 first.
-    /// They are left out of the tone menus.
-    @Published var scratchTones: [Int] = UserDefaults.standard.array(forKey: "scratchTones") as? [Int] ?? [] {
-        didSet { UserDefaults.standard.set(scratchTones, forKey: "scratchTones") }
-    }
-    /// Called with every record the speaker sends, after it is applied (ScratchFiller waits on them).
+    /// Tones a feature keeps for itself (Song tones' scratch tones): left out of the tone menus.
+    @Published var reservedTones: Set<Int> = []
+    /// Names of tones a feature saves for itself: such a tone isn't offered for a tone button.
+    var isReservedName: (String) -> Bool = { _ in false }
+    /// Called with every record the speaker sends, after it is applied (a feature waits on them).
     var recordObservers: [UUID: (PropertyRecord) -> Void] = [:]
 
     static let levelRange = 0...32       // the volume knob has 32 clicks: 0 to 32
@@ -225,7 +224,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         send(BandBoxProtocol.set(Property.effectBlock, [UInt8(channel), UInt8(details.id), op.rawValue] + rest), label, coalesce: key)
     }
 
-    /// Queues a message as it is, after the writes already queued (for ScratchFiller).
+    /// Queues a message as it is, after the writes already queued (for a feature's own writes).
     func sendRaw(_ data: Data, _ label: String? = nil) { send(data, label) }
 
     private func toneName(_ id: Int) -> String { tones.first { $0.id == id }?.name ?? "#\(id)" }
@@ -458,8 +457,8 @@ final class BandBoxClient: NSObject, ObservableObject {
             send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
         case .saveAs:
             // The echo has ff for the tone and the new tone's ID as target.
-            // A scratch tone isn't the player's: don't offer it for a tone button.
-            if !ScratchFiller.isScratchName(name) { createdTone = CreatedTone(channel: channel, id: target) }
+            // A feature's tone isn't the player's: don't offer it for a tone button.
+            if !isReservedName(name) { createdTone = CreatedTone(channel: channel, id: target) }
             send(BandBoxProtocol.get([Property.presetLibrary]))
             setPreset(target, channel: channel)
         case .rename:

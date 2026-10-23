@@ -241,8 +241,8 @@ struct Bank: Codable, Equatable {
 /// Each guitar channel's button tones and the names the user gave them ("" = the slot's own name),
 /// in the current bank. Channel 3 keeps the settings saved before there were channels; channel 1
 /// starts as a copy. With one bank ("Main", what there was before banks) nothing else shows; more
-/// banks are other sets of the four slots, picked in the footer, by CC 90, or by a Rocksmith
-/// song's tones (ScratchFiller).
+/// banks are other sets of the four slots, picked in the footer, by CC 90, or by a song's style
+/// (Song tones, ScratchFiller).
 final class ToneAssignments: ObservableObject {
     @Published private var tones: [Int: [Int]] {
         didSet {

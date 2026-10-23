@@ -103,24 +103,31 @@ latching switch. CC 90 picks a bank by its value (0 the first, 1 the next…). E
 Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
 
-**Song-made tones for Rocksmith.** The
-[Rocksmith companion](https://github.com/glebb/rs-mac-companion) sends, as a song loads, a
-SysEx message (manufacturer 0x7D, then JSON) describing the song's tones in Rocksmith's terms:
-each one's category (Clean, Crunch, Heavy, Lead) and its delay, modulation and reverb. Stagehand
-turns those into the BandBox's pedals (tape delay → Echopress 900, analog → Analog Echo, chorus
-→ Chorus, and so on, mixes kept at most 35) and fills a
-scratch tone for each (user tones "RS 1"–"RS 5", made on first use and left out of the tone
-menus): it plays the slot's tone, sets the pedals, saves it into the scratch tone and drops
-the edits, so the tones in your slots stay as they are. That takes about half a second a tone, and the
-channel jumps between your slots meanwhile. During the song PC 8–12 play the scratch tones
-(unless you bind those to something else); before they're ready, their slots. The slots
-come from the bank named by the song's style (the companion labels a song Soft, Classic rock or
-Metal by how heavy it is), and loading a song switches to it. Banks for styles that Stagehand doesn't have yet are made
-on the first song message, as copies of Main (they say so in the Log): set their slots to
-sound soft, classic rock or metal; until then those songs sound as with Main. Every other
-setting comes from your slots, so the levels stay yours. Try it without the game:
+**Song tones** (optional, macOS; switch it on in the MIDI settings). Another app can describe a
+song's tones in one SysEx message (manufacturer 0x7D, then JSON), and Stagehand makes a tone for
+each and plays them by Program Change. The
+[RS Companion](https://github.com/glebb/rs-mac-companion) sends one as a Rocksmith song loads; a
+setlist or backing-track app could as well. Each tone names a category (Clean, Crunch, Heavy,
+Lead: the slot it starts from), its delay, modulation and reverb in plain terms (tape or analog
+delay, chorus, phaser…), and the Program Change that plays it; the song names a style, the bank
+the slots come from. The format is at the top of
+`Sources/Shared/SongTones/SongTonesRequest.swift`.
+
+Stagehand turns the effects into the BandBox's pedals (tape delay → Echopress 900, analog →
+Analog Echo, chorus → Chorus, and so on, mixes kept at most 35) and fills a tone of its own for
+each: user tones "Song 1"–"Song 5", made on first use and left out of the tone menus. It plays
+the slot's tone, sets the pedals, saves it into the song tone and drops the edits, so the tones
+in your slots stay as they are. That takes about half a second a tone, and the channel jumps
+between your slots meanwhile. The Program Changes the message names then play them (unless you
+bind those to something else; before they're ready, their slots), and the tones page shows the
+song with the playing tone lit. Loading a song switches to its style's bank; banks for styles
+Stagehand doesn't have yet are made on the first message, as copies of Main (they say so in the
+Log): set their slots to sound soft, classic rock or metal, say; until then those songs sound as
+with Main. Every other setting comes from your slots, so the levels stay yours. Off, Stagehand
+ignores the messages, leaves those Program Changes to the bindings and makes no tones. Try it
+without another app:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
-(`Sources/Shared/ScratchTones.swift`, `ScratchFiller.swift`).
+(`Sources/Shared/SongTones/`).
 
 ## Getting it
 
@@ -240,7 +247,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 | File | Purpose |
 |---|---|
 | `ble-scan.swift`, `build-blescan.sh` | Scanner/listener/sender (`BLEScan.app`): finds the speaker, dumps GATT, logs notifications, sends timed writes |
-| `scratch-probe.swift`, `build-scratch-probe.sh` | `ScratchProbe.app`: what scratch tones for Rocksmith need (reading and saving a tone that isn't playing, write speed, how many user tones fit), on its own "Probe" tones, which it deletes |
+| `scratch-probe.swift`, `build-scratch-probe.sh` | `ScratchProbe.app`: what song tones need (reading and saving a tone that isn't playing, write speed, how many user tones fit), on its own "Probe" tones, which it deletes |
 | `guided-session.sh` | Runs the listener and speaks prompts aloud, so each button press lines up with its message |
 | `capture-speaker-controls.sh`, `capture-app-controls.sh` | Guided sessions behind the notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |
 | `polled-session.sh` | Like `guided-session.sh`, but also polls the per-channel queries and unknown properties every few seconds; the two sessions below use it |

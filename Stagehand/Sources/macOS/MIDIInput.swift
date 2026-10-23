@@ -40,8 +40,6 @@ final class MIDIInput: ObservableObject {
     @Published private(set) var messageCount = 0
     /// The action that the next message gets bound to (MIDI Learn).
     @Published var learning: StageAction?
-    /// The last song's tones the Rocksmith companion sent (ScratchTones.swift).
-    @Published private(set) var songTones: SongTonesRequest?
 
     private var midiClient = MIDIClientRef()
     private var port = MIDIPortRef()
@@ -50,8 +48,9 @@ final class MIDIInput: ObservableObject {
     private let sysex = SysExReaders()
     private weak var client: BandBoxClient?
     private weak var assignments: ToneAssignments?
-    /// Fills and plays the Rocksmith companion's song tones: PC 8–12, unless bound to something
-    /// else. CC 90 picks a bank by its value (0 = the first), likewise.
+    /// Song tones (optional): a song tones SysEx has it make the song's tones, and the Program
+    /// Changes the message names play them, unless bound to something else. CC 90 picks a bank
+    /// by its value (0 = the first), likewise.
     private(set) var filler: ScratchFiller?
 
     func start(client: BandBoxClient, assignments: ToneAssignments, filler: ScratchFiller) {
@@ -134,13 +133,17 @@ final class MIDIInput: ObservableObject {
         learning = nil
     }
 
-    /// A SysEx message: the Rocksmith companion's song tones are the only kind Stagehand reads.
+    /// A SysEx message: a song tones message (SongTonesRequest) is the only kind Stagehand reads.
     private func handleSysEx(_ bytes: [UInt8]) {
-        guard enabled, let request = SongTonesRequest.parse(bytes) else { return }
-        songTones = request
-        client?.record("MIDI song tones for \(request.song.isEmpty ? "a song" : request.song): \(request.summary)")
+        guard enabled, let request = SongTonesRequest.parse(bytes), let filler else { return }
+        let song = request.song.isEmpty ? "a song" : request.song
+        guard MainActor.assumeIsolated({ filler.enabled }) else {
+            client?.record("MIDI song tones for \(song) ignored: Song tones is off (MIDI settings)")
+            return
+        }
+        client?.record("MIDI song tones for \(song): \(request.summary)")
         request.warnings.forEach { client?.record("! song tones: \($0)") }
-        MainActor.assumeIsolated { filler?.load(request) }
+        MainActor.assumeIsolated { filler.load(request) }
     }
 
     private func handle(_ message: MIDIMessage) {
@@ -155,13 +158,10 @@ final class MIDIInput: ObservableObject {
             return
         }
         guard enabled, let client, let assignments else { return }
-        if message.kind == .program, (8...12).contains(message.number),
-           !bindings.contains(where: { $0.trigger.matches(message) }), let filler {
-            MainActor.assumeIsolated {
-                guard filler.request != nil else { return }
-                client.record("MIDI \(message.label) → song tone \(message.number - 7)")
-                filler.play(message.number - 8)
-            }
+        if message.kind == .program, !bindings.contains(where: { $0.trigger.matches(message) }), let filler,
+           let index = MainActor.assumeIsolated({ filler.index(program: message.number) }) {
+            client.record("MIDI \(message.label) → song tone \(index + 1)")
+            MainActor.assumeIsolated { filler.play(index) }
             return
         }
         if message.kind == .control, message.number == 90, !bindings.contains(where: { $0.trigger.matches(message) }) {

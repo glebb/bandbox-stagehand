@@ -10,6 +10,7 @@ struct ContentView: View {
     #if os(macOS)
     @EnvironmentObject private var hotKeys: GlobalHotKeys
     @EnvironmentObject private var midi: MIDIInput
+    @EnvironmentObject private var songTones: ScratchFiller
     @State private var showMIDI = false
     @State private var midiFlash = false
     #endif
@@ -83,6 +84,7 @@ struct ContentView: View {
         #if os(macOS)
         .sheet(isPresented: $showMIDI) {
             MIDISheet().environmentObject(midi).environmentObject(client).environmentObject(assignments)
+                .environmentObject(songTones)
         }
         #endif
     }

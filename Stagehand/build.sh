@@ -35,7 +35,7 @@ BINARIES=()
 for arch in $ARCHS; do
   swiftc -O -parse-as-library \
     -target "$arch-apple-macos14.0" \
-    Sources/Shared/*.swift Sources/macOS/*.swift \
+    Sources/Shared/*.swift Sources/Shared/SongTones/*.swift Sources/macOS/*.swift \
     -o "build/Stagehand-$arch"
   BINARIES+=("build/Stagehand-$arch")
 done

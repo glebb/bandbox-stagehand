@@ -1,32 +1,45 @@
 import Foundation
 
-// Song-made tones for Rocksmith. While a song loads, the RS Companion sends one SysEx: manufacturer
-// 0x7D, then a JSON text describing each of the song's tones in Rocksmith's terms, in the order
-// the song first plays them (its SongTones.swift has the format):
+// Song tones: a message any app can send Stagehand over MIDI to have it make a tone for each of a
+// song's tones and play them by Program Change (the RS Companion sends one as a Rocksmith song
+// loads). One SysEx: manufacturer 0x7D (non-commercial), then JSON. Version 2 describes the tones
+// in plain terms and leaves the BandBox to Stagehand:
 //
 //   {"v": 2, "kind": "song-tones", "song": "18 And Life", "artist": "Skid Row", "tempo": 92.4,
 //    "style": "Classic rock", "styles": ["Soft", "Classic rock", "Metal"],
 //    "tones": [{"program": 8, "key": "skid18an_clean", "category": "Clean",
-//               "effects": {"modulation": {"kind": "chorus", "mix": 60}, "reverb": {"mix": 25}}}, ...]}
+//               "effects": {"modulation": {"kind": "chorus", "mix": 60}, "reverb": {"mix": 25}}},
+//              {"program": 9, "key": "skid18an_dist", "category": "Heavy",
+//               "effects": {"delay": {"kind": "analog", "time_ms": 400, "mix": 30, "feedback": 20}}}]}
 //
-// Tone i becomes scratch tone i, which PC 8 + i plays. Each one is a copy of the tone slot named
-// by its category (its template), in the bank named by the style, with only the FX, Delay and
-// Reverb pedals changed, so it keeps the template's level. Turning Rocksmith's effects into the
-// BandBox's is Stagehand's: BandBoxMapping below. (Version 1 named the BandBox models itself:
-// "bank", "banks", and per tone "base" and "set" with the pedals; still read.)
+// "category": Clean, Crunch, Heavy or Lead, the tone slot it starts from (its template).
+// "effects": delay (kind tape, analog, modulated or digital; time_ms, mix 0-100, feedback),
+// modulation (kind chorus, flanger, phaser, tremolo or vibe; mix) and reverb (mix). Left out:
+// the tone has none (a delay or modulation is switched off; the template's reverb stays).
+// "program": the Program Change that plays it (0-127; 8 + its index if left out).
+// "style": the bank the templates come from (the current bank if there's none by that name);
+// "styles": every style the app may send, made as copies of Main if missing. "key" names the
+// tone on screen; "song", "artist" and "tempo" (for a delay without a time) are optional.
+//
+// Each tone becomes a scratch tone: its template with only the FX, Delay and Reverb pedals
+// changed, so it keeps the template's level. BandBoxMapping below picks the pedals. Version 1
+// names them itself (for an app that knows the BandBox): "bank", "banks", and per tone "base"
+// (the category) and "set": {"FX"|"Delay"|"Reverb": {"on": true, "model": "Analog Echo",
+// "Time": 400, "Mix": 30}} with the models and knobs as the JBL app names them.
 
-/// The companion's message, checked against the pedals and models Stagehand knows.
+/// A song tones message, checked against the pedals and models Stagehand knows.
 struct SongTonesRequest: Equatable {
     static let manufacturer: UInt8 = 0x7D
     static let firstProgram = 8
-    static let maxTones = 5           // Rocksmith's Base and A–D
-    /// The tone slots by the names the companion uses for them, in ToneSlot order.
+    static let maxTones = 5           // scratch tones (a Rocksmith arrangement has up to five tones)
+    /// The tone slots by the names a message uses for them, in ToneSlot order.
     static let slots = ["Clean", "Crunch", "Heavy", "Lead"]
     /// The only pedals a song may change: the others set the tone's level.
     static let pedals: [String: EffectSlot] = ["FX": .fx, "Delay": .delay, "Reverb": .reverb]
 
     struct Tone: Equatable {
         let key: String
+        let program: Int                    // the Program Change that plays it
         let slot: Int                       // the template: index into ToneSlot.all
         let changes: [EffectSlot: Change]
     }
@@ -41,7 +54,7 @@ struct SongTonesRequest: Equatable {
     let song: String
     let artist: String
     let bank: String
-    /// Every bank the companion may name; Stagehand makes the missing ones (ScratchFiller).
+    /// Every bank a message may name; Stagehand makes the missing ones (ScratchFiller).
     let banks: [String]
     let tones: [Tone]
     /// What was refused or guessed, for the log.
@@ -60,9 +73,7 @@ struct SongTonesRequest: Equatable {
         if list.count > maxTones { warnings.append("\(list.count) tones, only the first \(maxTones) are made") }
         let tones = list.prefix(maxTones).enumerated().map { i, t in
             let key = t["key"] as? String ?? "tone \(i + 1)"
-            if let program = t["program"] as? Int, program != firstProgram + i {
-                warnings.append("\(key): program \(program), but scratch tone \(i + 1) plays on PC \(firstProgram + i)")
-            }
+            let program = (t["program"] as? Int).map { min(max($0, 0), 127) } ?? firstProgram + i
             let base = t[v2 ? "category" : "base"] as? String ?? ""
             let slot = slots.firstIndex { $0.caseInsensitiveCompare(base) == .orderedSame } ?? {
                 warnings.append("\(key): no tone slot \"\(base)\", using \(slots[0])")
@@ -79,7 +90,7 @@ struct SongTonesRequest: Equatable {
                 guard let fields = value as? [String: Any], let change = change(slot, fields, key, &warnings) else { continue }
                 changes[slot] = change
             }
-            return Tone(key: key, slot: slot, changes: changes)
+            return Tone(key: key, program: program, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
                                 bank: json[v2 ? "style" : "bank"] as? String ?? "", banks: names(json[v2 ? "styles" : "banks"]),
@@ -112,20 +123,20 @@ struct SongTonesRequest: Equatable {
         return change
     }
 
-    /// "Classic rock: 1 skid18an_clean (Clean, FX Chorus), 2 …"
+    /// "Classic rock: PC 8 skid18an_clean (Clean, FX Chorus), PC 9 …"
     var summary: String {
         "\(bank.isEmpty ? "no bank" : bank): " + tones.enumerated().map { i, t in
             let on = EffectSlot.allCases.compactMap { slot -> String? in
                 guard let c = t.changes[slot], c.on else { return nil }
                 return c.model.flatMap { slot.model($0)?.name }.map { "\(slot.name) \($0)" } ?? slot.name
             }
-            return "\(i + 1) \(t.key) (\(Self.slots[t.slot])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + ")"
+            return "PC \(t.program) \(t.key) (\(Self.slots[t.slot])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + ")"
         }.joined(separator: ", ")
     }
 }
 
-/// Rocksmith's effects, as a song tone message describes them, on the BandBox's pedals: the
-/// closest model, Rocksmith's mix kept at most 35 so a wet tone doesn't get louder than its
+/// A version 2 message's effects on the BandBox's pedals: the closest model, the mix kept at
+/// most 35 so a wet tone doesn't get louder than its
 /// template, and the delay's time from the song's tempo when the gear has none. A tone without
 /// a delay or modulation has that pedal off; without a reverb, the template's reverb stays.
 enum BandBoxMapping {

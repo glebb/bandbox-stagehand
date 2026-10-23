@@ -1,6 +1,9 @@
 import Foundation
 
-/// Fills the scratch tones for a Rocksmith song (ScratchTones.swift) and plays them.
+/// Song tones, an optional feature: fills the scratch tones for a song another app describes
+/// (SongTonesRequest.swift; the RS Companion sends one as a Rocksmith song loads) and plays them
+/// on the Program Changes the message names. Off, Stagehand ignores those messages, leaves the
+/// Program Changes to the bindings and makes no tones.
 ///
 /// The speaker edits only the tone a channel plays, and saving into another tone copies the
 /// playing tone there with its edits and name (protocol-notes.md, Tone actions). So for each
@@ -8,8 +11,9 @@ import Foundation
 /// into the scratch tone, which is then renamed back; the template's edits are dropped. About
 /// half a second a tone, while the song loads; the channel jumps between the slots meanwhile.
 ///
-/// The five scratch tones ("RS 1" … "RS 5", category Others) are made on first use with save as
-/// and kept in `BandBoxClient.scratchTones`; one deleted in the JBL app is made again.
+/// The five scratch tones ("Song 1" … "Song 5", category Others) are made on first use with save
+/// as; the speaker keeps them, Stagehand their IDs (reserved in the client, so the tone menus
+/// leave them out). One deleted in the JBL app is made again.
 @MainActor
 final class ScratchFiller: ObservableObject {
     enum State: Equatable {
@@ -25,6 +29,24 @@ final class ScratchFiller: ObservableObject {
     @Published private(set) var ready: Set<Int> = []
     /// The guitar channel the song tones play on.
     @Published private(set) var channel = 3
+    /// The feature's switch (MIDI settings). Off by default, on for who used it before it had one.
+    @Published var enabled = UserDefaults.standard.object(forKey: enabledKey) as? Bool
+        ?? !(UserDefaults.standard.array(forKey: tonesKey) ?? []).isEmpty {
+        didSet {
+            UserDefaults.standard.set(enabled, forKey: Self.enabledKey)
+            if !enabled { stop() }
+        }
+    }
+    private static let enabledKey = "songTonesEnabled"
+    private static let tonesKey = "scratchTones"
+
+    /// The scratch tones' IDs, scratch tone 1 first.
+    private var scratchIDs: [Int] = UserDefaults.standard.array(forKey: tonesKey) as? [Int] ?? [] {
+        didSet {
+            UserDefaults.standard.set(scratchIDs, forKey: Self.tonesKey)
+            client?.reservedTones = Set(scratchIDs)
+        }
+    }
 
     // Set by start (MIDIInput), so the app can own the filler and the screens can watch it.
     private var client: BandBoxClient!
@@ -35,13 +57,35 @@ final class ScratchFiller: ObservableObject {
     func start(client: BandBoxClient, assignments: ToneAssignments) {
         self.client = client
         self.assignments = assignments
+        client.reservedTones = Set(scratchIDs)
+        client.isReservedName = Self.isScratchName
+    }
+
+    /// Switched off: forgets the song and stops a fill.
+    private func stop() {
+        generation += 1
+        request = nil
+        ready = []
+        wanted = nil
+        state = .idle
     }
 
     /// The song tone `channel` plays, if it plays one that is filled.
     func playing(channel: Int) -> Int? {
         guard request != nil, channel == self.channel, let tone = client?.presets[channel],
-              let i = client.scratchTones.firstIndex(of: tone), ready.contains(i) else { return nil }
+              let i = scratchIDs.firstIndex(of: tone), ready.contains(i) else { return nil }
         return i
+    }
+
+    /// The song tone a Program Change plays, if the song has one on it.
+    func index(program: Int) -> Int? {
+        guard enabled else { return nil }
+        return request?.tones.firstIndex { $0.program == program }
+    }
+
+    /// "♪ skid18an_dist": a song tone by the name its message gives it.
+    func label(_ index: Int) -> String {
+        request.flatMap { $0.tones.indices.contains(index) ? "♪ \($0.tones[index].key)" : nil } ?? "♪ song tone \(index + 1)"
     }
 
     /// The tone slot a song tone is built on.
@@ -51,7 +95,7 @@ final class ScratchFiller: ObservableObject {
 
     /// A new song: fills its tones, replacing any fill still running.
     func load(_ request: SongTonesRequest) {
-        guard let client else { return }
+        guard enabled, let client else { return }
         makeMissingBanks(request)
         // The tone buttons show the bank the song's tones are built from.
         if let bank = assignments.bank(named: request.bank), bank != assignments.current {
@@ -73,7 +117,7 @@ final class ScratchFiller: ObservableObject {
         Task { await fill(request, generation) }
     }
 
-    /// Makes the banks the companion may name and Stagehand doesn't have yet, as copies of Main
+    /// Makes the banks the message may name and Stagehand doesn't have yet, as copies of Main
     /// (or of the current bank if there's no Main), for the player to set up. Until they do, the
     /// songs that use them sound as with Main.
     private func makeMissingBanks(_ request: SongTonesRequest) {
@@ -84,18 +128,18 @@ final class ScratchFiller: ObservableObject {
         }
     }
 
-    /// Program Change 8 + `index`: plays that scratch tone, or its template slot until it's
-    /// filled. While filling, the last one asked for plays when the fill is done, on the channel
+    /// Plays song tone `index` (on its Program Change, or tapped): its scratch tone, or its
+    /// template slot until it's filled. While filling, the last one asked for plays when the fill is done, on the channel
     /// the fill is on.
     func play(_ index: Int) {
-        guard let request, let client, request.tones.indices.contains(index), client.link == .connected else { return }
+        guard enabled, let request, let client, request.tones.indices.contains(index), client.link == .connected else { return }
         if case .filling = state {
             wanted = index
             return
         }
         channel = client.primaryGuitarChannel
-        if ready.contains(index), client.scratchTones.indices.contains(index) {
-            client.setPreset(client.scratchTones[index], channel: channel)
+        if ready.contains(index), scratchIDs.indices.contains(index) {
+            client.setPreset(scratchIDs[index], channel: channel)
         } else {
             client.setPreset(template(request.tones[index], channel), channel: channel)
         }
@@ -166,16 +210,19 @@ final class ScratchFiller: ObservableObject {
 
     private func fail(_ reason: String) {
         state = .failed(reason)
-        client.record("! song tones: \(reason); Program Change 8–12 play the template slots")
+        client.record("! song tones: \(reason); their Program Changes play the template slots")
         if let wanted { self.wanted = nil; play(wanted) }
     }
 
-    private nonisolated static func name(_ index: Int) -> String { "RS \(index + 1)" }
-    nonisolated static func isScratchName(_ name: String) -> Bool { (0 ..< SongTonesRequest.maxTones).map(Self.name).contains(name) }
+    private nonisolated static func name(_ index: Int) -> String { "Song \(index + 1)" }
+    /// A scratch tone's name, or what it was called before ("RS 1"; renamed on its next fill).
+    nonisolated static func isScratchName(_ name: String) -> Bool {
+        (1 ... SongTonesRequest.maxTones).contains { name == "Song \($0)" || name == "RS \($0)" }
+    }
 
     /// The first `count` scratch tones, made with save as from the playing tone where missing.
     private func scratchTones(_ count: Int) async -> [Int]? {
-        var ids = client.scratchTones
+        var ids = scratchIDs
         if !client.tones.isEmpty {
             ids = ids.filter { id in client.tones.contains { $0.id == id && $0.isUser } }
         }
@@ -186,10 +233,10 @@ final class ScratchFiller: ObservableObject {
                                             Property.toneAction, { $0.count > 3 && $0[1] == ToneAction.saveAs.rawValue }),
                   echo[3] != 0xFF else { return nil }
             ids.append(Int(echo[3]))
-            client.scratchTones = ids
+            scratchIDs = ids
             client.record("made scratch tone \(Self.name(ids.count - 1)) (\(echo[3]))")
         }
-        client.scratchTones = ids
+        scratchIDs = ids
         return Array(ids.prefix(count))
     }
 
