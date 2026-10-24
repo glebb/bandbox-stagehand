@@ -47,7 +47,23 @@ extension BandBoxClient {
             let channel = target.channel(self)
             guard let current = isOn(pedal, channel: channel) else { return }
             let on = on ?? !current
-            if on != current { setPedal(pedal, on: on, channel: channel) }
+            if on != current { switchPedal(pedal, on: on, channel: channel) }
         }
+    }
+
+    /// Switches a pedal as the tones page, keys and MIDI do: saved into the tone right away,
+    /// unless the tone already has other unsaved edits (the preset editor's), which the save
+    /// would keep too; then it's one more edit, for the editor's Save or Discard.
+    func switchPedal(_ pedal: Pedal, on: Bool, channel: Int) {
+        let save = !isEdited(channel: channel)
+        setPedal(pedal, on: on, channel: channel)
+        if save { saveTone(channel: channel) }
+    }
+
+    /// Picks a pedal's model as the tones page does, saved like `switchPedal`.
+    func switchModel(_ pedal: Pedal, _ model: EffectModel, channel: Int) {
+        let save = !isEdited(channel: channel)
+        setModel(pedal, model, channel: channel)
+        if save { saveTone(channel: channel) }
     }
 }

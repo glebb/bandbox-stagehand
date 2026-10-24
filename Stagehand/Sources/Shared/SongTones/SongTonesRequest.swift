@@ -93,7 +93,8 @@ struct SongTonesRequest: Equatable {
             return Tone(key: key, program: program, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
-                                bank: json[v2 ? "style" : "bank"] as? String ?? "", banks: names(json[v2 ? "styles" : "banks"]),
+                                bank: (json[v2 ? "style" : "bank"] as? String ?? "").trimmingCharacters(in: .whitespaces),
+                                banks: names(json[v2 ? "styles" : "banks"]),
                                 tones: tones, warnings: warnings)
     }
 

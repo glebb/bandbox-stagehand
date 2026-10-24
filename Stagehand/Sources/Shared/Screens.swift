@@ -32,13 +32,13 @@ struct TonesScreen: View {
     }
 
     /// Tap switches the pedal on or off; long-press (or right-click) picks its model.
-    /// Either is saved into the tone right away.
+    /// Either is saved into the tone right away (BandBoxClient.switchPedal).
     private func pedalButton(_ pedal: Pedal) -> some View {
         let on = client.isOn(pedal, channel: channel)
         let switchable = pedal.models.count > 1 && on != nil
         return SwitchPad(on: on == true,
                          longPress: switchable ? { choosingModel = pedal } : nil,
-                         action: { if let on { client.setPedal(pedal, on: !on, channel: channel); save() } }) {
+                         action: { if let on { client.switchPedal(pedal, on: !on, channel: channel) } }) {
             // Off: the pedal's kind (FX); on: the model it is playing.
             let model = on == true ? client.model(pedal, channel: channel).flatMap { pedal.slot.model($0)?.name } : nil
             Text(model ?? pedal.name)
@@ -52,7 +52,7 @@ struct TonesScreen: View {
         .contextMenu {
             if switchable {
                 ForEach(pedal.models) { model in
-                    Button { client.setModel(pedal, model, channel: channel); save() } label: {
+                    Button { client.switchModel(pedal, model, channel: channel) } label: {
                         if client.model(pedal, channel: channel) == model.id { Label(model.name, systemImage: "checkmark") } else { Text(model.name) }
                     }
                 }
@@ -62,8 +62,7 @@ struct TonesScreen: View {
         .popover(isPresented: Binding(get: { choosingModel == pedal },
                                       set: { if !$0 { choosingModel = nil } })) {
             ModelPicker(pedal: pedal, current: client.model(pedal, channel: channel)) {
-                client.setModel(pedal, $0, channel: channel)
-                save()
+                client.switchModel(pedal, $0, channel: channel)
                 choosingModel = nil
             }
             .presentationCompactAdaptation(.popover)
@@ -179,10 +178,6 @@ struct TonesScreen: View {
         }
         .buttonStyle(.plain)
     }
-
-    /// Saves the pedals as they are now into the playing tone on the speaker; the write
-    /// follows the change's, so the speaker has applied it first.
-    private func save() { client.saveTone(channel: channel) }
 
     @ViewBuilder
     private func toneMenu(_ pick: @escaping (Int) -> Void) -> some View {

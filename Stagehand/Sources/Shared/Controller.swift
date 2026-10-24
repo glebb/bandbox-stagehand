@@ -356,8 +356,9 @@ struct LogView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .onAppear { proxy.scrollTo(client.log.count - 1, anchor: .bottom) }
-                .onChange(of: client.log.count) { _, count in
-                    proxy.scrollTo(count - 1, anchor: .bottom)
+                // On the newest line, not the count: that stays at the cap once the log is full.
+                .onChange(of: client.log.last) {
+                    proxy.scrollTo(client.log.count - 1, anchor: .bottom)
                 }
             }
             Button("Done") { dismiss() }.keyboardShortcut(.defaultAction)

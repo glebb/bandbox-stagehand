@@ -445,16 +445,19 @@ final class BandBoxClient: NSObject, ObservableObject {
     }
 
     /// Follows up the speaker's echo of a tone action (ch op NN target …), as the JBL app does.
+    /// A tone is read again only while a channel plays it: its details are kept for no other.
+    /// That spares Song tones' fills, which save into and rename tones that aren't playing.
     private func toneActionDone(channel: Int, _ action: ToneAction?, tone: Int, target: Int, name: String) {
         let playing = Self.guitarChannels.filter { presets[$0] == tone }
+        let reread = { if !playing.isEmpty { self.send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)])) } }
         switch action {
         case .save:
             // Save the edits we have as the saved tone, so the re-read replaces both.
             for c in playing { savedDetails[c] = toneDetails[c] }
-            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+            reread()
         case .discard, .reset:
             for c in playing { toneDetails[c] = savedDetails[c] }
-            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+            reread()
         case .saveAs:
             // The echo has ff for the tone and the new tone's ID as target.
             // A feature's tone isn't the player's: don't offer it for a tone button.
@@ -462,8 +465,10 @@ final class BandBoxClient: NSObject, ObservableObject {
             send(BandBoxProtocol.get([Property.presetLibrary]))
             setPreset(target, channel: channel)
         case .rename:
-            send(BandBoxProtocol.get([Property.presetLibrary]))
-            send(BandBoxProtocol.set(Property.toneDetailsQuery, [UInt8(tone)]))
+            // The tone menus leave a feature's tones out, so their names needn't be fetched
+            // (the whole library, in fragments, for each Song tones fill).
+            if !reservedTones.contains(tone) { send(BandBoxProtocol.get([Property.presetLibrary])) }
+            reread()
         case .delete:
             send(BandBoxProtocol.get([Property.presetLibrary]))
             for c in playing { setPreset(1, channel: c) }

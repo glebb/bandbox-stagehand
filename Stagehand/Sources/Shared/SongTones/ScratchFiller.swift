@@ -52,7 +52,8 @@ final class ScratchFiller: ObservableObject {
     private var client: BandBoxClient!
     private var assignments: ToneAssignments!
     private var generation = 0
-    private var wanted: Int?                // the scratch tone a Program Change asked for while filling
+    private var fillTask: Task<Void, Never>?
+    private var wanted: Int?               // the scratch tone a Program Change asked for while filling
 
     func start(client: BandBoxClient, assignments: ToneAssignments) {
         self.client = client
@@ -102,19 +103,28 @@ final class ScratchFiller: ObservableObject {
             assignments.selectBank(bank)
             client.record("bank \(assignments.bankName) for \(request.song.isEmpty ? "this song" : request.song)")
         }
-        channel = client.primaryGuitarChannel
         generation += 1
         self.request = request
         ready = []
         wanted = nil
         guard client.link == .connected, !request.tones.isEmpty else {
+            channel = client.primaryGuitarChannel
             fail(request.tones.isEmpty ? "no tones" : "not connected to the speaker")
             return
         }
         let generation = generation
         // Filling from now, so a Program Change that comes before the task starts waits for it.
         state = .filling(done: 0, of: request.tones.count)
-        Task { await fill(request, generation) }
+        // One fill at a time: a fill still running stops at its next step, and this one starts
+        // after it, so their writes and the speaker's echoes don't mix and the scratch tones
+        // aren't made twice. The channel changes only then, as the old fill uses it to the end.
+        let previous = fillTask
+        fillTask = Task {
+            await previous?.value
+            guard current(generation) else { return }
+            channel = client.primaryGuitarChannel
+            await fill(request, generation)
+        }
     }
 
     /// Makes the banks the message may name and Stagehand doesn't have yet, as copies of Main
@@ -159,7 +169,7 @@ final class ScratchFiller: ObservableObject {
         let start = Date()
         state = .filling(done: 0, of: request.tones.count)
         client.record("song tones from bank \(assignments.banks[bank].name)")
-        guard let scratch = await scratchTones(request.tones.count), current(generation) else {
+        guard let scratch = await scratchTones(request.tones.count, generation), current(generation) else {
             if current(generation) { fail("couldn't make the scratch tones") }
             return
         }
@@ -220,14 +230,15 @@ final class ScratchFiller: ObservableObject {
         (1 ... SongTonesRequest.maxTones).contains { name == "Song \($0)" || name == "RS \($0)" }
     }
 
-    /// The first `count` scratch tones, made with save as from the playing tone where missing.
-    private func scratchTones(_ count: Int) async -> [Int]? {
+    /// The first `count` scratch tones, made with save as from the playing tone where missing;
+    /// nil if one couldn't be made or a newer fill took over.
+    private func scratchTones(_ count: Int, _ generation: Int) async -> [Int]? {
         var ids = scratchIDs
         if !client.tones.isEmpty {
             ids = ids.filter { id in client.tones.contains { $0.id == id && $0.isUser } }
         }
         while ids.count < count {
-            guard let playing = client.presets[channel],
+            guard current(generation), let playing = client.presets[channel],
                   let echo = await exchange(BandBoxProtocol.toneAction(.saveAs, channel: channel, tone: playing,
                                                                        category: 7, name: Self.name(ids.count)),
                                             Property.toneAction, { $0.count > 3 && $0[1] == ToneAction.saveAs.rawValue }),

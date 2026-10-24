@@ -60,11 +60,12 @@ drag), tap the dots, or use ← / →.
    controls (CH 1 / CH 3) next to the page dots. Each channel has its own four tone slots
    (Clean, Crunch, Heavy, Lead; keys 1–4 on the Mac); channel 1 starts as a copy of channel 3's.
    Hold one, or right-click it, to rename it, to pick which of the speaker's tones it
-   selects, to open its tone in the preset editor, or to save the pedals into that tone
-   on the speaker (only while it's playing). Above them, Comp, Dist, FX, Delay and Reverb turn on or off for the current
-   tone. Hold Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's
-   names (Dist holds the wahs and Precision Drive). Pedal and model changes are lost
-   when the tone changes, unless saved.
+   selects, or to open its tone in the preset editor. Above them, Comp, Dist, FX, Delay
+   and Reverb turn on or off for the current tone (keys 5–9 and MIDI do the same). Hold
+   Dist, FX or Delay, or right-click it, to pick its model, by the JBL app's names (Dist
+   holds the wahs and Precision Drive). Pedal and model changes are saved into the tone
+   right away, unless the tone has unsaved changes from the preset editor: then they join
+   those, for the editor's Save or Discard.
    **Banks** are other sets of the four slots (say Soft, Classic rock, Metal), for both
    channels: *Banks* in the footer makes one from the slots as they are, then picks, renames
    or deletes them. CC 90 picks one by MIDI, and a song's style can pick one (Song tones,

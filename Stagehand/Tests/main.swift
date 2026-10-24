@@ -69,6 +69,8 @@ let song2 = #"{"v":2,"kind":"song-tones","song":"18 And Life","artist":"Skid Row
     + #"{"program":10,"key":"l","category":"Lead","effects":{"modulation":{"kind":"phaser","mix":50},"delay":{"kind":"analog","time_ms":1500}}}]}"#
 if let r = SongTonesRequest.parse(message(song2)) {
     check(r.bank == "Classic rock" && r.banks == ["Soft", "Classic rock", "Metal"], "v2: the style names the bank")
+    let spaced = SongTonesRequest.parse(message(song2.replacingOccurrences(of: #""style":"Classic rock""#, with: #""style":" Classic rock ""#)))
+    check(spaced?.bank == "Classic rock", "v2: spaces around the style are dropped")
     check(r.tones.map(\.slot) == [0, 2, 3], "v2: templates by category")
     check(r.tones[0].changes[.fx] == .init(on: true, model: 0x0B, knobs: ["Mix": 35]), "v2: chorus, mix kept at 35")
     check(r.tones[0].changes[.delay] == .init(on: false), "v2: no delay turns it off")
@@ -167,6 +169,9 @@ do {
     a.assign(30, to: 0, channel: 3)
     check(a.tone(clean, channel: 3, bank: 0) == 5 && a.tone(clean, channel: 3, bank: 1) == 30, "assigning changes only the current bank")
     check(a.bank(named: " metal") == 1 && a.bank(named: "Soft") == nil, "banks are found by name, any case")
+    a.renameBank(to: "Metal ")
+    check(a.bank(named: "metal") == 1, "a bank saved with spaces around its name is still found")
+    a.renameBank(to: "Metal")
     let again = ToneAssignments()
     check(again.bankName == "Metal" && again.tone(clean, channel: 3) == 30 && again.banks.count == 2, "banks are kept")
     a.addBank(named: "Soft", copying: 0)
@@ -180,6 +185,24 @@ do {
     check(a.banks.map(\.name) == ["Main"] && a.bankName == "Main" && a.tone(clean, channel: 3) == 5, "deleting goes back to the one before")
     a.deleteBank()
     check(a.banks.count == 1, "the last bank stays")
+}
+UserDefaults.standard.removePersistentDomain(forName: domain)
+
+// Broken settings: a bank with a short channel 3 and no channel 1, a binding to a tone slot past the fourth.
+do {
+    let broken = Bank(name: "Odd", tones: [3: [9, 9]], names: [3: ["x"], 1: ["a", "b", "c", "d"]])
+    UserDefaults.standard.set(try? JSONEncoder().encode([broken]), forKey: "banks")
+    let a = ToneAssignments()
+    let lead = ToneSlot.all[3]
+    check(a.tone(lead, channel: 3) == lead.defaultTone && a.tone(lead, channel: 1) == lead.defaultTone,
+          "a short or missing channel gets the slots' own tones")
+    check(a.name(lead, channel: 1) == "d" && a.name(lead, channel: 3) == lead.name, "names that fit are kept")
+    a.assign(40, to: 3, channel: 1)
+    check(a.tone(lead, channel: 1) == 40, "a channel that was missing can be assigned")
+    let bindings = [MIDIBinding(trigger: MIDITrigger(kind: .program, number: 0), action: .tone(slot: 7, .primary)),
+                    MIDIBinding(trigger: MIDITrigger(kind: .program, number: 1), action: .tone(slot: 1, .primary))]
+    UserDefaults.standard.set(try? JSONEncoder().encode(bindings), forKey: "midiBindings")
+    check(MIDIInput.savedBindings() == [bindings[1]], "a binding to a slot that doesn't exist is dropped")
 }
 UserDefaults.standard.removePersistentDomain(forName: domain)
 

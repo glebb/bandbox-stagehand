@@ -103,8 +103,11 @@ final class MIDIInput: ObservableObject {
         return name?.takeRetainedValue() as String? ?? "MIDI source"
     }
 
-    private static func savedBindings() -> [MIDIBinding]? {
-        UserDefaults.standard.data(forKey: bindingsKey).flatMap { try? JSONDecoder().decode([MIDIBinding].self, from: $0) }
+    /// The saved bindings, without any to an action Stagehand doesn't have (a tone slot past
+    /// the fourth, from broken settings), which would crash where the slot is looked up.
+    static func savedBindings() -> [MIDIBinding]? {
+        UserDefaults.standard.data(forKey: bindingsKey).flatMap { try? JSONDecoder().decode([MIDIBinding].self, from: $0) }?
+            .filter { StageAction.all.contains($0.action) }
     }
 
     func binding(for action: StageAction) -> MIDIBinding? { bindings.first { $0.action == action } }

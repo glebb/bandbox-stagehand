@@ -236,6 +236,18 @@ struct Bank: Codable, Equatable {
     var name: String
     var tones: [Int: [Int]]
     var names: [Int: [String]]
+
+    /// The bank with four tones and names for each guitar channel, as the buttons need them:
+    /// a channel missing or of the wrong length (settings from a test or broken build) gets
+    /// channel 3's, and channel 3 the slots' own.
+    func repaired() -> Bank {
+        let count = ToneSlot.all.count
+        func valid<T>(_ list: [T]?) -> [T]? { list.flatMap { $0.count == count ? $0 : nil } }
+        let tones3 = valid(tones[3]) ?? ToneSlot.all.map(\.defaultTone)
+        let names3 = valid(names[3]) ?? Array(repeating: "", count: count)
+        return Bank(name: name, tones: [3: tones3, 1: valid(tones[1]) ?? tones3],
+                    names: [3: names3, 1: valid(names[1]) ?? names3])
+    }
 }
 
 /// Each guitar channel's button tones and the names the user gave them ("" = the slot's own name),
@@ -284,7 +296,8 @@ final class ToneAssignments: ObservableObject {
         let names = [3: names3, 1: savedNames(1) ?? names3]
         // "rigs" / "currentRig": what banks were called in a test build.
         let defaults = UserDefaults.standard
-        var banks = (defaults.data(forKey: "banks") ?? defaults.data(forKey: "rigs")).flatMap { try? JSONDecoder().decode([Bank].self, from: $0) } ?? []
+        var banks = (defaults.data(forKey: "banks") ?? defaults.data(forKey: "rigs"))
+            .flatMap { try? JSONDecoder().decode([Bank].self, from: $0) }?.map { $0.repaired() } ?? []
         if banks.isEmpty { banks = [Bank(name: "Main", tones: tones, names: names)] }
         let current = min(max(defaults.object(forKey: "currentBank") as? Int ?? defaults.integer(forKey: "currentRig"), 0), banks.count - 1)
         self.banks = banks
@@ -312,9 +325,10 @@ final class ToneAssignments: ObservableObject {
 
     var bankName: String { banks[current].name }
 
-    /// The bank called `name` (any case), if there is one.
+    /// The bank called `name` (any case, spaces around either name ignored), if there is one.
     func bank(named name: String) -> Int? {
-        banks.firstIndex { $0.name.caseInsensitiveCompare(name.trimmingCharacters(in: .whitespaces)) == .orderedSame }
+        let name = name.trimmingCharacters(in: .whitespaces)
+        return banks.firstIndex { $0.name.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(name) == .orderedSame }
     }
 
     /// A button's tone in another bank, without switching to it.
