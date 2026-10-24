@@ -4,6 +4,9 @@ import SwiftUI
 /// play it), the one playing lit in its slot's colour, and how the fill went.
 struct SongStrip: View {
     @ObservedObject var song: ScratchFiller
+    /// The song tone the channel plays. Passed in rather than read from `song`: it follows the
+    /// client's presets, which the strip doesn't watch, so read here it lagged one change behind.
+    let playing: Int?
     @EnvironmentObject private var assignments: ToneAssignments
 
     var body: some View {
@@ -16,7 +19,7 @@ struct SongStrip: View {
                     .layoutPriority(-1)
                 ForEach(request.tones.indices, id: \.self) { i in
                     let slot = ToneSlot.all[request.tones[i].slot]
-                    let playing = song.playing(channel: song.channel) == i
+                    let playing = self.playing == i
                     Text("\(i + 1) \(slot.name)")
                         .font(.system(size: 11, weight: playing ? .semibold : .regular))
                         .foregroundStyle(playing ? slot.color : song.ready.contains(i) ? Stage.secondaryText : Stage.faintText)

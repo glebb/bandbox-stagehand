@@ -18,7 +18,7 @@ struct TonesScreen: View {
     var body: some View {
         VStack(spacing: 10) {
             #if os(macOS)
-            if song.enabled, song.request != nil, song.channel == channel { SongStrip(song: song) }
+            if song.enabled, song.request != nil, song.channel == channel { SongStrip(song: song, playing: playingSongTone) }
             #endif
             HStack(spacing: 10) {
                 ForEach(Pedal.allCases) { pedalButton($0) }
