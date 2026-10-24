@@ -71,6 +71,10 @@ if let r = SongTonesRequest.parse(message(song2)) {
     check(r.bank == "Classic rock" && r.banks == ["Soft", "Classic rock", "Metal"], "v2: the style names the bank")
     let spaced = SongTonesRequest.parse(message(song2.replacingOccurrences(of: #""style":"Classic rock""#, with: #""style":" Classic rock ""#)))
     check(spaced?.bank == "Classic rock", "v2: spaces around the style are dropped")
+    let long = String(repeating: "x", count: 40)
+    let longStyle = SongTonesRequest.parse(message(song2.replacingOccurrences(of: #""Classic rock""#, with: "\"\(long)\"")))
+    check(longStyle?.bank == String(long.prefix(SongTonesRequest.maxBankName)) && longStyle?.banks[1] == longStyle?.bank,
+          "v2: a long style is cut, the same in style and styles")
     check(r.tones.map(\.slot) == [0, 2, 3], "v2: templates by category")
     check(r.tones[0].changes[.fx] == .init(on: true, model: 0x0B, knobs: ["Mix": 35]), "v2: chorus, mix kept at 35")
     check(r.tones[0].changes[.delay] == .init(on: false), "v2: no delay turns it off")

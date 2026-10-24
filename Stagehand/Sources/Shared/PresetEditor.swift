@@ -82,7 +82,7 @@ struct PresetEditor: View {
         }
         .sheet(isPresented: $savingAs) {
             if let details {
-                SaveAsSheet(name: details.name, category: tone?.categoryID ?? 0) { name, category in
+                SaveAsSheet(name: details.name, category: saveAsCategory) { name, category in
                     client.saveToneAs(name, category: category, channel: channel)
                 }
                 .environmentObject(client)
@@ -98,6 +98,11 @@ struct PresetEditor: View {
         .onChange(of: client.createdTone) { _, created in
             if let created, created.channel == channel { assigning = created }
         }
+    }
+
+    /// Save as starts on the tone's category, or the first one the speaker has if it isn't known.
+    private var saveAsCategory: Int {
+        tone.flatMap { client.categories[$0.categoryID] != nil ? $0.categoryID : nil } ?? client.categories.keys.min() ?? 0
     }
 
     private var confirmTitle: String {

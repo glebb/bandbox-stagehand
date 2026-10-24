@@ -42,7 +42,8 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var streamVolume: Int?
     /// Channel n's volume (n = 1-3) is level (n, channelKeys[n]), the key being its input type;
     /// learned from channelInfo events.
-    @Published private(set) var channelKeys: [Int: UInt8] = [3: 0x02, 2: 0x03]
+    @Published private(set) var channelKeys: [Int: UInt8] = defaultChannelKeys
+    private static let defaultChannelKeys: [Int: UInt8] = [3: 0x02, 2: 0x03]
     @Published private(set) var stemTypes: [Int: StemType] = [:]   // stem channels 1-2
     @Published private(set) var stemLevels: [Int: Int] = [:]       // stem channels 1-3 (3 = Others)
     @Published private(set) var log: [String] = []
@@ -113,6 +114,7 @@ final class BandBoxClient: NSObject, ObservableObject {
     func setTuner(_ on: Bool) {
         tunerKeepAlive?.invalidate()
         tunerKeepAlive = nil
+        guard link == .connected else { return }
         if on {
             send(BandBoxProtocol.set(Property.tuner, [1]), "tuner on")
             send(BandBoxProtocol.set(Property.uiMode, [1, 2]))
@@ -556,10 +558,40 @@ final class BandBoxClient: NSObject, ObservableObject {
         probeNext()
     }
 
-    func record(_ line: String) {
+    /// Forgets the speaker's settings once it's gone, so the dimmed screens show "–" rather than
+    /// values it may no longer have; connecting asks for them again. The tone library, its
+    /// categories and the speaker's name stay: they only change by our own actions.
+    private func forgetSpeakerState() {
+        battery = nil
+        externalPower = false
+        presets = [:]
+        stemAI = nil
+        pickups = [:]
+        tunerReference = nil
+        toneDetails = [:]
+        savedDetails = [:]
+        inputs = [:]
+        levels = [:]
+        streamVolume = nil
+        channelKeys = Self.defaultChannelKeys
+        stemTypes = [:]
+        stemLevels = [:]
+    }
+
+    /// Drops the speaker's connection; its disconnect starts the search again.
+    private func reconnect(_ p: CBPeripheral, _ reason: String) {
+        record(reason)
+        central.cancelPeripheralConnection(p)
+    }
+
+    private static let timeFormat: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "HH:mm:ss.SSS"
-        let stamped = "[\(f.string(from: Date()))] \(line)"
+        return f
+    }()
+
+    func record(_ line: String) {
+        let stamped = "[\(Self.timeFormat.string(from: Date()))] \(line)"
         print(stamped)
         log.append(stamped)
         if log.count > 400 { log.removeFirst(log.count - 400) }
@@ -612,8 +644,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
         tuner = nil
         tunerKeepAlive?.invalidate()
         tunerKeepAlive = nil
-        toneDetails = [:]
-        savedDetails = [:]
+        forgetSpeakerState()
         if stopped { peripheral = nil } else { startSearching() }
     }
 }
@@ -630,16 +661,18 @@ extension BandBoxClient: CBPeripheralDelegate {
     }
 
     func peripheral(_ p: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        for ch in service.characteristics ?? [] {
-            if ch.uuid == Self.writeChar { writeCharacteristic = ch }
-            if ch.uuid == Self.notifyChar { p.setNotifyValue(true, for: ch) }
+        let characteristics = service.characteristics ?? []
+        writeCharacteristic = characteristics.first { $0.uuid == Self.writeChar }
+        guard writeCharacteristic != nil, let notify = characteristics.first(where: { $0.uuid == Self.notifyChar }) else {
+            // Connected, but nothing could be sent or heard: drop it and search again.
+            return reconnect(p, "! the speaker's command channel is incomplete; connecting again")
         }
+        p.setNotifyValue(true, for: notify)
     }
 
     func peripheral(_ p: CBPeripheral, didUpdateNotificationStateFor ch: CBCharacteristic, error: Error?) {
         if let error {
-            record("subscribe failed: \(error.localizedDescription)")
-            return
+            return reconnect(p, "subscribe failed: \(error.localizedDescription); connecting again")
         }
         link = .connected
         rescanTimer?.invalidate()

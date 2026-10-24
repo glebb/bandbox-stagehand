@@ -130,9 +130,17 @@ final class ScratchFiller: ObservableObject {
     /// Makes the banks the message may name and Stagehand doesn't have yet, as copies of Main
     /// (or of the current bank if there's no Main), for the player to set up. Until they do, the
     /// songs that use them sound as with Main.
+    /// At most this many banks in all: past it, songs don't make more (the ones they name play as
+    /// with the current bank), so messages from any MIDI source can't pile them up.
+    static let maxBanks = 32
+
     private func makeMissingBanks(_ request: SongTonesRequest) {
         let source = assignments.bank(named: "Main") ?? assignments.current
         for name in request.banks + [request.bank] where !name.isEmpty && assignments.bank(named: name) == nil {
+            guard assignments.banks.count < Self.maxBanks else {
+                client.record("! song tones: no bank \(name) made, there are \(Self.maxBanks) already")
+                return
+            }
             assignments.addBank(named: name, copying: source)
             client.record("made bank \(name), a copy of \(assignments.banks[source].name): set its slots for these songs")
         }

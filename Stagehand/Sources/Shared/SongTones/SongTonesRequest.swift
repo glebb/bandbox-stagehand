@@ -93,15 +93,23 @@ struct SongTonesRequest: Equatable {
             return Tone(key: key, program: program, slot: slot, changes: changes)
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
-                                bank: (json[v2 ? "style" : "bank"] as? String ?? "").trimmingCharacters(in: .whitespaces),
+                                bank: bankName(json[v2 ? "style" : "bank"] as? String ?? ""),
                                 banks: names(json[v2 ? "styles" : "banks"]),
                                 tones: tones, warnings: warnings)
     }
 
     /// Bank names: text, trimmed, not empty, at most 16.
     private static func names(_ value: Any?) -> [String] {
-        let list = (value as? [Any] ?? []).compactMap { ($0 as? String)?.trimmingCharacters(in: .whitespaces) }
+        let list = (value as? [Any] ?? []).compactMap { ($0 as? String).map(bankName) }
         return Array(list.filter { !$0.isEmpty }.prefix(16))
+    }
+
+    /// The longest bank name a message can give; the rest is cut, the same way every time,
+    /// so a style always finds the bank it made.
+    static let maxBankName = 32
+
+    private static func bankName(_ s: String) -> String {
+        String(s.trimmingCharacters(in: .whitespaces).prefix(maxBankName)).trimmingCharacters(in: .whitespaces)
     }
 
     private static func change(_ slot: EffectSlot, _ fields: [String: Any], _ key: String,
