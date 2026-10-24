@@ -1,8 +1,13 @@
 # MIDI control plan
 
+> **Done (2026-10-18).** How MIDI came about; the README describes it as it is now. Since then
+> CC 90 picks a bank and the MIDI sheet holds the Song tones switch
+> ([song-tones-plan.md](song-tones-plan.md)). The ideas left for later are under *Not yet* in
+> the README.
+
 The Mac app listens to MIDI and does what the tones page's buttons do: select tone buttons
 1–4 and switch Comp, Dist, FX, Delay and Reverb, of the primary guitar channel or of
-channel 1. It works with another app in front, like *Keys 1–9: everywhere*. CoreMIDI needs
+channel 1. It works with another app in front, like the *Keys 1–9* switch. CoreMIDI needs
 no permission or entitlement, so the ad-hoc signed `build.sh` stays as it is.
 
 There's no particular controller to aim at, so the defaults should suit most footswitch

@@ -1,5 +1,8 @@
 # Preset editor plan
 
+> **Done (2026-10-18).** How the preset editor came about; the README describes it as it is
+> now, and protocol-notes.md has the protocol.
+
 A view for editing a tone in depth: the whole signal chain, each slot's model and its
 parameters, then saving over the tone or as a new one. The tones screen stays the quick
 view (pick a tone, switch pedals on and off); the editor goes deeper. The JBL app's
@@ -12,7 +15,7 @@ view (pick a tone, switch pedals on and off); the editor goes deeper. The JBL ap
 | A tone's 8 blocks (0x3444: slot, model, bypass, params) | Parsed; params kept as raw bytes |
 | Bypass (0x3445 op 01) and model swap (op 02) | Done for comp, dist, FX, delay, reverb |
 | Save into the same tone (0x3446 op 04, target ff) | Done |
-| Changing a parameter value | Probably op 01 with new floats; probe from the Mac |
+| Changing a parameter value | Done: op 04, one param per write (op 01 applies only the bypass) |
 | Parameter names, ranges and units per model | All mapped (protocol-notes.md, *Effect models*) |
 | Amp models and names | Mapped: 11 amps, op 03 between guitar amps, op 02 for Acoustic / Studio Bass |
 | Cab models and names | Mapped: 12 cabs, op 03, no params |
@@ -49,7 +52,7 @@ actions (save, save as, rename, delete, reset, discard) are in protocol-notes.md
 
 ## Phase 2: client (`BandBoxClient.swift`) — done
 Checked offline against the captures (builders, round trip of every captured tone, catalog
-IDs); not yet against the speaker, which needs the editor UI.
+IDs), then against the speaker through the editor UI (phase 3).
 
 - `setParam(slot:param:value:channel:)`: optimistic update + op 04 with that one param; while a knob is
   dragged, coalesce writes (latest value, about every 50 ms).

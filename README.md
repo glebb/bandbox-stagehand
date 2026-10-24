@@ -186,7 +186,7 @@ Ideas, not promises:
 
 To update, download the new zip and replace the app in Applications. To uninstall, move it to
 the Trash; its settings are in
-`~/Library/Preferences/local.bandbox-stagehand.plist`.
+`~/Library/Preferences/io.github.glebb.bandbox-stagehand.plist`.
 
 #### Building it yourself
 
