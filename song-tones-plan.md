@@ -11,6 +11,11 @@
 >   plays on the Program Change its message names.
 > - The scratch tones are called "Song 1"–"Song 5".
 >
+> - Match amps (2026-11-07, off by default, not yet heard) lifts the rule below that a scratch tone
+>   never changes the amp, for a tone the message says is driven. It sets a model only, at its
+>   defaults, and no knobs: the RS Companion's measurements of Helix showed an amp's level can
+>   move by 35 dB with Drive, so knob values for the BandBox would need the speaker.
+>
 > Where this plan has the companion name models, banks or PC 8–12, read it as described above.
 
 The companion today sends one of four Program Changes (Clean, Crunch, Heavy, Lead) and Stagehand

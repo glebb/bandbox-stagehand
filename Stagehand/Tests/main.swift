@@ -100,6 +100,34 @@ check(SongTonesRequest.parse(message(programs))?.tones.map(\.program) == [20, 9,
 check(ScratchFiller.isScratchName("Song 1") && ScratchFiller.isScratchName("RS 5"), "scratch names, new and old")
 check(!ScratchFiller.isScratchName("Song 6") && !ScratchFiller.isScratchName("My Song 1"), "other names aren't")
 
+// Match amps: a family and how driven a tone is name a model; anything else leaves the template's.
+func amp(_ name: String?) -> UInt16? { name.flatMap { n in EffectSlot.amp.models.first { $0.name == n }?.id } }
+check(BandBoxMapping.amp(gear: "Amp_MarshallJCM800", drive: 0.5) == amp("UK Crunch"), "British, crunch")
+check(BandBoxMapping.amp(gear: "Amp_GB100", drive: 0.9) == amp("British Lead"), "British, heavy")
+check(BandBoxMapping.amp(gear: "Amp_HG500", drive: 0.9) == amp("British Lead"), "HG500 is a Marshall, not a high-gain family amp")
+check(BandBoxMapping.amp(gear: "Amp_TW22", drive: 0.4) == amp("Yellow Tweed"), "American, crunch")
+check(BandBoxMapping.amp(gear: "Amp_AT120", drive: 0.7) == amp("Vintage Drive"), "American, heavy")
+check(BandBoxMapping.amp(gear: "Amp_CA100", drive: 0.9) == amp("US Metal"), "high gain, heavy")
+check(BandBoxMapping.amp(gear: "Amp_HG180", drive: 0.4) == amp("Vintage Drive"), "high gain, crunch")
+check(BandBoxMapping.amp(gear: "Amp_MarshallJCM800", drive: 0.2) == nil, "a clean tone keeps its amp")
+check(BandBoxMapping.amp(gear: "Bass_Amp_HT300B", drive: 0.9) == nil, "a bass keeps its amp")
+check(BandBoxMapping.amp(gear: "DI_Amp_TubePre", drive: 0.9) == nil, "a DI keeps its amp")
+check(BandBoxMapping.amp(gear: "Amp_Unknown", drive: 0.9) == nil, "an unknown amp keeps its amp")
+check(BandBoxMapping.amp(gear: "Amp_CA100", drive: nil) == nil && BandBoxMapping.amp(gear: nil, drive: 0.9) == nil, "no drive or gear")
+check(BandBoxMapping.canSwitchAmp(from: 0x0306) && !BandBoxMapping.canSwitchAmp(from: 0x0806), "guitar amps only")
+check(!BandBoxMapping.canSwitchAmp(from: 0x001D) && !BandBoxMapping.canSwitchAmp(from: 0x001E), "not back from Acoustic or Studio Bass")
+let withAmp = #"""
+    {"v":2,"kind":"song-tones","style":"Metal","main_amp":"Amp_CA100","tones":[
+     {"key":"a","category":"Heavy","drive":0.9,"amp":{"gear":"Amp_CA100","gain":80},"effects":{}},
+     {"key":"b","category":"Clean","drive":0.1,"amp":{"gear":"Amp_CA100","gain":10},"effects":{}},
+     {"key":"c","category":"Crunch","effects":{}}]}
+    """#
+let amps = SongTonesRequest.parse(message(withAmp))
+check(amps?.tones.map(\.amp) == [amp("US Metal"), nil, nil], "the message's amp and drive")
+check(amps?.summary.contains("amp US Metal") == true, "the summary names the amp")
+check(SongTonesRequest.parse(message(#"{"v":1,"kind":"song-tones","tones":[{"base":"Heavy","drive":0.9,"amp":{"gear":"Amp_CA100"}}]}"#))?
+    .tones[0].amp == nil, "version 1 has no amps")
+
 // Planning. A template like Brit Crunch: every slot, FX Green Phaser on, delay Pure Echo off.
 func block(_ slot: EffectSlot, _ model: UInt16, on: Bool, _ params: [(UInt8, Float)]) -> EffectBlock {
     EffectBlock(slot: slot.rawValue, model: model, bypassed: !on, params: params.map { EffectParam(id: $0.0, value: $0.1) })
@@ -153,6 +181,32 @@ if let r = request {
 }
 
 // The bytes, as BandBoxClient and protocol-notes.md have them.
+// Match amps in the plan: off changes nothing, on is one write, and nothing else moves.
+if let a = amps {
+    var warnings: [String] = []
+    let off = ScratchPlan.target(template: template, tone: a.tones[0], warnings: &warnings)
+    check(off.first { $0.slot == 3 }?.model == 0x0306, "Match amps off: the template's amp")
+    let on = ScratchPlan.target(template: template, tone: a.tones[0], matchAmp: true, warnings: &warnings)
+    let was = template.blocks.map(KnownBlock.init)
+    let plain = ScratchPlan.edits(from: was, to: off)
+    check(ScratchPlan.edits(from: was, to: on) == [.model(slot: 3, model: amp("US Metal")!)] + plain, "one more write, op 03, and no knobs")
+    check(ScratchPlan.edits(from: was, to: ScratchPlan.target(template: template, tone: a.tones[1], matchAmp: true, warnings: &warnings))
+          == ScratchPlan.edits(from: was, to: ScratchPlan.target(template: template, tone: a.tones[1], warnings: &warnings)),
+          "a clean tone: no more writes")
+    check(on.first { $0.slot == 3 }?.bypassed == false, "the amp stays on")
+    let same = ToneDetails(id: 1, name: "x", blocks: [block(.amp, amp("US Metal")!, on: true, [(4, 40)])])
+    check(ScratchPlan.target(template: same, tone: a.tones[0], matchAmp: true, warnings: &warnings)[0].params[4] == 40,
+          "already that amp: the player's knobs stay")
+    let acoustic = ToneDetails(id: 2, name: "x", blocks: [block(.amp, 0x001D, on: true, [])])
+    check(ScratchPlan.target(template: acoustic, tone: a.tones[0], matchAmp: true, warnings: &warnings)[0].model == 0x001D,
+          "an acoustic template stays")
+    let off2 = ToneDetails(id: 3, name: "x", blocks: [block(.amp, 0x0306, on: false, [])])
+    let bypassed = ScratchPlan.target(template: off2, tone: a.tones[0], matchAmp: true, warnings: &warnings)
+    check(bypassed[0].bypassed && ScratchPlan.edits(from: off2.blocks.map(KnownBlock.init), to: bypassed).count == 1,
+          "an amp that's off stays off")
+    check(warnings.isEmpty, "no warnings: \(warnings)")
+}
+
 check(ScratchPlan.Edit.param(slot: 6, model: 0x14, param: 1, value: 800).value(channel: 3, tone: 0x40)
       == [3, 0x40, 4, 6, 0x14, 0, 0xFF, 1, 1] + BandBoxProtocol.f32(800), "op 04 bytes")
 check(ScratchPlan.Edit.model(slot: 5, model: 0x0B).value(channel: 3, tone: 0x40) == [3, 0x40, 2, 5, 0x0B, 0, 0xFF, 0], "op 02 bytes")

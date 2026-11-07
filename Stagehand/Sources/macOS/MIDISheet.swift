@@ -48,6 +48,20 @@ struct MIDISheet: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             .opacity(midi.enabled ? 1 : 0.5)
+            HStack(alignment: .firstTextBaseline, spacing: 12) {
+                Toggle("Match amps", isOn: $songTones.matchAmps)
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Stage.secondaryText)
+                Text("Driven song tones also get the amp nearest the song's, at that amp's defaults. Clean tones keep "
+                     + "your slot's amp. Not yet tried on a speaker, and levels can change: start with the volume down.")
+                    .font(.system(size: 11))
+                    .foregroundStyle(Stage.faintText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .opacity(midi.enabled && songTones.enabled ? 1 : 0.5)
+            .disabled(!songTones.enabled)
 
             HStack {
                 Button("Reset to Defaults") { midi.resetToDefaults() }

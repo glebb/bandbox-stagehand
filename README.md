@@ -146,6 +146,15 @@ How a song tone is built:
 So until you set up a bank's slots (to sound soft, classic rock or metal, say), the songs with
 that style sound as with Main.
 
+**Match amps** (off by default, under Song tones in the MIDI settings) also gives a driven tone the
+amp nearest the song's, if the message says which: the amp's family and how driven the tone is pick one
+of the JBL app's models, at its defaults. Marshall-style amps get UK Crunch or British Lead, Fender-style
+Yellow Tweed or Vintage Drive, and high-gain ones Vintage Drive or US Metal. Clean tones, basses, DIs, amps
+it doesn't know and templates on Acoustic Amp, Studio Bass or Bass Amp keep the slot's amp. It costs one
+more write per tone. **It hasn't been tried on a speaker.** The plan's rule that levels come from your
+slots doesn't hold for these tones: the level is the model's default, and nothing has measured how those
+compare, so start with the volume down.
+
 Stagehand turns the effects into the BandBox's pedals (tape delay → Echopress 900, analog →
 Analog Echo, chorus → Chorus, and so on, mixes kept at most 35) and fills a tone of its own for
 each: user tones "Song 1"–"Song 5", made on first use and left out of the tone menus. It plays
