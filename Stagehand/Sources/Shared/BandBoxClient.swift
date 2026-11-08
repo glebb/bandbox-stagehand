@@ -26,6 +26,10 @@ final class BandBoxClient: NSObject, ObservableObject {
     @Published private(set) var pickups: [Int: Pickup] = [:]   // guitar channel → pickup type
     @Published private(set) var tunerOn = false
     @Published private(set) var tuner: TunerReading?
+    /// The tuner is chromatic (any note, so any tuning) rather than matching a guitar's six strings.
+    /// A setting of the speaker's, nil until it has said.
+    @Published private(set) var tunerChromatic: Bool?
+    @Published private(set) var chromatic: ChromaticReading?
     @Published private(set) var tunerReference: Double?
     /// Guitar channel → the effect blocks of its current tone, with that channel's unsaved edits.
     @Published private(set) var toneDetails: [Int: ToneDetails] = [:]
@@ -46,6 +50,16 @@ final class BandBoxClient: NSObject, ObservableObject {
     private static let defaultChannelKeys: [Int: UInt8] = [3: 0x02, 2: 0x03]
     @Published private(set) var stemTypes: [Int: StemType] = [:]   // stem channels 1-2
     @Published private(set) var stemLevels: [Int: Int] = [:]       // stem channels 1-3 (3 = Others)
+    /// Direct monitor (0x3187): the speaker plays the inputs it sends to the computer. Off, with the
+    /// output on the computer, is the DI (isDI).
+    @Published private(set) var directMonitor: Bool?
+    @Published private(set) var outputLocation: OutputLocation?
+    @Published private(set) var usb: USBStatus?
+    /// The music source playing; the computer's sound is one, at channel 4's volume (streamVolume).
+    @Published private(set) var musicSource: AudioSource?
+    @Published private(set) var musicMuted: Bool?
+    /// The speaker's capability list (0x3805), nil until it has sent one.
+    @Published private(set) var capabilities: Set<UInt8>?
     @Published private(set) var log: [String] = []
     /// Tones a feature keeps for itself (Song tones' scratch tones): left out of the tone menus.
     @Published var reservedTones: Set<Int> = []
@@ -84,6 +98,8 @@ final class BandBoxClient: NSObject, ObservableObject {
     private var rescanTimer: Timer?
     private var stopped = false   // disconnect() was called: don't search until connect()
     private var tunerKeepAlive: Timer?
+    private var locationBeforeDI: OutputLocation?   // where the output was before setDI(true) moved it
+    private var toneBeforeDry: [Int: Int] = [:]     // guitar channel → its tone before setDry(true)
 
     override init() {
         super.init()
@@ -108,7 +124,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         send(BandBoxProtocol.set(Property.stemAI, [on ? 1 : 0]), "STEM AI \(on ? "on" : "off")")
     }
 
-    /// Mirrors the JBL app: tuner on, then UI mode 01 02; reverse order to turn off.
+    /// Mirrors the JBL app: tuner on, then "the app has the tuner page open"; reverse order to turn off.
     /// A tuner turned on over Bluetooth switches itself off after ~11 s, so while it's on
     /// we repeat the tuner-on SET every 5 s; the speaker keeps it on as long as those arrive.
     func setTuner(_ on: Bool) {
@@ -117,14 +133,91 @@ final class BandBoxClient: NSObject, ObservableObject {
         guard link == .connected else { return }
         if on {
             send(BandBoxProtocol.set(Property.tuner, [1]), "tuner on")
-            send(BandBoxProtocol.set(Property.uiMode, [1, 2]))
+            send(BandBoxProtocol.set(Property.pageInUse, [PageInUse.tuner, PageInUse.appInUse]))
             tunerKeepAlive = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
                 self?.send(BandBoxProtocol.set(Property.tuner, [1]))
             }
         } else {
-            send(BandBoxProtocol.set(Property.uiMode, [1, 0]))
+            send(BandBoxProtocol.set(Property.pageInUse, [PageInUse.tuner, PageInUse.notInUse]))
             send(BandBoxProtocol.set(Property.tuner, [0]), "tuner off")
         }
+    }
+
+    /// The speaker has the chromatic mode; true until its capability list says otherwise.
+    var supportsChromatic: Bool { capabilities.map { $0.contains(Capability.chromaticTuning.rawValue) } ?? true }
+
+    /// Chromatic or string mode, the JBL app's tuner setting; then reads it back. Its readings come
+    /// as their own feed (0x3108). From the JBL app, not yet tried on a speaker.
+    func setTunerChromatic(_ on: Bool) {
+        guard link == .connected else { return }
+        tunerChromatic = on
+        tuner = nil
+        chromatic = nil
+        send(BandBoxProtocol.set(Property.tunerChromatic, [on ? 1 : 0]), on ? "tuner chromatic" : "tuner on strings")
+        send(BandBoxProtocol.get([Property.tunerChromatic]))
+    }
+
+    // MARK: DI
+    // The speaker is the computer's sound card over USB-C: it sends its inputs to the computer and
+    // plays what the computer sends back. Direct monitor off stops it playing the inputs itself, so the
+    // guitar reaches the computer only, while the computer's sound still plays (a music source, at
+    // channel 4's volume). Read from the JBL app, not yet heard on a speaker: the screen shows
+    // what the speaker reports back.
+
+    /// The DI is on: direct monitor off, with the output on the computer (when the speaker says
+    /// where it is). Nil until the speaker has said.
+    var isDI: Bool? {
+        guard let directMonitor else { return nil }
+        return !directMonitor && (outputLocation ?? .computer) == .computer
+    }
+
+    /// The speaker offers output to the computer; true until its capability list says otherwise.
+    var supportsDI: Bool { capabilities.map { $0.contains(Capability.outputToComputer.rawValue) } ?? true }
+
+    /// As the JBL app's Output page does it: output to the computer ("PC"), then direct monitor off.
+    /// Off turns direct monitor back on and puts the output back where it was. Then reads both back,
+    /// so the screen shows what the speaker made of it.
+    func setDI(_ on: Bool) {
+        guard link == .connected else { return }
+        if on, outputLocation != .computer {
+            locationBeforeDI = outputLocation
+            outputLocation = .computer
+            send(BandBoxProtocol.set(Property.outputLocation, [OutputLocation.computer.rawValue]), "output to the computer")
+        }
+        directMonitor = !on
+        send(BandBoxProtocol.set(Property.directMonitor, [on ? 0 : 1]),
+             on ? "DI on: the guitar goes to the computer, not the speaker" : "DI off: the speaker plays the guitar")
+        if !on, let before = locationBeforeDI {
+            outputLocation = before
+            send(BandBoxProtocol.set(Property.outputLocation, [before.rawValue]), "output back to \(before.name)")
+        }
+        if !on { locationBeforeDI = nil }
+        send(BandBoxProtocol.get([Property.outputLocation, Property.directMonitor]))
+    }
+
+    /// The factory tone with no amp, cab or pedals: the guitar as it comes in.
+    var bypassedTone: Int { tones.first { !$0.isUser && $0.name == "Bypassed" }?.id ?? 0x1B }
+
+    /// Every guitar channel in use plays Bypassed.
+    var isDry: Bool { activeGuitarChannels.allSatisfy { presets[$0] == bypassedTone } }
+
+    /// On plays Bypassed on the guitar channels in use and remembers their tones; off plays those
+    /// again. A channel moved to another tone meanwhile keeps it. `fallback` gives a channel's tone
+    /// when none was remembered (Bypassed picked elsewhere, or before Stagehand started).
+    func setDry(_ on: Bool, fallback: (Int) -> Int) {
+        guard link == .connected else { return }
+        let bypassed = bypassedTone
+        for channel in activeGuitarChannels {
+            if on {
+                guard presets[channel] != bypassed else { continue }
+                if let tone = presets[channel] { toneBeforeDry[channel] = tone }
+                setPreset(bypassed, channel: channel)
+            } else if presets[channel] == bypassed {
+                let tone = toneBeforeDry[channel] ?? fallback(channel)
+                if tone != bypassed { setPreset(tone, channel: channel) }
+            }
+        }
+        if !on { toneBeforeDry = [:] }
     }
 
     // MARK: Tone editing
@@ -402,6 +495,18 @@ final class BandBoxClient: NSObject, ObservableObject {
             pickups[Int(r.value[0])] = Pickup(rawValue: r.value[1])
         case Property.streamVolume where !r.value.isEmpty:
             streamVolume = Int(r.value[0])
+        case Property.directMonitor where !r.value.isEmpty:
+            directMonitor = r.value[0] == 1
+        case Property.outputLocation where !r.value.isEmpty:
+            outputLocation = OutputLocation(rawValue: r.value[0])
+        case Property.usbStatus where !r.value.isEmpty:
+            usb = USBStatus(r.value[0])
+        case Property.musicSource where !r.value.isEmpty:
+            musicSource = AudioSource(rawValue: r.value[0])
+        case Property.musicMuted where !r.value.isEmpty:
+            musicMuted = r.value[0] == 1
+        case Property.capabilities:
+            capabilities = Set(r.value)
         case Property.stemType where r.value.count >= 2:
             stemTypes[Int(r.value[0])] = StemType(rawValue: r.value[1]) ?? .off
         case Property.stemLevel where r.value.count >= 2:
@@ -418,7 +523,10 @@ final class BandBoxClient: NSObject, ObservableObject {
             stemAI = r.value[0] == 1
         case Property.tuner where !r.value.isEmpty:
             let on = r.value[0] == 1
-            if !on { tuner = nil }
+            if !on {
+                tuner = nil
+                chromatic = nil
+            }
             if !on, tunerKeepAlive != nil {
                 // The speaker drops its tuner when a channel is selected or a jack goes in or out
                 // (and on its own tuner button); one turned on here stays on until turned off here.
@@ -429,6 +537,11 @@ final class BandBoxClient: NSObject, ObservableObject {
         case Property.tunerFeed:
             tuner = BandBoxProtocol.tunerReading(r.value)
             return  // ~10 per second; keep it out of the log
+        case Property.chromaticFeed:
+            chromatic = BandBoxProtocol.chromaticReading(r.value)
+            return  // as the string feed
+        case Property.tunerChromatic where !r.value.isEmpty:
+            tunerChromatic = r.value[0] == 1
         case Property.tunerReference where r.value.count >= 2:
             tunerReference = Double(UInt16(r.value[0]) | UInt16(r.value[1]) << 8) / 10
         case Property.level where r.value.count >= 3:
@@ -481,7 +594,7 @@ final class BandBoxClient: NSObject, ObservableObject {
 
     private func requestInitialState() {
         send(BandBoxProtocol.get([Property.modelName, Property.battery, Property.stemAI,
-                                  Property.tuner, Property.tunerReference, Property.streamVolume]))
+                                  Property.tuner, Property.tunerReference, Property.tunerChromatic, Property.streamVolume]))
         send(BandBoxProtocol.set(Property.levelQuery, [0, 0]))   // speaker answers with the volume event
         for (channel, k) in channelKeys {
             send(BandBoxProtocol.set(Property.levelQuery, [UInt8(channel), k]))
@@ -494,6 +607,9 @@ final class BandBoxClient: NSObject, ObservableObject {
         // The speaker answers with each guitar channel's preset and pickup events.
         send(BandBoxProtocol.set(Self.guitarChannels.map { PropertyRecord(id: Property.presetQuery, value: [UInt8($0)]) }))
         send(BandBoxProtocol.set(Self.guitarChannels.map { PropertyRecord(id: Property.pickupQuery, value: [UInt8($0)]) }))
+        // The DI and the computer's sound, in a GET of their own: a speaker that doesn't know one leaves it out.
+        send(BandBoxProtocol.get([Property.capabilities, Property.usbStatus, Property.outputLocation,
+                                  Property.directMonitor, Property.musicSource, Property.musicMuted]))
     }
 
     // MARK: Discovery
@@ -568,6 +684,7 @@ final class BandBoxClient: NSObject, ObservableObject {
         stemAI = nil
         pickups = [:]
         tunerReference = nil
+        tunerChromatic = nil
         toneDetails = [:]
         savedDetails = [:]
         inputs = [:]
@@ -576,6 +693,12 @@ final class BandBoxClient: NSObject, ObservableObject {
         channelKeys = Self.defaultChannelKeys
         stemTypes = [:]
         stemLevels = [:]
+        directMonitor = nil
+        outputLocation = nil
+        usb = nil
+        musicSource = nil
+        musicMuted = nil
+        capabilities = nil
     }
 
     /// Drops the speaker's connection; its disconnect starts the search again.
@@ -642,6 +765,7 @@ extension BandBoxClient: CBCentralManagerDelegate {
         fragments.removeAll()
         tunerOn = false
         tuner = nil
+        chromatic = nil
         tunerKeepAlive?.invalidate()
         tunerKeepAlive = nil
         forgetSpeakerState()

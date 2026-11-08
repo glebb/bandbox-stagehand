@@ -1,7 +1,7 @@
 import SwiftUI
 
-// The controller's three screens, laid out for a landscape window or phone:
-// 1. tones and pedals, 2. tuner and mix, 3. STEM AI.
+// The controller's screens, laid out for a landscape window or phone:
+// 1. tones and pedals, 2. tuner and mix, 3. STEM AI, 4. DI (the preset editor is in PresetEditor.swift).
 
 /// Tones and pedals of one guitar channel (1 or 3).
 struct TonesScreen: View {
@@ -334,14 +334,27 @@ struct MixScreen: View {
     }
 }
 
-/// Tap to turn the tuner on or off. Shows the note it hears and how far off it is.
-/// The speaker's tuner isn't per channel: it hears a guitar in channel 1 or 3.
+/// Tap to turn the tuner on or off; hold (or right-click on the Mac) to switch between matching a
+/// guitar's six strings and chromatic, any note, for other tunings. Shows the note it hears and how
+/// far off it is. The speaker's tuner isn't per channel: it hears a guitar in channel 1 or 3.
 struct TunerPad: View {
     @EnvironmentObject private var client: BandBoxClient
     private static let inputs = "Any guitar input"
 
+    private var chromaticMode: Bool { client.tunerChromatic == true }
+    private var modeName: String { chromaticMode ? "Chromatic" : "Strings" }
+
+    /// The note heard, its octave (chromatic only) and cents off; nil without a signal.
+    private var reading: (note: String, octave: Int?, cents: Float)? {
+        if chromaticMode {
+            return client.chromatic.flatMap { $0.hasSignal ? ($0.noteName, $0.octave, Float($0.cents)) : nil }
+        }
+        return client.tuner.flatMap { $0.hasSignal ? ($0.noteName, nil, $0.cents) : nil }
+    }
+
     var body: some View {
         Pad(border: client.tunerOn ? Stage.tunerBorder : Stage.tileBorder,
+            longPress: client.supportsChromatic ? { client.setTunerChromatic(!chromaticMode) } : nil,
             action: { client.setTuner(!client.tunerOn) }) {
             VStack(spacing: 0) {
                 if !client.tunerOn {
@@ -350,29 +363,48 @@ struct TunerPad: View {
                         .padding(.top, 10)
                     Text(Self.inputs).font(.system(size: 12)).foregroundStyle(Stage.faintText)
                         .padding(.top, 6)
+                    if client.supportsChromatic {
+                        Text("\(modeName) · hold to change").font(.system(size: 12)).foregroundStyle(Stage.faintText)
+                            .padding(.top, 6)
+                    }
                 } else {
-                    let reading = client.tuner.flatMap { $0.hasSignal ? $0 : nil }
+                    let reading = self.reading
                     let cents = reading.map { Int($0.cents.rounded()) }   // finite, ±1000 at most (tunerReading)
                     let inTune = cents.map { abs($0) < 5 } ?? false
-                    Text(reading?.noteName ?? "–")
-                        .font(.system(size: 56, weight: .medium))
-                        .foregroundStyle(inTune ? Stage.inTune : (reading == nil ? Stage.faintText : Stage.text))
-                        .frame(height: 60)
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        Text(reading?.note ?? "–").font(.system(size: 56, weight: .medium))
+                        if let octave = reading?.octave { Text("\(octave)").font(.system(size: 24, weight: .medium)) }
+                    }
+                    .foregroundStyle(inTune ? Stage.inTune : (reading == nil ? Stage.faintText : Stage.text))
+                    .frame(height: 60)
                     TunerTicks(cents: reading?.cents)
                         .frame(height: 18)
                         .padding(.top, 18)
-                    Text(cents.map { "\($0 > 0 ? "+" : $0 < 0 ? "−" : "")\(abs($0)) cents" } ?? "Play a string")
+                    Text(cents.map { "\($0 > 0 ? "+" : $0 < 0 ? "−" : "")\(abs($0)) cents" }
+                         ?? (chromaticMode ? "Play a note" : "Play a string"))
                         .font(.system(size: 12))
                         .monospacedDigit()
                         .foregroundStyle(Stage.secondaryText)
                         .padding(.top, 10)
-                    Text("\(client.tunerReference.map { String(format: "%.0f Hz", $0) } ?? "440 Hz") · \(Self.inputs)")
+                    Text("\(client.tunerReference.map { String(format: "%.0f Hz", $0) } ?? "440 Hz") · \(modeName)")
                         .font(.system(size: 12))
                         .foregroundStyle(Stage.faintText)
                         .padding(.top, 6)
                 }
             }
         }
+        #if os(macOS)
+        .contextMenu {
+            if client.supportsChromatic {
+                ForEach([false, true], id: \.self) { chromatic in
+                    Button { client.setTunerChromatic(chromatic) } label: {
+                        let name = chromatic ? "Chromatic" : "Strings"
+                        if chromaticMode == chromatic { Label(name, systemImage: "checkmark") } else { Text(name) }
+                    }
+                }
+            }
+        }
+        #endif
     }
 }
 
@@ -447,6 +479,68 @@ struct StemScreen: View {
             .buttonStyle(.plain)
             .menuIndicator(.hidden)
         }
+    }
+}
+
+/// The DI: the guitar goes to the computer over USB-C and the speaker doesn't play it, while what the
+/// computer plays still comes out of the speaker, at the volume on the right. Dry plays the Bypassed
+/// tone, for a computer that wants the guitar as it comes in.
+struct DIScreen: View {
+    @EnvironmentObject private var client: BandBoxClient
+    @EnvironmentObject private var assignments: ToneAssignments
+
+    var body: some View {
+        // Until the speaker says, DI shows as off; tapping it then turns it on.
+        let di = client.isDI ?? false
+        HStack(spacing: 10) {
+            SwitchPad(on: di, action: { if client.supportsDI { client.setDI(!di) } }) {
+                VStack(spacing: 8) {
+                    Text("DI").font(.system(size: 20, weight: .medium))
+                    Text(!client.supportsDI ? "Not on this speaker"
+                         : di ? "Guitar to the computer only" : "The speaker plays the guitar")
+                        .font(.system(size: 12))
+                        .opacity(0.8)
+                    Text(usbText)
+                        .font(.system(size: 12))
+                        .foregroundStyle(Stage.faintText)
+                        .padding(.top, 6)
+                }
+                .multilineTextAlignment(.center)
+            }
+            .frame(maxWidth: .infinity)
+            .opacity(client.supportsDI ? 1 : 0.4)
+
+            // Off goes back to the tones Dry replaced, or a channel's Clean slot.
+            SwitchPad(on: client.isDry, action: {
+                client.setDry(!client.isDry) { assignments.tone(ToneSlot.all[0], channel: $0) }
+            }) {
+                VStack(spacing: 8) {
+                    Text("Dry").font(.system(size: 20, weight: .medium))
+                    Text("Bypassed tone").font(.system(size: 12)).opacity(0.8)
+                }
+            }
+            .frame(width: 150)
+
+            VolumeColumn(title: playbackTitle, level: client.streamVolume) {
+                client.changeChannelVolume(BandBoxClient.streamChannel, by: $0)
+            }
+            .frame(width: 150)
+        }
+    }
+
+    /// Whether the computer is on the USB-C port; empty until the speaker says.
+    private var usbText: String {
+        guard let usb = client.usb else { return "" }
+        if usb.hasComputer { return "Computer on USB" }
+        if usb.plugged, let source = usb.source, source != .none { return "USB: \(source.name)" }
+        return "No computer on USB"
+    }
+
+    /// The music the speaker plays besides its inputs: the computer's sound, unless it's playing
+    /// another source (Bluetooth from a phone, say).
+    private var playbackTitle: String {
+        let source = client.musicSource.map { $0 == .none ? "Playback" : "\($0.name) audio" } ?? "Computer audio"
+        return client.musicMuted == true ? "\(source), muted" : source
     }
 }
 

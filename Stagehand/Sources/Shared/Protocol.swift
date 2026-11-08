@@ -22,7 +22,12 @@ enum Property {
     static let modelName: UInt16 = 0x0006
     static let battery: UInt16 = 0x000D
     static let keepAlive: UInt16 = 0x0002
-    static let streamVolume: UInt16 = 0x2D42      // channel 4 (USB / Bluetooth audio) volume, 0-32
+    static let musicSource: UInt16 = 0x0BA1       // the music source playing (AudioSource)
+    static let usbStatus: UInt16 = 0x200A         // what is in the USB-C port (USBStatus)
+    static let musicMuted: UInt16 = 0x2D41        // 01: the music source is muted
+    /// The JBL app's AudioVolume: the level of the music the speaker plays (from a computer over USB,
+    /// Bluetooth or aux), 0-32. The speaker shows it as channel 4, which has no input jack.
+    static let streamVolume: UInt16 = 0x2D42
     static let stemType: UInt16 = 0x3081          // ch type: stem channel 1-2 type (StemType)
     static let stemLevel: UInt16 = 0x3082         // ch VV: stem channel 1-3 volume, 0-32
     static let stemTypeQuery: UInt16 = 0x3083     // SET ch: speaker answers with a stemType event
@@ -33,7 +38,13 @@ enum Property {
     static let pitchShift: UInt16 = 0x30C1        // signed semitones, ff = -1
     static let tuner: UInt16 = 0x3100
     static let tunerReference: UInt16 = 0x3103
-    static let tunerFeed: UInt16 = 0x3106
+    static let tunerFeed: UInt16 = 0x3106         // string mode's live readings (TunerReading)
+    static let tunerChromatic: UInt16 = 0x3107    // 01: the tuner is chromatic, any note; 00: guitar strings
+    static let chromaticFeed: UInt16 = 0x3108     // chromatic mode's live readings (ChromaticReading)
+    static let outputLocation: UInt16 = 0x3180    // where the speaker sends what it records (OutputLocation)
+    /// Direct monitor, the JBL app's Output page with "PC" picked: 01 the speaker plays the inputs it
+    /// sends to the computer, 00 it doesn't (the DI). What the computer plays is a music source, not an input.
+    static let directMonitor: UInt16 = 0x3187
     static let channelQuery: UInt16 = 0x3400      // SET n: speaker answers with a channelInfo event
     static let channelInfo: UInt16 = 0x3401       // n plugged type: what is in channel n; its volume is level (n, type)
     static let pickupQuery: UInt16 = 0x3402       // SET ch: speaker answers with a pickup event
@@ -48,7 +59,71 @@ enum Property {
     static let effectBlock: UInt16 = 0x3445       // SET ch NN op slot …: 01 bypass, 02 / 03 model, 04 one param (EffectOp)
     static let toneAction: UInt16 = 0x3446        // ch op NN target cat len name: save, save as, rename… (ToneAction)
     static let presetCategories: UInt16 = 0x344A  // GET: category names
-    static let uiMode: UInt16 = 0x3804
+    static let pageInUse: UInt16 = 0x3804         // page state: which tool page a client has open (PageInUse)
+    static let capabilities: UInt16 = 0x3805      // the speaker's features, one Capability byte each
+}
+
+/// 0x3804 `page state`, as the JBL app sends it while one of its tool pages is open.
+enum PageInUse {
+    static let tuner: UInt8 = 1                   // also 2 looper, 3 drums, 4 metronome
+    static let notInUse: UInt8 = 0, appInUse: UInt8 = 2
+}
+
+/// The features in the speaker's capability list (0x3805) that Stagehand looks at.
+enum Capability: UInt8 {
+    case chromaticTuning = 1                      // the tuner's chromatic mode
+    case outputToComputer = 13                    // the JBL app's Output to "PC", with direct monitor
+}
+
+/// A music source (0x0BA1, and the low bits of 0x200A), by the JBL app's list.
+enum AudioSource: UInt8 {
+    case none = 0, bluetooth = 1, aux = 2, usbDrive = 3, optical = 4, fmRadio = 5, dabRadio = 6
+    case computer = 7                             // USB Audio Class: a computer with the speaker as its sound card
+    case rca = 8, a2b = 9, coaxial = 10, auracast = 16
+
+    var name: String {
+        switch self {
+        case .none: "Nothing"
+        case .bluetooth: "Bluetooth"
+        case .aux: "Aux"
+        case .usbDrive: "USB drive"
+        case .optical: "Optical"
+        case .fmRadio: "FM radio"
+        case .dabRadio: "DAB radio"
+        case .computer: "Computer"
+        case .rca: "RCA"
+        case .a2b: "A2B"
+        case .coaxial: "Coaxial"
+        case .auracast: "Auracast"
+        }
+    }
+}
+
+/// The USB-C port (0x200A): bit 7 set when something is plugged in, the rest what it runs as.
+struct USBStatus: Equatable {
+    let plugged: Bool
+    let source: AudioSource?
+
+    init(_ byte: UInt8) {
+        plugged = byte & 0x80 != 0
+        source = AudioSource(rawValue: byte & 0x7F)
+    }
+
+    /// A computer is using the speaker as its sound card.
+    var hasComputer: Bool { plugged && source == .computer }
+}
+
+/// Where the speaker sends what it records (0x3180): the JBL app's "Output to".
+enum OutputLocation: UInt8 {
+    case phone = 0, usbDrive = 1, computer = 2
+
+    var name: String {
+        switch self {
+        case .phone: "the phone"
+        case .usbDrive: "the USB drive"
+        case .computer: "the computer"
+        }
+    }
 }
 
 struct Tone: Identifiable, Hashable {
@@ -168,7 +243,7 @@ enum StemType: UInt8, CaseIterable, Identifiable {
     }
 }
 
-/// One sample of the live tuner feed (0x3106). The tuner matches guitar strings, not chromatic notes.
+/// One sample of the live tuner feed (0x3106), in string mode: it matches a guitar's six strings.
 struct TunerReading: Equatable {
     let frequency: Float
     let string: Int         // 1 = high E … 6 = low E
@@ -178,6 +253,20 @@ struct TunerReading: Equatable {
     var noteName: String {
         ["", "E", "B", "G", "D", "A", "E"][min(max(string, 0), 6)]
     }
+}
+
+/// One sample of the chromatic tuner (0x3108): the nearest note, in any tuning, and how far off it is.
+struct ChromaticReading: Equatable {
+    let semitonesFromA4: Int   // the nearest note: 0 A4, −5 E4, −29 E2 (the JBL app names C2–B4)
+    let cents: Int             // from that note, −50…50; below 0 is flat
+    let frequency: Float       // what it hears, Hz
+    let hasSignal: Bool
+
+    private static let names = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
+    private var midiNote: Int { 69 + semitonesFromA4 }
+
+    var noteName: String { Self.names[(midiNote % 12 + 12) % 12] }
+    var octave: Int { Int((Double(midiNote) / 12).rounded(.down)) - 1 }
 }
 
 struct Message {
@@ -306,6 +395,14 @@ enum BandBoxProtocol {
         guard frequency.isFinite, cents.isFinite else { return nil }
         return TunerReading(frequency: frequency, string: Int(v[4]), cents: min(max(cents, -1000), 1000),
                             hasSignal: v[9] == 1)
+    }
+
+    /// 0x3108: note i8 (semitones from A4) | the note's frequency f32 | cents i8 | frequency heard f32 | signal u8.
+    static func chromaticReading(_ v: [UInt8]) -> ChromaticReading? {
+        guard v.count >= 11 else { return nil }
+        let frequency = f32(v, at: 6)
+        return ChromaticReading(semitonesFromA4: Int(Int8(bitPattern: v[0])), cents: Int(Int8(bitPattern: v[5])),
+                                frequency: frequency.isFinite ? frequency : 0, hasSignal: v[10] == 1)
     }
 
     static func hex(_ bytes: [UInt8]) -> String {

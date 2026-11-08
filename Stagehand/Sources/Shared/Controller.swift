@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The controller screens, side by side: a tones page for each guitar channel with a guitar
-/// plugged in (channel 3 when there's none), then mix, STEM AI and the preset editor. Swipe (touch, trackpad or drag),
+/// plugged in (channel 3 when there's none), then mix, STEM AI, DI and the preset editor. Swipe (touch, trackpad or drag),
 /// tap the dots, or use ← / → to change screen; 1–4 select the tone buttons and 5–9 switch the
 /// pedals of the primary guitar channel, Shift+1–9 those of channel 1.
 struct ContentView: View {
@@ -25,8 +25,9 @@ struct ContentView: View {
     #endif
 
     private var guitarPages: [Int] { client.activeGuitarChannels }
-    private var pageCount: Int { guitarPages.count + 3 }
-    private var editorPage: Int { guitarPages.count + 2 }
+    private var pageCount: Int { guitarPages.count + 4 }
+    private var diPage: Int { guitarPages.count + 2 }
+    private var editorPage: Int { guitarPages.count + 3 }
     private var editedChannel: Int {
         editorChannel.flatMap { guitarPages.contains($0) ? $0 : nil } ?? client.primaryGuitarChannel
     }
@@ -51,6 +52,8 @@ struct ContentView: View {
                         MixScreen(channel: $channel)
                     } else if index == guitarPages.count + 1 {
                         StemScreen()
+                    } else if index == diPage {
+                        DIScreen()
                     } else {
                         PresetEditorScreen(channel: $editorChannel)
                     }
@@ -158,6 +161,15 @@ struct ContentView: View {
                 Circle().fill(statusColor).frame(width: 6, height: 6)
                 Text(client.deviceName ?? "JBL BandBox Trio")
                 Spacer()
+                // The speaker is quiet for the guitar until DI is off again, also after a restart.
+                if client.isDI == true {
+                    Button { page = diPage } label: {
+                        Text("DI on").foregroundStyle(Stage.amber)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.trailing, 10)
+                    .help("The guitar goes to the computer only; the speaker doesn't play it. Click for the DI screen.")
+                }
                 if let battery = client.battery {
                     HStack(spacing: 3) {
                         if client.externalPower { Image(systemName: "bolt.fill").font(.system(size: 9)) }

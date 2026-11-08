@@ -30,8 +30,11 @@ footswitch, so you can change sound without taking your hands off the guitar for
   models, then save the result into the tone.
 - **Edit tones in depth** in a preset editor: the whole chain from gate to reverb, every
   model and knob, with save, save as, rename, delete and factory reset.
-- **Tune and mix**: tuner, pickup type, channel and master volumes.
+- **Tune and mix**: tuner (guitar strings or chromatic), pickup type, channel and master volumes.
 - **STEM AI**: on/off, what the two stem channels hold, and their volumes.
+- **DI to a computer**: with the BandBox as the computer's sound card over USB-C, the guitar goes
+  to the computer and not to the speaker, while what the computer plays still comes out of the
+  speaker. Optionally dry, on the Bypassed tone. Not yet tried on a speaker.
 - **Banks**: other sets of the four tone buttons (say Soft, Classic rock, Metal), switched in
   the footer or by MIDI.
 - **Hands-free on the Mac**: number keys that work from any app, and MIDI control from a
@@ -76,10 +79,25 @@ drag), tap the dots, or use ← / →.
    switch is set to: Guitar, Mic, Line, USB/BT; it starts on the guitar's channel) chooses
    the channel the rest of the screen shows: its pickup type (Active, Humbucker, Single
    coil; only for channel 3, or channel 1 with its switch on guitar), the tuner (string, cents and frequency) and its volume.
-   Master volume is on the right.
+   Master volume is on the right. Hold the tuner (or right-click it on the Mac) to switch it
+   between **Strings**, which matches a guitar's six strings in standard tuning, and
+   **Chromatic**, which names any note with its octave (D2, C♯3), for drop D, E♭ or a bass. That's
+   the speaker's own setting, as in the JBL app's tuner settings. **Chromatic hasn't been tried on
+   a speaker yet.**
 3. **STEM AI**: on/off, the type of stem channels 1 and 2 (guitar, vocals, drums, off)
    and the volumes of both plus Others.
-4. **Preset editor**: the whole chain of the tone a guitar channel plays: gate,
+4. **DI**: for playing into a computer (Rocksmith, a DAW) with the BandBox as its sound card
+   over USB-C. **DI** sends the guitar to the computer only: the speaker stops playing it, and
+   what the computer plays still comes out of the speaker. It's what the JBL app's Output page
+   does with *PC* picked and *Direct Monitor Mode* off, and it shows whether a computer is on the
+   USB port. **Dry** plays the Bypassed tone on the guitar channels in use, so the computer gets
+   the guitar as it comes in; off goes back to the tones they had (or the Clean slot). On the
+   right is the volume of what the speaker plays (channel 4's), titled by its source, so a phone
+   playing over Bluetooth instead of the computer shows there. While DI is on the footer says
+   **DI on**; the speaker keeps it until it's switched off, also after Stagehand quits.
+   **Not yet tried on a speaker**: the commands come from the JBL app (see
+   [app-teardown.md](app-teardown.md)), and the screen shows what the speaker reports back.
+5. **Preset editor**: the whole chain of the tone a guitar channel plays: gate,
    compressor, distortion, amp, cabinet, FX, delay and reverb, joined like a pedalboard
    (amber when on). Tap a slot to show its models (by the JBL app's names: 11 amps, 12
    cabinets, 9 FX…) and its knobs; drag a knob up or down to turn it, and the power button
@@ -176,8 +194,9 @@ Ideas, not promises:
 - **More MIDI actions:** an expression pedal for volume, next / previous tone, cycling a
   pedal's model, and lights on the controller that show what's on
   ([midi-plan.md](midi-plan.md)).
-- **More of the JBL app's features:** the looper, drums and EQ, which are still being mapped
-  out (`capture-app-features.sh`).
+- **More of the JBL app's features:** the looper, drums and metronome, and EQ.
+  The JBL app names all their properties ([app-teardown.md](app-teardown.md)); none is captured
+  or tried yet (`capture-app-features.sh`).
 
 ## Getting it
 

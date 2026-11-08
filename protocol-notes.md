@@ -57,10 +57,12 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x000d | 1 | `64` (100), `e4` | **Battery %** in bits 0–6; bit 7 set **on the wall power** (`e4` = full and plugged in) | listen + app capture, Mac log |
 | 0x0031 | 16 | sec,min,hour,?,day,month,year(u16),?,"+03:00",dst | Date/time; the app SETs it on connect | app capture |
 | 0x3100 | 1 | `00`/`01` | **Tuner off/on**. GET works too. **Verified from the Mac**: SET → OK reply + EVENT confirming the new state. A tuner turned on with SET **switches itself off after ~11 s**; repeating SET 0x3100 = 01 every 5 s keeps it on (tested 36 s). Turned on from the speaker's button, it stayed on. Selecting a channel on the speaker, or plugging or unplugging a jack, **turns it off** (EVENT 0x3100 = 00); the next keep-alive SET turns it back on | app capture + Mac test, `captures/tuner.decoded.txt` |
-| 0x3101, 0x3102, 0x3104, 0x3107 | 1 | `00` | Tuner readings? All 0 when nothing was played | app capture |
+| 0x3101, 0x3102, 0x3104 | 1 | `00` | Tuner settings, named from the app: **0x3101 mode** (0 auto, 1–6 one string), **0x3102 instrument** (`TunerBassMode`: guitar 3+3 or 6 in line, 4-string bass, ukulele), **0x3104 string** (custom tuning). All 0 on connect | app capture; names from app teardown |
+| 0x3107 | 1 | `00`/`01` | **Chromatic tuner** (`TunerChromaticTuning`): 01 the tuner names any note, 00 it matches a guitar's strings (0x3106). A setting on the JBL app's tuner settings page, SET on its own. GET on connect gave 00. Stagehand switches it (hold the tuner). **SET not tried** | app capture + app teardown |
+| 0x3108 | 11 | | **Chromatic tuner feed** (`ChromaticTuningResult`), in chromatic mode: byte 0 the nearest note, signed semitones from A4 (0 A4, −29 E2; the app names C2–B4); bytes 1–4 that note's frequency, float32 Hz; byte 5 **cents** off it, signed, −50…50, below 0 flat (the app calls ±3 perfect); bytes 6–9 the frequency heard, float32 Hz; byte 10 1 = signal. **Not seen yet** | app teardown |
 | 0x3103 | 2 | `30 11` | **Tuner reference pitch** ×10: 0x1130 = 4400 → 440.0 Hz. GET from the Mac works | app capture + Mac test |
 | 0x3106 | 10 | `36 3b a5 42 06 87 2a 0c 40 01` | **Live tuner feed**, EVENT ~10×/s while the tuner is on. Bytes 0–3: detected frequency, float32 Hz (82.6). Byte 4: **guitar string** it's matched to, 1 = high E … 6 = low E (a string tuner, not chromatic). Bytes 5–8: offset from that string's target, float32 in **half-cents** (×2 for cents; checked at 82.6, 80.1 and 102.5 Hz). Byte 9: 1 = signal, 0 = silence (then all bytes 0). **No channel byte: it hears a guitar in channel 1 or channel 3**, whichever channel is selected on the speaker (with one guitar; two at once untested) | `captures/speaker-controls.listen.log`, `captures/tuner.decoded.txt` |
-| 0x3804 | 2 | `01 02` / `01 00` | Sent with the tuner on/off (UI mode/page?) | app capture |
+| 0x3804 | 2 | `01 02` / `01 00` | **Page in use** (`PageInUseStatus`) `page state`: the client has a tool page open. Page 1 tuner, 2 looper, 3 drums, 4 metronome; state 0 not in use, 1 in use on the speaker, 2 in use in the app. Sent with the tuner on/off | app capture; names from app teardown |
 | 0x3441 | 1 | `03` | **Query current tone**: SET 0x3441 = 03 → EVENT 0x3442 with the current tone | Mac probe |
 | 0x3442 | 2 | `ch NN` | **Current tone** of guitar channel ch (01 or 03, each has its own): SET 0x3442 = 01 NN switched channel 1 audibly and left channel 3 alone (`captures/ch1-guitar.decoded.txt`). The speaker also sends it unprompted for channel 01 (01 33 when its preset button was pressed), so a client must check the channel byte. NN = tone ID from the 0x3440 library (not a 1–3 slot; the speaker's preset buttons step through the library). SET selects a tone. GET returns nothing; use 0x3441. The leading byte is the channel | listen + app capture 2 + Mac test |
 | 0x3443 | 1 | `NN` | **Query tone details**: SET 0x3443 = NN → EVENT 0x3444. The app sends it after every tone change | app capture 2 |
@@ -87,6 +89,11 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3440 | 432 | records `id cat len name…` | **Tone preset library**: 27 factory tones (Clean Comping … Bypassed) + user tones at 0x33, 0x34. GET works; reply comes in 2 fragments. **It breaks off at about 1 KB**: with 86 tones (59 user tones) the reply was 1,159 bytes, correct up to tone 0x6b and then memory garbage, so later tones were missing (`captures/scratch-probe.log`, 2026-10-22). Keep the number of user tones well under ~60 | Mac probe |
 | 0x344a | | records `cat len name…` | **Tone categories**: Pop, Funk, Blues, Rock, Metal, Acoustic, Bass, Others | Mac probe |
 | 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | **BandBox capability list** (`BandBoxSupportedFeatureList`). Each byte is a feature bit; this Trio advertises ChromaticTuning(1), Drum(2), LooperDrumMode(3), LooperMetronomeMode(4), OutputPhoneMode(5), OutputUsbDriveMode(6), UkuleleTuner(9), Looper(0a), ThreeLevelGuitarGain(0b), OutputPC(0d). **Absent: AuxOutSetting(0e)** — see the DI note below | app capture; decoded from app |
+| 0x3180 | 1 | `02` | **Output location** (`OutputRecordStorageLocation`): where recordings go, 00 phone, 01 USB drive, 02 computer ("PC"). Stagehand sets 02 for the DI and puts the old value back after. **Not tried** | app teardown |
+| 0x3187 | 1 | `00`/`01` | **Direct monitor** (`OutputDirectMonitorMode`): 01 the speaker plays the inputs it sends to the computer, 00 it doesn't. Stagehand's DI is SET 0x3180 = 02 then SET 0x3187 = 00, then GETs both back. **Not tried**: whether the speaker goes quiet for the guitar while the computer still gets it, and still plays the computer's sound | app teardown |
+| 0x200a | 1 | `87` | **USB port** (`USBStatusFeature`): bit 7 set when something is plugged in, bits 0–6 the source it runs as (07 a computer using the speaker as its sound card, 03 a USB drive; see 0x0ba1). Stagehand reads it on connect. **Not tried** | app teardown |
+| 0x0ba1 | 1 | | **Music source playing** (`ActiveAudioSource`): 00 none, 01 Bluetooth, 02 aux, 03 USB drive, 07 computer (USB audio), others for other JBL speakers. Writable in the app's beans, but the app never writes it for the BandBox; Stagehand only reads it | app teardown |
+| 0x2d41 | 1 | `00`/`01` | **Music source muted** (`AudioMuteStatus`). Read by Stagehand, not written | app teardown |
 | 0x1008, 0x000c, 0x2c00–0x2c05, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect. Named from the app: 0x1008 TotalPlaybackTime, 0x000c FirmwareVersion (14-byte), 0x2c00–0x2c05 Party\*, 0x3000 DrumStartEnd, 0x3040 MetronomeStartEnd, 0x3145 LooperRecordPlayOperation, 0x3148 LooperLayerCount, 0x0ba1 ActiveAudioSource, 0x3404 AUXType, 0x3407 AuxOutputMode. See the app teardown | app capture + app teardown |
 
 ## Tone actions (0x3446)
@@ -243,6 +250,16 @@ quiet while the USB feed to the computer stays up":
 
 Not yet verified on hardware: that direct-monitor-off actually silences the speaker while the
 UAC level holds (the app proves the control and its bytes, not the DSP routing).
+
+**How the JBL app uses it** (`OutputActivity` / `OutputViewModel`, layout `activity_output`): the
+Output page GETs 0x3180, 0x200a, 0x3805, 0x3187 and 0x3800 when it opens. Its *Output to* row
+picks Phone, PC or Flash drive (SET 0x3180). With **PC** picked it hides the record button and
+the file list (the computer records) and shows only **Direct Monitor Mode**, a toggle that SETs
+0x3187; the toggle shows only if 0x3805 has OutputPC. So the DI is "output to PC, direct monitor
+off". The computer's own sound is a music source (0x0ba1 = 07, level 0x2d42), not an input, so
+direct monitor shouldn't touch it, but that's untested too. Master volume and 0x2d41 would
+silence the computer's sound along with the guitar, so they're no use for a DI that still plays
+the computer. Stagehand's DI screen does exactly this, with Dry (the Bypassed tone) as a separate switch.
 
 ## Not mapped yet
 Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:

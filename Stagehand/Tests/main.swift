@@ -264,5 +264,40 @@ do {
 }
 UserDefaults.standard.removePersistentDomain(forName: domain)
 
+// The DI's writes and reads, as the JBL app's Output page makes them (app-teardown.md).
+do {
+    check([UInt8](BandBoxProtocol.set(Property.outputLocation, [OutputLocation.computer.rawValue]))
+          == [0x00, 0xDD, 0x02, 0x00, 0x01, 0x00, 0x05, 0x00, 0x80, 0x31, 0x01, 0x00, 0x02], "output to the computer: SET 0x3180 = 02")
+    check([UInt8](BandBoxProtocol.set(Property.directMonitor, [0]))
+          == [0x00, 0xDD, 0x02, 0x00, 0x01, 0x00, 0x05, 0x00, 0x87, 0x31, 0x01, 0x00, 0x00], "direct monitor off: SET 0x3187 = 00")
+    check(USBStatus(0x87).hasComputer && USBStatus(0x87).source == .computer, "plugged in, USB audio: a computer")
+    check(USBStatus(0x83).plugged && !USBStatus(0x83).hasComputer && USBStatus(0x83).source == .usbDrive, "a USB drive isn't a computer")
+    check(!USBStatus(0x07).plugged && !USBStatus(0x07).hasComputer, "nothing plugged in")
+    check(USBStatus(0xFF).source == nil, "an unknown source")
+    let reply = BandBoxProtocol.records([0x00, 0x00, 0x87, 0x31, 0x01, 0x00, 0x01, 0x05, 0x38, 0x03, 0x00, 0x01, 0x0D, 0x0E])
+    check(reply.records.map(\.id) == [Property.directMonitor, Property.capabilities], "a GET reply with direct monitor and capabilities")
+    check(Set(reply.records[1].value).contains(Capability.outputToComputer.rawValue), "output to the computer in the capability list")
+}
+
+// The chromatic tuner (0x3107 / 0x3108, from the JBL app's V5ChromaticTuningResult and ChromaticTuningView).
+do {
+    check([UInt8](BandBoxProtocol.set(Property.tunerChromatic, [1]))
+          == [0x00, 0xDD, 0x02, 0x00, 0x01, 0x00, 0x05, 0x00, 0x07, 0x31, 0x01, 0x00, 0x01], "chromatic on: SET 0x3107 = 01")
+    func sample(_ note: Int8, _ cents: Int8, heard: Float, signal: UInt8 = 1) -> [UInt8] {
+        [UInt8(bitPattern: note)] + BandBoxProtocol.f32(82.41) + [UInt8(bitPattern: cents)] + BandBoxProtocol.f32(heard) + [signal]
+    }
+    let lowD = BandBoxProtocol.chromaticReading(sample(-31, -7, heard: 73.1))
+    check(lowD?.noteName == "D" && lowD?.octave == 2 && lowD?.cents == -7 && lowD?.hasSignal == true, "D2, 7 cents flat (drop D)")
+    check(abs((lowD?.frequency ?? 0) - 73.1) < 0.01, "the frequency heard")
+    let a4 = BandBoxProtocol.chromaticReading(sample(0, 12, heard: 443))
+    check(a4?.noteName == "A" && a4?.octave == 4 && a4?.cents == 12, "A4, 12 cents sharp")
+    let cSharp = BandBoxProtocol.chromaticReading(sample(-20, 0, heard: 138.6))
+    check(cSharp?.noteName == "C♯" && cSharp?.octave == 3, "C♯3")
+    let bassE = BandBoxProtocol.chromaticReading(sample(-41, 0, heard: 41.2))
+    check(bassE?.noteName == "E" && bassE?.octave == 1, "E1, below the app's C2–B4")
+    check(BandBoxProtocol.chromaticReading(sample(0, 0, heard: 0, signal: 0))?.hasSignal == false, "no signal")
+    check(BandBoxProtocol.chromaticReading(Array(sample(0, 0, heard: 440).prefix(10))) == nil, "a short sample is dropped")
+}
+
 print(failures == 0 ? "PASS" : "FAIL: \(failures)")
 exit(failures == 0 ? 0 : 1)

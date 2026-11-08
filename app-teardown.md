@@ -330,7 +330,12 @@ over the existing BLE link (no firmware flash, no extra hardware):
 **Still needs a hardware test** (the app proves the controls exist and their byte encoding;
 it does not prove the DSP routing): set `0x3187 = 00` with the BandBox connected and watch
 the Mac's input meter — if the speaker goes quiet while the UAC level holds, that's the
-silent DI. Then a Stagehand "silent DI" switch = select Bypassed + `SET 0x3187 = 00`.
+silent DI. Stagehand's DI screen now does this the way the app's Output page does (`SET 0x3180 =
+02`, then `SET 0x3187 = 00`), with Dry (the Bypassed tone) as a separate switch and the
+computer's playback level beside them; see protocol-notes.md, *How the JBL app uses it*.
+
+**USBStatusFeature (0x200A) byte layout:** bit 7 = inserted, bits 0–6 = the `V5AudioSource`
+the port runs as (`87` = a computer over UAC, `83` = a USB drive).
 
 ## Confirmations & corrections to protocol-notes.md
 
