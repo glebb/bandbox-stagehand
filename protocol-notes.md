@@ -69,7 +69,7 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3446 | var | `ch op NN target cat len name…` | **Tone action** on tone NN for guitar channel ch; unused fields are ff (cat) and 00 (len). See *Tone actions* | app capture 3 + 4, `captures/app-capture-6-save.*`, Mac probe |
 | 0x3448 / 0x3449 | 1 / 6 | `03` / `03 04 01 09 0e 16` | SET 0x3448 = 03 → EVENT 0x3449: `03`, count 4, then 4 tone IDs. Probably the tones on the speaker's preset buttons | app capture 3 |
 | 0x3406 | 3 | `a b VV` | **Level table** (the app SETs `a b VV` + 7 zero bytes; 3 bytes also work), keyed by (a,b). VV is **0–32** (32 knob clicks, verified end to end). `(00 00)` = **master volume**; SET 0x3406 = 00 00 VV sets it. Otherwise the key is **(channel, input type)** from 0x3401, so each channel keeps one volume per input type: (01 01) ch 1 mic (its Volume knob, 0–32), (01 02) ch 1 guitar, (02 01) ch 2 mic, (02 03) ch 2 line, (03 02) ch 3 guitar. Plugging a jack in sends an EVENT with that input's volume. The speaker sends an EVENT on every knob click. (04 04)=24 is something else (see 0x2d42) | `captures/speaker-controls.listen.log`, `captures/inputs.decoded.txt` |
-| 0x2d42 | 1 | `07` | **Channel 4 volume** (USB / Bluetooth audio; channel 4 has no input jack). Not in the 0x3406 table: EVENT on every knob click with channel 4 selected, GET and SET from the Mac work (7→8→7). Range 0–32 like the other channels (32 confirmed as the speaker's maximum). (04 04) in 0x3406 is something else: SETs to it are accepted but don't change channel 4 | Mac app log 2026-10-17 |
+| 0x2d42 | 1 | `07` | **Music-source volume** — the app calls this `AudioVolume` (the BT / USB / UAC / AUX playback level), *not* a channel. The speaker surfaces it as "channel 4" because channel 4 has no input jack. EVENT on every knob click with channel 4 selected, GET and SET from the Mac work (7→8→7). Range 0–32 like the other channels (32 confirmed as the speaker's maximum). Channel 4's own mixer volume is in 0x3406 as (04 04) = (CH4, AUX_INSTRUMENT); SETs there are accepted but don't change this music level | Mac app log 2026-10-17; name from app teardown |
 | 0x3405 | 2 | `a b` | SET to query entries of 0x3406 | app capture |
 | 0x3400 / 0x3401 | 1 / 3 | `n` / `n j t` | Channel query / **input state** of channel n (1–3). SET 0x3400 = n → EVENT 0x3401. **j = 1 jack plugged in, 0 empty. t = input type: 01 mic, 02 guitar, 03 line**, set by the channel's switch (ch 1: mic/guitar, ch 2: mic/line; ch 3 is always guitar). The speaker sends an EVENT on every plug, unplug and switch move, with or without a jack. Channel n's volume is level (n, t). Earlier read as a channel-selection event | `captures/inputs.decoded.txt` |
 | 0x3402 / 0x3403 | 1 / 2 | `03` / `03 TT` | **Pickup type** of a guitar input, per channel: SET 0x3402 = 03 → EVENT 0x3403 = 03 TT; SET 0x3403 = 03 TT selects it, echoed as an EVENT. Channel 1 has its own: SET 0x3403 = 01 TT from the Mac works and is echoed (Stagehand log, 2026-10-18). 0x3402 = 02 gets no answer (channel 2 has no guitar input). TT **00 = Single coil, 01 = Active, 02 = Passive humbucker** (checked against the JBL app with Stagehand showing the speaker's setting) | app capture 5 |
@@ -86,8 +86,8 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3083 / 0x3084 | 1 | `ch` | SET to query: 0x3083 = ch → EVENT 0x3081; 0x3084 = ch → EVENT 0x3082 | app capture 3 |
 | 0x3440 | 432 | records `id cat len name…` | **Tone preset library**: 27 factory tones (Clean Comping … Bypassed) + user tones at 0x33, 0x34. GET works; reply comes in 2 fragments. **It breaks off at about 1 KB**: with 86 tones (59 user tones) the reply was 1,159 bytes, correct up to tone 0x6b and then memory garbage, so later tones were missing (`captures/scratch-probe.log`, 2026-10-22). Keep the number of user tones well under ~60 | Mac probe |
 | 0x344a | | records `cat len name…` | **Tone categories**: Pop, Funk, Blues, Rock, Metal, Acoustic, Bass, Others | Mac probe |
-| 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | Capability/feature list? | app capture |
-| 0x1008, 0x000c, 0x2c00–0x2c05, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect; unknown | app capture |
+| 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | **BandBox capability list** (`BandBoxSupportedFeatureList`). Each byte is a feature bit; this Trio advertises ChromaticTuning(1), Drum(2), LooperDrumMode(3), LooperMetronomeMode(4), OutputPhoneMode(5), OutputUsbDriveMode(6), UkuleleTuner(9), Looper(0a), ThreeLevelGuitarGain(0b), OutputPC(0d). **Absent: AuxOutSetting(0e)** — see the DI note below | app capture; decoded from app |
+| 0x1008, 0x000c, 0x2c00–0x2c05, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect. Named from the app: 0x1008 TotalPlaybackTime, 0x000c FirmwareVersion (14-byte), 0x2c00–0x2c05 Party\*, 0x3000 DrumStartEnd, 0x3040 MetronomeStartEnd, 0x3145 LooperRecordPlayOperation, 0x3148 LooperLayerCount, 0x0ba1 ActiveAudioSource, 0x3404 AUXType, 0x3407 AuxOutputMode. See the app teardown | app capture + app teardown |
 
 ## Tone actions (0x3446)
 `ch op NN target cat len name…`, echoed by the speaker as an EVENT (`captures/app-capture-6-save.*`, JBL app on channel 1, 19:18–19:22, 2026-10-18):
@@ -204,12 +204,54 @@ The app sends whole numbers. Page layout: Fdbk, (Speed, Depth,) Mix in a row, Ti
 The names come from the JBL app's pedal pages (screenshots, 2026-10-17); the speaker sends only IDs.
 Each parameter is `(param id u8, float32)`; parameter IDs are per model, not per slot.
 
+## Cross-reference: JBL One app 2.8.4 (decompiled)
+
+The JBL One Android app ships named classes for this whole command set
+(`com.harman.v5protocol.bean.devinfofeat.V5DevInfoFeatID`, 182 features). The full ID
+table, byte encodings and app architecture are in **[app-teardown.md](app-teardown.md)**;
+the highlights that change entries above:
+
+**Corrections confirmed from the app**
+- **0x2d42 = `AudioVolume`** (music-playback source level), not a channel — fixed inline.
+- **0x0c0c / 0x0c10** = Mic1/Mic2 **sensitivity in dB** (resolves the "unknown float32");
+  **0x0c0b / 0x0c0f** are the same as a level. **0x0c09/0x0c0d = Mic Echo**, **0x0c0a/0x0c0e
+  = Mic Reverb** (echo, not delay).
+- Tuner block: **0x3101 = TunerMode** (Auto / String1–6), **0x3102 = BassMode**, **0x3104 =
+  String**, **0x3107 = ChromaticTuning** (result 0x3108). 0x3106 live feed already correct.
+- **0x3448/0x3449 = the "My Favorite" preset list**, not the hardware preset buttons.
+- **0x3804 = `PageInUseStatus` `[page, state]`** — the app tells the speaker which screen is
+  open (that's the `SET 0x3804 = 01 02 / 01 00` sent around the tuner).
+- Tone family names: 0x3440 AllSimpleInfo (library), 0x3441 SelectQuery, 0x3442 Select,
+  0x3443 InfoQuery, 0x3444 Info, 0x3445 **SlotInfo** (effect block), 0x3446 Operation,
+  0x344a GenreList (categories).
+
+**Silent DI / recording-to-computer controls** (new; all plain 1-byte writes over the com
+channel, no extra hardware). "Dry" still means the Bypassed tone; these address "speaker
+quiet while the USB feed to the computer stays up":
+- **0x3187 `OutputDirectMonitorMode`** = `01` on / `00` off — the app's recording-screen
+  "direct monitor" toggle; recording targets the PC over **UAC** (`AudioSource` 7). Best
+  lever to test: `SET 0x3187 = 00` and watch whether the speaker goes quiet while the Mac
+  input level holds.
+- **0x3407 `AuxOutputMode`** = `SilentMode 0` / `MonitorMode 1` — a silent-practice mode, but
+  gated by capability **AuxOutSetting(0e)**, which is **absent** from this Trio's 0x3805, so
+  probably unsupported here.
+- Related recording IDs: **0x3180** storage location (Phone=0 / FlashDrive=1 / **PC=2**),
+  **0x3181** record start/stop, **0x3182** separate-tracks (multitrack USB) enable,
+  **0x3186** record file path, **0x200a** USB status (inserted + UAC vs flash-drive).
+- **0x2d40 `AudioOperation`** (STOP/PAUSE/PLAY/PREV/NEXT/VOL±) and **0x2d41 `AudioMuteStatus`**
+  mute the *music source*, not the instrument channels.
+
+Not yet verified on hardware: that direct-monitor-off actually silences the speaker while the
+UAC level holds (the app proves the control and its bytes, not the DSP routing).
+
 ## Not mapped yet
 Things in the JBL app that haven't been captured. `capture-app-features.sh <area>` has prompts for each:
 - **Pitch shifter**: probably 0x30c1 (above); confirm and check the ±5 ends.
 - ~~Pedal parameters~~ Set with 0x3445 op 04; every slot's models and knobs are in *Effect models*.
 - ~~Amp models~~ (see *Amp models*). ~~Cab models~~ (see *Cab models*).
-- **Drum machine**, **looper**, **global EQ**, **channel 4 EQ**.
+- **Drum machine** (0x3000–0x3003), **looper** (0x3140–0x314b), **global/master EQ**
+  (0x0e01/0x0e02, 0x31c0/0x31c1), **channel 4 EQ**. IDs now known from the app teardown, but
+  the byte layouts still need capturing/decoding.
 - ~~Save as, rename, delete~~ See *Tone actions*. At least 69 user tones fit (the library reply breaks above ~60); a tone that isn't playing can be read, but not edited: edits go to the playing tone, and saving into another tone copies the playing tone there (*Tone actions*, `ScratchProbe.app`). Still open: whether rename can change the category.
 
 ## Still unknown
