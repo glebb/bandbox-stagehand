@@ -89,10 +89,10 @@ To turn it off the app sends `SET 0x3804 = 01 00`, then `SET 0x3100 = 00`.
 | 0x3440 | 432 | records `id cat len name…` | **Tone preset library**: 27 factory tones (Clean Comping … Bypassed) + user tones at 0x33, 0x34. GET works; reply comes in 2 fragments. **It breaks off at about 1 KB**: with 86 tones (59 user tones) the reply was 1,159 bytes, correct up to tone 0x6b and then memory garbage, so later tones were missing (`captures/scratch-probe.log`, 2026-10-22). Keep the number of user tones well under ~60 | Mac probe |
 | 0x344a | | records `cat len name…` | **Tone categories**: Pop, Funk, Blues, Rock, Metal, Acoustic, Bass, Others | Mac probe |
 | 0x3805 | 10 | `01 02 03 04 05 06 09 0a 0b 0d` | **BandBox capability list** (`BandBoxSupportedFeatureList`). Each byte is a feature bit; this Trio advertises ChromaticTuning(1), Drum(2), LooperDrumMode(3), LooperMetronomeMode(4), OutputPhoneMode(5), OutputUsbDriveMode(6), UkuleleTuner(9), Looper(0a), ThreeLevelGuitarGain(0b), OutputPC(0d). **Absent: AuxOutSetting(0e)** — see the DI note below | app capture; decoded from app |
-| 0x3180 | 1 | `02` | **Output location** (`OutputRecordStorageLocation`): where recordings go, 00 phone, 01 USB drive, 02 computer ("PC"). Stagehand sets 02 for the DI and puts the old value back after. **Not tried** | app teardown |
-| 0x3187 | 1 | `00`/`01` | **Direct monitor** (`OutputDirectMonitorMode`): 01 the speaker plays the inputs it sends to the computer, 00 it doesn't. Stagehand's DI is SET 0x3180 = 02 then SET 0x3187 = 00, then GETs both back. **Not tried**: whether the speaker goes quiet for the guitar while the computer still gets it, and still plays the computer's sound | app teardown |
-| 0x200a | 1 | `87` | **USB port** (`USBStatusFeature`): bit 7 set when something is plugged in, bits 0–6 the source it runs as (07 a computer using the speaker as its sound card, 03 a USB drive; see 0x0ba1). Stagehand reads it on connect. **Not tried** | app teardown |
-| 0x0ba1 | 1 | | **Music source playing** (`ActiveAudioSource`): 00 none, 01 Bluetooth, 02 aux, 03 USB drive, 07 computer (USB audio), others for other JBL speakers. Writable in the app's beans, but the app never writes it for the BandBox; Stagehand only reads it | app teardown |
+| 0x3180 | 1 | `02` | **Output location** (`OutputRecordStorageLocation`): where recordings go, 00 phone, 01 USB drive, 02 computer ("PC"). Stagehand sets 02 for the DI and puts the old value back after. GET gave 00 with a Mac on USB. **With 00 the Mac's USB input was digital silence on all 4 channels while a guitar played (direct monitor on too); with 02 it carried the guitar.** So the computer gets the inputs only with 02 | app teardown + Mac test 2026-11-12 |
+| 0x3187 | 1 | `00`/`01` | **Direct monitor** (`OutputDirectMonitorMode`): 01 the speaker plays the inputs it sends to the computer, 00 it doesn't. Stagehand's DI is SET 0x3180 = 02 then SET 0x3187 = 00, then GETs both back. GET gave 01. **Works (2026-11-12, Trio + Mac):** with 0x3180 = 02 and 0x3187 = 00 the speaker didn't play the guitar, the Mac got it on USB inputs 1 and 2 (the same signal on both, about −40 dBFS RMS, −21 dBFS peaks; 3 and 4 silent), and the speaker still played the Mac's sound. Each SET came back as an EVENT with the new value | app teardown + Mac test |
+| 0x200a | 1 | `87` | **USB port** (`USBStatusFeature`): bit 7 set when something is plugged in, bits 0–6 the source it runs as (07 a computer using the speaker as its sound card, 03 a USB drive; see 0x0ba1). Stagehand reads it on connect. GET gave `87` with a Mac on USB-C, as decoded | app teardown + Mac test 2026-11-12 |
+| 0x0ba1 | 1 | | **Music source playing** (`ActiveAudioSource`): 00 none, 01 Bluetooth, 02 aux, 03 USB drive, 07 computer (USB audio), others for other JBL speakers. Writable in the app's beans, but the app never writes it for the BandBox; Stagehand only reads it. GET gave 07 with a Mac on USB-C | app teardown + Mac test 2026-11-12 |
 | 0x2d41 | 1 | `00`/`01` | **Music source muted** (`AudioMuteStatus`). Read by Stagehand, not written | app teardown |
 | 0x1008, 0x000c, 0x2c00–0x2c05, 0x3000, 0x3040, 0x3145, 0x3148, 0x0ba1, 0x3404, 0x3407 | | | Read once on connect. Named from the app: 0x1008 TotalPlaybackTime, 0x000c FirmwareVersion (14-byte), 0x2c00–0x2c05 Party\*, 0x3000 DrumStartEnd, 0x3040 MetronomeStartEnd, 0x3145 LooperRecordPlayOperation, 0x3148 LooperLayerCount, 0x0ba1 ActiveAudioSource, 0x3404 AUXType, 0x3407 AuxOutputMode. See the app teardown | app capture + app teardown |
 
@@ -248,8 +248,10 @@ quiet while the USB feed to the computer stays up":
 - **0x2d40 `AudioOperation`** (STOP/PAUSE/PLAY/PREV/NEXT/VOL±) and **0x2d41 `AudioMuteStatus`**
   mute the *music source*, not the instrument channels.
 
-Not yet verified on hardware: that direct-monitor-off actually silences the speaker while the
-UAC level holds (the app proves the control and its bytes, not the DSP routing).
+**Verified on a Trio (2026-11-12, Mac over USB-C, through Stagehand's DI screen):** output to
+PC (0x3180 = 02) with direct monitor off (0x3187 = 00) silences the guitar on the speaker while
+the Mac records it on USB inputs 1–2, and the Mac's own sound still plays. With output to the
+phone (00) the USB input carries nothing at all, so 02 is needed for any recording.
 
 **How the JBL app uses it** (`OutputActivity` / `OutputViewModel`, layout `activity_output`): the
 Output page GETs 0x3180, 0x200a, 0x3805, 0x3187 and 0x3800 when it opens. Its *Output to* row
@@ -257,7 +259,7 @@ picks Phone, PC or Flash drive (SET 0x3180). With **PC** picked it hides the rec
 the file list (the computer records) and shows only **Direct Monitor Mode**, a toggle that SETs
 0x3187; the toggle shows only if 0x3805 has OutputPC. So the DI is "output to PC, direct monitor
 off". The computer's own sound is a music source (0x0ba1 = 07, level 0x2d42), not an input, so
-direct monitor shouldn't touch it, but that's untested too. Master volume and 0x2d41 would
+direct monitor doesn't touch it (checked: it still played). Master volume and 0x2d41 would
 silence the computer's sound along with the guitar, so they're no use for a DI that still plays
 the computer. Stagehand's DI screen does exactly this, with Dry (the Bypassed tone) as a separate switch.
 

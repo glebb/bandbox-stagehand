@@ -34,7 +34,7 @@ footswitch, so you can change sound without taking your hands off the guitar for
 - **STEM AI**: on/off, what the two stem channels hold, and their volumes.
 - **DI to a computer**: with the BandBox as the computer's sound card over USB-C, the guitar goes
   to the computer and not to the speaker, while what the computer plays still comes out of the
-  speaker. Optionally dry, on the Bypassed tone. Not yet tried on a speaker.
+  speaker. Optionally dry, on the Bypassed tone. Tried on a Trio with a Mac; Dry hasn't been.
 - **Banks**: other sets of the four tone buttons (say Soft, Classic rock, Metal), switched in
   the footer or by MIDI.
 - **Hands-free on the Mac**: number keys that work from any app, and MIDI control from a
@@ -95,8 +95,12 @@ drag), tap the dots, or use ← / →.
    right is the volume of what the speaker plays (channel 4's), titled by its source, so a phone
    playing over Bluetooth instead of the computer shows there. While DI is on the footer says
    **DI on**; the speaker keeps it until it's switched off, also after Stagehand quits.
-   **Not yet tried on a speaker**: the commands come from the JBL app (see
-   [app-teardown.md](app-teardown.md)), and the screen shows what the speaker reports back.
+   **Tried on a Trio** (2026-11-12, a Mac over USB-C): with DI on the Mac's BandBox input got the
+   guitar on inputs 1 and 2 (3 and 4 stayed silent), the speaker didn't play it, and it still
+   played the Mac's sound; DI off put the speaker back as it was. With output set to the phone,
+   as the speaker was before, the Mac's input was silent even with the guitar playing, so off
+   DI the computer gets no guitar at all. Dry hasn't been tried. The commands come from the JBL
+   app (see [app-teardown.md](app-teardown.md)), and the screen shows what the speaker reports back.
 5. **Preset editor**: the whole chain of the tone a guitar channel plays: gate,
    compressor, distortion, amp, cabinet, FX, delay and reverb, joined like a pedalboard
    (amber when on). Tap a slot to show its models (by the JBL app's names: 11 amps, 12
@@ -134,6 +138,8 @@ binding to one MIDI channel, or sets a pedal to Follow (64 and up is on) so it m
 latching switch. CC 90 picks a bank by its value (0 the first, 1 the next…). Each message
 Stagehand acts on shows in the Log. Without a controller,
 `swift midi-send.swift pc 2 press 81` sends test messages from a virtual source.
+If the Mac's MIDI server hangs (the Yamaha Steinberg USB MIDI driver hung it when a BandBox
+was plugged in over USB-C), Stagehand still opens and works; only MIDI waits for the server.
 
 ### Song tones
 

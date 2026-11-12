@@ -327,12 +327,13 @@ over the existing BLE link (no firmware flash, no extra hardware):
    volumes all sit *before* whatever the USB feed taps, most likely, so turning them down
    would quiet the recording too — not a silent-DI lever on their own.
 
-**Still needs a hardware test** (the app proves the controls exist and their byte encoding;
-it does not prove the DSP routing): set `0x3187 = 00` with the BandBox connected and watch
-the Mac's input meter — if the speaker goes quiet while the UAC level holds, that's the
-silent DI. Stagehand's DI screen now does this the way the app's Output page does (`SET 0x3180 =
-02`, then `SET 0x3187 = 00`), with Dry (the Bypassed tone) as a separate switch and the
-computer's playback level beside them; see protocol-notes.md, *How the JBL app uses it*.
+**Tested on a Trio, 2026-11-12: it works.** Stagehand's DI screen does what the app's Output page
+does (`SET 0x3180 = 02`, then `SET 0x3187 = 00`), with Dry (the Bypassed tone) as a separate
+switch and the computer's playback level beside them; see protocol-notes.md, *How the JBL app
+uses it*. With a Mac on USB-C the speaker stopped playing the guitar, the Mac recorded it on the
+BandBox's USB inputs 1–2, and the Mac's own sound still came out of the speaker. Before, with
+output to the phone (`0x3180 = 00`), the USB input was silent even with direct monitor on: the
+computer gets the inputs only with output to PC.
 
 **USBStatusFeature (0x200A) byte layout:** bit 7 = inserted, bits 0–6 = the `V5AudioSource`
 the port runs as (`87` = a computer over UAC, `83` = a USB drive).

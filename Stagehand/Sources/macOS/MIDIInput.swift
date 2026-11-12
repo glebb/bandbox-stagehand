@@ -53,38 +53,57 @@ final class MIDIInput: ObservableObject {
     /// by its value (0 = the first), likewise.
     private(set) var filler: ScratchFiller?
 
+    private var starting = false
+
     func start(client: BandBoxClient, assignments: ToneAssignments, filler: ScratchFiller) {
-        guard midiClient == 0 else { return }
+        guard !starting else { return }
+        starting = true
         self.client = client
         self.assignments = assignments
         self.filler = filler
         MainActor.assumeIsolated { filler.start(client: client, assignments: assignments) }
-        let status = MIDIClientCreateWithBlock("Stagehand" as CFString, &midiClient) { [weak self] notification in
-            guard notification.pointee.messageID == .msgSetupChanged else { return }
-            DispatchQueue.main.async { self?.connectSources() }
-        }
-        guard status == noErr else { return client.record("! MIDI unavailable (\(status))") }
-        // Called on CoreMIDI's own thread: parse there, act on the main thread, packet by packet
-        // in the order they came (a song's SysEx before the Program Change that plays its tone).
-        // The source's endpoint comes as the connection's refCon, so each source has its own SysEx.
+        // Making the client waits on the Mac's MIDI server, which can hang for good (a third-party
+        // USB MIDI driver stuck on a new device does it), so make it off the main thread: the
+        // window still comes up and only MIDI waits.
         let sysex = self.sysex
-        MIDIInputPortCreateWithProtocol(midiClient, "Stagehand in" as CFString, ._1_0, &port) { [weak self] list, refCon in
-            let source = Int(bitPattern: refCon)
-            let packets = list.unsafeSequence().map { Array($0.words()) }.map { words in
-                (sysex: sysex.feed(words, source: source), messages: MIDIMessage.parse(words))
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            var midiClient = MIDIClientRef()
+            let status = MIDIClientCreateWithBlock("Stagehand" as CFString, &midiClient) { [weak self] notification in
+                guard notification.pointee.messageID == .msgSetupChanged else { return }
+                DispatchQueue.main.async { self?.connectSources() }
             }
-            guard packets.contains(where: { !$0.sysex.isEmpty || !$0.messages.isEmpty }) else { return }
-            DispatchQueue.main.async {
-                for packet in packets {
-                    packet.sysex.forEach { self?.handleSysEx($0) }
-                    packet.messages.forEach { self?.handle($0) }
+            // Called on CoreMIDI's own thread: parse there, act on the main thread, packet by packet
+            // in the order they came (a song's SysEx before the Program Change that plays its tone).
+            // The source's endpoint comes as the connection's refCon, so each source has its own SysEx.
+            var port = MIDIPortRef()
+            if status == noErr {
+                MIDIInputPortCreateWithProtocol(midiClient, "Stagehand in" as CFString, ._1_0, &port) { [weak self] list, refCon in
+                    let source = Int(bitPattern: refCon)
+                    let packets = list.unsafeSequence().map { Array($0.words()) }.map { words in
+                        (sysex: sysex.feed(words, source: source), messages: MIDIMessage.parse(words))
+                    }
+                    guard packets.contains(where: { !$0.sysex.isEmpty || !$0.messages.isEmpty }) else { return }
+                    DispatchQueue.main.async {
+                        for packet in packets {
+                            packet.sysex.forEach { self?.handleSysEx($0) }
+                            packet.messages.forEach { self?.handle($0) }
+                        }
+                    }
                 }
             }
+            DispatchQueue.main.async {
+                guard let self else { return }
+                guard status == noErr else { return client.record("! MIDI unavailable (\(status))") }
+                self.midiClient = midiClient
+                self.port = port
+                self.connectSources()
+            }
         }
-        connectSources()
     }
 
     private func connectSources() {
+        // A setup change can come before the port is made; the port's own call connects them then.
+        guard port != 0 else { return }
         let endpoints = (0..<MIDIGetNumberOfSources()).map(MIDIGetSource).filter { $0 != 0 }
         for source in endpoints where !connected.contains(source) {
             MIDIPortConnectSource(port, source, UnsafeMutableRawPointer(bitPattern: Int(source)))
