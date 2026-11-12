@@ -64,9 +64,12 @@ final class MIDIInput: ObservableObject {
         MainActor.assumeIsolated { filler.start(client: client, assignments: assignments) }
         // Making the client waits on the Mac's MIDI server, which can hang for good (a third-party
         // USB MIDI driver stuck on a new device does it), so make it off the main thread: the
-        // window still comes up and only MIDI waits.
+        // window still comes up and only MIDI waits. On a thread of its own that then runs its run
+        // loop: CoreMIDI tells a client of setup changes (a source that appears later, such as an app
+        // started after Stagehand) on the run loop of the thread that made the process's first client,
+        // and a dispatch queue's thread runs none.
         let sysex = self.sysex
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        let thread = Thread { [weak self] in
             var midiClient = MIDIClientRef()
             let status = MIDIClientCreateWithBlock("Stagehand" as CFString, &midiClient) { [weak self] notification in
                 guard notification.pointee.messageID == .msgSetupChanged else { return }
@@ -98,7 +101,13 @@ final class MIDIInput: ObservableObject {
                 self.port = port
                 self.connectSources()
             }
+            guard status == noErr else { return }
+            RunLoop.current.add(Port(), forMode: .default)  // a run loop with nothing to wait for returns at once
+            RunLoop.current.run()
         }
+        thread.name = "Stagehand MIDI"
+        thread.qualityOfService = .userInitiated
+        thread.start()
     }
 
     private func connectSources() {
