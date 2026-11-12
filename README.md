@@ -101,6 +101,15 @@ drag), tap the dots, or use ← / →.
    as the speaker was before, the Mac's input was silent even with the guitar playing, so off
    DI the computer gets no guitar at all. Dry hasn't been tried. The commands come from the JBL
    app (see [app-teardown.md](app-teardown.md)), and the screen shows what the speaker reports back.
+   **Known issue, not Stagehand's**: as a Mac's sound card the BandBox stalls for about 50 ms
+   every 5–25 seconds, which you hear in Rocksmith. Its USB input now and then doesn't answer
+   (macOS's `usbaudiod` logs `transaction status error: 0xe00002ed`, "not responding"), and macOS
+   restarts the device's audio, input and output. It happens with DI on or off, without
+   Rocksmith or Loopback, with the Mac and the speaker on mains power or battery, and at any
+   buffer size, though small buffers make it more frequent (6
+   stalls in 75 s at 64 frames, 3 at 512). The audio between stalls is clean. Not yet tried:
+   another cable or port, and newer speaker firmware. To see it:
+   `/usr/bin/log show --last 10m --info --debug --predicate 'process == "usbaudiod"' | grep "status error"`.
 5. **Preset editor**: the whole chain of the tone a guitar channel plays: gate,
    compressor, distortion, amp, cabinet, FX, delay and reverb, joined like a pedalboard
    (amber when on). Tap a slot to show its models (by the JBL app's names: 11 amps, 12
