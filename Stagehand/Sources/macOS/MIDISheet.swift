@@ -54,8 +54,9 @@ struct MIDISheet: View {
                     .controlSize(.small)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(Stage.secondaryText)
-                Text("Driven song tones also get the amp nearest the song's, at that amp's defaults. Clean tones keep "
-                     + "your slot's amp. Not yet tried on a speaker, and levels can change: start with the volume down.")
+                Text("Song tones also get the amp, drive, tone knobs, cab and drive pedal nearest the song's own rig, "
+                     + "with the amp's Volume set to keep your slot's level (from measurements of a BandBox). "
+                     + "The gate, compressor and wah stay your slot's.")
                     .font(.system(size: 11))
                     .foregroundStyle(Stage.faintText)
                     .fixedSize(horizontal: false, vertical: true)

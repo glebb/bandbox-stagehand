@@ -16,6 +16,11 @@
 >   defaults, and no knobs: the RS Companion's measurements of Helix showed an amp's level can
 >   move by 35 dB with Drive, so knob values for the BandBox would need the speaker.
 >
+> - Match amps, measured (2026-11-13): the message carries each tone's whole rig, and Match amps
+>   now sets the amp, its Drive and tone knobs, the cab and a drive pedal from it, with the amp's
+>   Volume from measured tables so the tone keeps its template's level (`GearMatch.swift`,
+>   `tone-bench/`). A version 2 tone can also set any of the eight pedals by name ("set").
+>
 > Where this plan has the companion name models, banks or PC 8–12, read it as described above.
 
 The companion today sends one of four Program Changes (Clean, Crunch, Heavy, Lead) and Stagehand

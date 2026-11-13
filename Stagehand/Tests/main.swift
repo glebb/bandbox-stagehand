@@ -100,33 +100,53 @@ check(SongTonesRequest.parse(message(programs))?.tones.map(\.program) == [20, 9,
 check(ScratchFiller.isScratchName("Song 1") && ScratchFiller.isScratchName("RS 5"), "scratch names, new and old")
 check(!ScratchFiller.isScratchName("Song 6") && !ScratchFiller.isScratchName("My Song 1"), "other names aren't")
 
-// Match amps: a family and how driven a tone is name a model; anything else leaves the template's.
+// Match amps: the game's amp names a family; anything else leaves the template's.
 func amp(_ name: String?) -> UInt16? { name.flatMap { n in EffectSlot.amp.models.first { $0.name == n }?.id } }
-check(BandBoxMapping.amp(gear: "Amp_MarshallJCM800", drive: 0.5) == amp("UK Crunch"), "British, crunch")
-check(BandBoxMapping.amp(gear: "Amp_GB100", drive: 0.9) == amp("British Lead"), "British, heavy")
-check(BandBoxMapping.amp(gear: "Amp_HG500", drive: 0.9) == amp("British Lead"), "HG500 is a Marshall, not a high-gain family amp")
-check(BandBoxMapping.amp(gear: "Amp_TW22", drive: 0.4) == amp("Yellow Tweed"), "American, crunch")
-check(BandBoxMapping.amp(gear: "Amp_AT120", drive: 0.7) == amp("Vintage Drive"), "American, heavy")
-check(BandBoxMapping.amp(gear: "Amp_CA100", drive: 0.9) == amp("US Metal"), "high gain, heavy")
-check(BandBoxMapping.amp(gear: "Amp_HG180", drive: 0.4) == amp("Vintage Drive"), "high gain, crunch")
-check(BandBoxMapping.amp(gear: "Amp_MarshallJCM800", drive: 0.2) == nil, "a clean tone keeps its amp")
-check(BandBoxMapping.amp(gear: "Bass_Amp_HT300B", drive: 0.9) == nil, "a bass keeps its amp")
-check(BandBoxMapping.amp(gear: "DI_Amp_TubePre", drive: 0.9) == nil, "a DI keeps its amp")
-check(BandBoxMapping.amp(gear: "Amp_Unknown", drive: 0.9) == nil, "an unknown amp keeps its amp")
-check(BandBoxMapping.amp(gear: "Amp_CA100", drive: nil) == nil && BandBoxMapping.amp(gear: nil, drive: 0.9) == nil, "no drive or gear")
+func cab(_ name: String) -> UInt16? { EffectSlot.cab.models.first { $0.name == name }?.id }
+check(GearMatch.Family(gear: "Amp_MarshallJCM800") == .british && GearMatch.Family(gear: "Amp_HG500") == .british, "Marshalls, the HG500 too")
+check(GearMatch.Family(gear: "Amp_CA100") == .highGain && GearMatch.Family(gear: "Amp_CA85") == .boogie
+      && GearMatch.Family(gear: "Amp_TW22") == .american, "high gain, American")
+check(GearMatch.Family(gear: "Amp_EN30") == .chime && GearMatch.Family(gear: "Amp_CS90") == .jazz, "chime, jazz")
+check(GearMatch.Family(gear: "Bass_Amp_HT300B") == nil && GearMatch.Family(gear: "DI_Amp_TubePre") == nil
+      && GearMatch.Family(gear: "Amp_Unknown") == nil, "a bass, a DI and an unknown amp have none")
+check(GearMatch.Family.allCases.allSatisfy { $0.amps.allSatisfy { BandBoxCalibration.amps[$0] != nil && GearMatch.ampDefaults[$0] != nil } },
+      "every stand-in amp was measured")
+check(GearMatch.cab(gear: "Cab_Marshall1960a_57_Cone") == cab("UK 1960 4x12") && GearMatch.cab(gear: "Cab_CA412C_Ribbon_Edge") == cab("Mebo 4x12")
+      && GearMatch.cab(gear: "Cab_EN212C_57_Cone") == cab("Voks 2x12") && GearMatch.cab(gear: "Cab_Marshall1936_57_Cone") == cab("UK 2550 2x12"), "cabs")
+check(GearMatch.cab(gear: "Cab_PA600C_57_Cone") == nil && GearMatch.cab(gear: "Bass_Cab_AT810BC_57_Cone") == nil, "a PA and a bass cab keep the template's")
 check(BandBoxMapping.canSwitchAmp(from: 0x0306) && !BandBoxMapping.canSwitchAmp(from: 0x0806), "guitar amps only")
-check(!BandBoxMapping.canSwitchAmp(from: 0x001D) && !BandBoxMapping.canSwitchAmp(from: 0x001E), "not back from Acoustic or Studio Bass")
+
+// The tables, read: an amp follows a quiet input and stops following a loud one; more Drive, more saturated.
+check(abs(GearMatch.value([(0, 0), (10, 20)], at: 5) - 10) < 1e-9 && abs(GearMatch.value([(0, 0), (10, 20)], at: 15) - 30) < 1e-9, "lines, and on past the ends")
+check(abs(GearMatch.inverse([(20, -15.6), (50, 0), (100, 12.1)], of: 0) - 50) < 1e-9, "the inverse")
+check(GearMatch.saturation(0x0006, drive: 30, input: 0)! < 0.15, "American Clean is clean")
+check(GearMatch.saturation(0x0706, drive: 100, input: 8)! > 0.9, "US Metal at full is saturated")
+check(GearMatch.saturation(0x0306, drive: 80, input: 8)! > GearMatch.saturation(0x0306, drive: 20, input: 8)!, "more Drive, more saturated")
+check(GearMatch.saturation(0x0806, drive: 50, input: 0) == nil, "the bass amp wasn't measured")
+check(GearMatch.target(drive: 0.9) > GearMatch.target(drive: 0.5) && GearMatch.target(drive: 0.5) > GearMatch.target(drive: 0.1), "the drive asks for more")
+
 let withAmp = #"""
     {"v":2,"kind":"song-tones","style":"Metal","main_amp":"Amp_CA100","tones":[
-     {"key":"a","category":"Heavy","drive":0.9,"amp":{"gear":"Amp_CA100","gain":80},"effects":{}},
-     {"key":"b","category":"Clean","drive":0.1,"amp":{"gear":"Amp_CA100","gain":10},"effects":{}},
-     {"key":"c","category":"Crunch","effects":{}}]}
+     {"key":"a","category":"Heavy","drive":0.9,"amp":{"gear":"Amp_CA100","gain":80,"mid":30},"effects":{}},
+     {"key":"b","category":"Clean","drive":0.1,"effects":{},
+      "rig":{"Amp":{"gear":"Amp_TW22","knobs":{"Gain":20,"Bass":40,"Mid":50,"Treble":60,"":3,"Bright":true}},
+             "Cabinet":{"gear":"Cab_TW112C_57_Cone","knobs":{}},"PrePedal1":{"gear":"Pedal_GermaniumDrive","knobs":{"Gain":40,"Tone":70}}}},
+     {"key":"c","category":"Lead","amp":{"gear":"Amp_CA100","gain":80},"effects":{},
+      "set":{"amp":{"model":"US Metal","Drive":60,"Volume":45},"Cab":{"model":"Mebo 4x12"},"Gate":{"on":true},"Wah":{"on":true},"Delay":{"on":false}}}]}
     """#
 let amps = SongTonesRequest.parse(message(withAmp))
-check(amps?.tones.map(\.amp) == [amp("US Metal"), nil, nil], "the message's amp and drive")
-check(amps?.summary.contains("amp US Metal") == true, "the summary names the amp")
+check(amps?.tones[0].rig == ["Amp": .init(gear: "Amp_CA100", knobs: ["Gain": 80, "Mid": 30])] && amps?.tones[0].drive == 0.9, "a rig from the message's amp")
+check(amps?.tones[1].rig["Amp"] == .init(gear: "Amp_TW22", knobs: ["Gain": 20, "Bass": 40, "Mid": 50, "Treble": 60, "": 3])
+      && amps?.tones[1].rig["PrePedal1"]?.knobs == ["Gain": 40, "Tone": 70] && amps?.tones[1].rig.count == 3, "the whole rig, knobs that are numbers")
+check(amps?.summary.contains("amp Amp_CA100") == true, "the summary names the amp")
+check(amps?.tones[2].changes[.amp] == .init(on: nil, model: amp("US Metal"), knobs: ["Drive": 60, "Volume": 45])
+      && amps?.tones[2].changes[.cab]?.model == cab("Mebo 4x12") && amps?.tones[2].changes[.gate] == .init(on: true)
+      && amps?.tones[2].changes[.delay] == .init(on: false) && amps?.tones[2].named == [.amp, .cab, .gate, .delay],
+      "version 2 sets any pedal by name")
+check(amps?.warnings == ["c: no pedal Wah"], "and warns about one that isn't: \(amps?.warnings ?? [])")
 check(SongTonesRequest.parse(message(#"{"v":1,"kind":"song-tones","tones":[{"base":"Heavy","drive":0.9,"amp":{"gear":"Amp_CA100"}}]}"#))?
-    .tones[0].amp == nil, "version 1 has no amps")
+    .tones[0].rig.isEmpty == true, "version 1 has no rig")
+
 
 // Planning. A template like Brit Crunch: every slot, FX Green Phaser on, delay Pure Echo off.
 func block(_ slot: EffectSlot, _ model: UInt16, on: Bool, _ params: [(UInt8, Float)]) -> EffectBlock {
@@ -181,30 +201,75 @@ if let r = request {
 }
 
 // The bytes, as BandBoxClient and protocol-notes.md have them.
-// Match amps in the plan: off changes nothing, on is one write, and nothing else moves.
+// Match amps in the plan: off changes nothing; on, the rig's amp, drive, cab and pedal, at the template's level.
 if let a = amps {
-    var warnings: [String] = []
+    var warnings: [String] = [], notes: [String] = []
+    func tables(_ blocks: [KnownBlock]) -> Double? {
+        func b(_ slot: EffectSlot) -> KnownBlock? { blocks.first { $0.slot == slot.rawValue } }
+        return GearMatch.level(amp: b(.amp)!, cab: b(.cab), input: GearMatch.input(compressor: b(.compressor), distortion: b(.distortion)))
+    }
+    let was = template.blocks.map(KnownBlock.init)
     let off = ScratchPlan.target(template: template, tone: a.tones[0], warnings: &warnings)
     check(off.first { $0.slot == 3 }?.model == 0x0306, "Match amps off: the template's amp")
-    let on = ScratchPlan.target(template: template, tone: a.tones[0], matchAmp: true, warnings: &warnings)
-    let was = template.blocks.map(KnownBlock.init)
-    let plain = ScratchPlan.edits(from: was, to: off)
-    check(ScratchPlan.edits(from: was, to: on) == [.model(slot: 3, model: amp("US Metal")!)] + plain, "one more write, op 03, and no knobs")
-    check(ScratchPlan.edits(from: was, to: ScratchPlan.target(template: template, tone: a.tones[1], matchAmp: true, warnings: &warnings))
-          == ScratchPlan.edits(from: was, to: ScratchPlan.target(template: template, tone: a.tones[1], warnings: &warnings)),
-          "a clean tone: no more writes")
-    check(on.first { $0.slot == 3 }?.bypassed == false, "the amp stays on")
-    let same = ToneDetails(id: 1, name: "x", blocks: [block(.amp, amp("US Metal")!, on: true, [(4, 40)])])
-    check(ScratchPlan.target(template: same, tone: a.tones[0], matchAmp: true, warnings: &warnings)[0].params[4] == 40,
-          "already that amp: the player's knobs stay")
+    let heavy = ScratchPlan.target(template: template, tone: a.tones[0], matchAmp: true, warnings: &warnings, notes: &notes)
+    let heavyAmp = heavy.first { $0.slot == 3 }!
+    check(heavyAmp.model == amp("US Metal") && !heavyAmp.bypassed, "a heavy Rectifier: US Metal, on")
+    check(GearMatch.saturation(heavyAmp.model, drive: Double(heavyAmp.params[0]!), input: GearMatch.input(compressor: nil, distortion: nil))! > 0.8,
+          "driven hard")
+    check(heavyAmp.params[2] == 30 && heavyAmp.params[1] == 67, "the game's Mid, the model's own Bass")
+    check(heavy.first { $0.slot == 2 }!.bypassed, "no pedal in the rig: the template's Precision Drive goes off")
+    check(heavy.first { $0.slot == 4 } == was.first { $0.slot == 4 }, "no cab in the rig: the template's")
+    check(abs(tables(heavy)! - tables(was)!) < 0.6, "as loud as the template: \(tables(heavy)!) and \(tables(was)!)")
+    check(notes.count == 1 && notes[0].contains("Amp_CA100") && notes[0].contains("Precision Drive off"), "what was picked: \(notes)")
+
+    let clean = ScratchPlan.target(template: template, tone: a.tones[1], matchAmp: true, warnings: &warnings, notes: &notes)
+    let cleanAmp = clean.first { $0.slot == 3 }!
+    check(cleanAmp.model == amp("American Clean") && cleanAmp.params[1] == 40 && cleanAmp.params[2] == 50 && cleanAmp.params[3] == 60,
+          "a clean Tweed: American Clean with the game's tone knobs")
+    check(clean.first { $0.slot == 4 }?.model == cab("TR65 2x12") && clean.first { $0.slot == 4 }?.bypassed == false, "the rig's cab, still on")
+    let pedal = clean.first { $0.slot == 2 }!
+    check(pedal.model == 0x04 && !pedal.bypassed && pedal.params == [0: 22, 1: 70, 2: 100], "the rig's drive pedal, by its gain and tone")
+    check(abs(tables(clean)! - tables(was)!) < 0.6 || cleanAmp.params[4] == 100, "as loud as the template, or the Volume at its end")
+    let edits = ScratchPlan.edits(from: was, to: clean)
+    check(edits.contains(.model(slot: 4, model: cab("TR65 2x12")!)) && !edits.contains { if case .bypass(slot: 4, _, _, _) = $0 { true } else { false } },
+          "a cab is one write, op 03")
+    check(ScratchPlan.applying(edits, to: was).first { $0.slot == 3 } == cleanAmp, "the writes give the amp with all five knobs")
+
+    // What a message sets by name comes last.
+    let named = ScratchPlan.target(template: template, tone: a.tones[2], matchAmp: true, warnings: &warnings, notes: &notes)
+    check(named.first { $0.slot == 3 }?.model == amp("US Metal") && named.first { $0.slot == 3 }?.params[0] == 60
+          && named.first { $0.slot == 3 }?.params[4] == 45 && named.first { $0.slot == 3 }?.bypassed == false, "the named amp and its knobs")
+    check(named.first { $0.slot == 4 }?.model == cab("Mebo 4x12") && named.first { $0.slot == 0 }?.bypassed == false, "the named cab, the gate on")
+    check(notes.count == 2, "no drive in the message: no match for that tone")
+
+    // What stays as it is.
+    func rigged(_ gear: String, drive: Double? = 0.9, pedal: String? = nil) -> SongTonesRequest.Tone {
+        var rig = ["Amp": SongTonesRequest.RigItem(gear: gear, knobs: ["Gain": 70])]
+        if let pedal { rig["PrePedal1"] = .init(gear: pedal) }
+        return SongTonesRequest.Tone(key: "x", program: 8, slot: 0, changes: [:], drive: drive, rig: rig)
+    }
+    check(GearMatch.match(template: template, tone: rigged("Bass_Amp_HT300B")) == nil && GearMatch.match(template: template, tone: rigged("DI_Amp_TubePre")) == nil
+          && GearMatch.match(template: template, tone: rigged("Amp_Unknown")) == nil, "a bass, a DI, an unknown amp")
+    check(GearMatch.match(template: template, tone: rigged("Amp_CA100", drive: nil)) == nil, "no drive")
+    check(GearMatch.match(template: template, tone: rigged("Amp_TW22", pedal: "Pedal_AcousticEmulator")) == nil, "an acoustic sound")
     let acoustic = ToneDetails(id: 2, name: "x", blocks: [block(.amp, 0x001D, on: true, [])])
-    check(ScratchPlan.target(template: acoustic, tone: a.tones[0], matchAmp: true, warnings: &warnings)[0].model == 0x001D,
-          "an acoustic template stays")
+    check(GearMatch.match(template: acoustic, tone: rigged("Amp_CA100")) == nil, "an acoustic template")
     let off2 = ToneDetails(id: 3, name: "x", blocks: [block(.amp, 0x0306, on: false, [])])
-    let bypassed = ScratchPlan.target(template: off2, tone: a.tones[0], matchAmp: true, warnings: &warnings)
-    check(bypassed[0].bypassed && ScratchPlan.edits(from: off2.blocks.map(KnownBlock.init), to: bypassed).count == 1,
-          "an amp that's off stays off")
+    check(GearMatch.match(template: off2, tone: rigged("Amp_CA100")) == nil, "an amp that's off stays off")
+    // More drive never picks a less saturated setting, on any family.
+    for gear in ["Amp_TW22", "Amp_CS90", "Amp_EN30", "Amp_MarshallJCM800", "Amp_CA100"] {
+        let picked = stride(from: 0.0, through: 1.0, by: 0.1).map { d -> Double in
+            let m = GearMatch.match(template: template, tone: rigged(gear, drive: d))!.blocks[3]!
+            return GearMatch.saturation(m.model, drive: Double(m.params[0]!), input: BandBoxCalibration.guitar)!
+        }
+        check(zip(picked, picked.dropFirst()).allSatisfy { $0 <= $1 + 0.1 }, "\(gear): more drive, more saturated: \(picked.map { String(format: "%.2f", $0) })")
+        print(gear, stride(from: 0.0, through: 1.0, by: 0.1).map { d -> String in
+            let m = GearMatch.match(template: template, tone: rigged(gear, drive: d))!.blocks[3]!
+            return "\(EffectSlot.amp.model(m.model)!.name.split(separator: " ").map { String($0.prefix(1)) }.joined())\(Int(m.params[0]!))/\(Int(m.params[4]!))"
+        }.joined(separator: " "))
+    }
     check(warnings.isEmpty, "no warnings: \(warnings)")
+    notes.forEach { print("match:", $0) }
 }
 
 check(ScratchPlan.Edit.param(slot: 6, model: 0x14, param: 1, value: 800).value(channel: 3, tone: 0x40)

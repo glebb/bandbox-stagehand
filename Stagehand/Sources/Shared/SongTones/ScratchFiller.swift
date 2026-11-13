@@ -37,8 +37,9 @@ final class ScratchFiller: ObservableObject {
             if !enabled { stop() }
         }
     }
-    /// Also gives a driven song tone the amp model nearest its gear. Off by default: what a model
-    /// change does to a tone's level hasn't been heard, and until then the level is the template's.
+    /// Also gives a song tone with a guitar amp the amp, drive, cab and drive pedal nearest its rig, at
+    /// its template's level by the measured tables (GearMatch). Off by default: it changes more of
+    /// the player's slot tone than the plain song tones do.
     @Published var matchAmps = UserDefaults.standard.bool(forKey: matchAmpsKey) {
         didSet { UserDefaults.standard.set(matchAmps, forKey: Self.matchAmpsKey) }
     }
@@ -204,10 +205,12 @@ final class ScratchFiller: ObservableObject {
                 if current(generation) { fail("no details for tone \(template)") }
                 return
             }
-            var warnings: [String] = []
+            var warnings: [String] = [], notes: [String] = []
             let edits = ScratchPlan.edits(from: details.blocks.map(KnownBlock.init),
-                                          to: ScratchPlan.target(template: details, tone: tone, matchAmp: matchAmps, warnings: &warnings))
+                                          to: ScratchPlan.target(template: details, tone: tone, matchAmp: matchAmps,
+                                                                 warnings: &warnings, notes: &notes))
             warnings.forEach { client.record("! song tones: \($0)") }
+            notes.forEach { client.record("match: \($0)") }
             for edit in edits {
                 client.sendRaw(BandBoxProtocol.set(Property.effectBlock, edit.value(channel: channel, tone: template)))
             }

@@ -179,14 +179,34 @@ How a song tone is built:
 So until you set up a bank's slots (to sound soft, classic rock or metal, say), the songs with
 that style sound as with Main.
 
-**Match amps** (off by default, under Song tones in the MIDI settings) also gives a driven tone the
-amp nearest the song's, if the message says which: the amp's family and how driven the tone is pick one
-of the JBL app's models, at its defaults. Marshall-style amps get UK Crunch or British Lead, Fender-style
-Yellow Tweed or Vintage Drive, and high-gain ones Vintage Drive or US Metal. Clean tones, basses, DIs, amps
-it doesn't know and templates on Acoustic Amp, Studio Bass or Bass Amp keep the slot's amp. It costs one
-more write per tone. **It hasn't been tried on a speaker.** The plan's rule that levels come from your
-slots doesn't hold for these tones: the level is the model's default, and nothing has measured how those
-compare, so start with the volume down.
+**Match amps** (off by default, under Song tones in the MIDI settings) also gives a tone the gear nearest
+the song's own rig, if the message has it (`rig`, which the RS Companion sends), the way rs-tonehost plays
+the game's tones in Helix Native:
+- **the amp** of the rig's family that can be driven as hard as the tone asks: Marshall-style amps get UK
+  Crunch or British Lead, Fender-style American Clean, Yellow Tweed or Vintage Drive, Vox-style American
+  Clean, Vintage Drive or UK Crunch, a Rectifier US Metal, a Mark-style amp American Gain Stack, a Jazz
+  Chorus Jazz Sound;
+- **its Drive**, where that amp is as saturated as the tone's `drive` asks;
+- **Bass, Mid and Treble** as the game has them, and the **cab** nearest the rig's;
+- **a Precision Drive** in front when the rig has a boost, overdrive, distortion or fuzz pedal, by that
+  pedal's gain; without one, a Precision Drive your slot has on goes off;
+- **the amp's Volume**, set so the tone is as loud as your slot's tone was.
+
+The last two come from measurements of a BandBox Trio (`tone-bench/`, `BandBoxCalibration.swift`): what
+each amp puts out over its Drive and its input, and what the Volume knob, the cabs and the pedals add.
+Checked the same way on the speaker, eleven rigs on four slots came out within 1 dB of their slot's level
+for most and 2.8 dB at worst. The measurements use a test signal, not a guitar being played: how hard a
+real guitar hits the amps is an estimate (`BandBoxCalibration.guitar`), so every tone may be a little
+cleaner or dirtier than meant, all by the same amount. Played with Rocksmith once since
+(13 November 2026) it sounded right; it hasn't been compared with the game's own tones side by side. The gate, the compressor and a wah stay your slot's. Basses, acoustic tones, DIs, amps it
+doesn't know and slots on Acoustic Amp, Studio Bass or Bass Amp stay as they are. It costs up to a dozen
+more writes a tone, so a song's five tones can take a few seconds to fill; the first is ready first. The
+Log says what each tone got (`match: …`).
+
+A message can also name the BandBox's own pedals for a tone, all eight of them (`"set": {"Amp": {"model":
+"US Metal", "Drive": 60, "Volume": 45}, "Cab": {"model": "Mebo 4x12"}, "Gate": {"on": true}}`), with the
+JBL app's names for models and knobs. That is applied last, over the match, whether Match amps is on or
+not, and whoever sets the amp, cab, drive, compressor or gate this way also sets the tone's level.
 
 Stagehand turns the effects into the BandBox's pedals (tape delay → Echopress 900, analog →
 Analog Echo, chorus → Chorus, and so on, mixes kept at most 35) and fills a tone of its own for
@@ -195,7 +215,7 @@ the slot's tone, sets the pedals, saves it into the song tone and drops the edit
 in your slots stay as they are. That takes about half a second a tone, and the channel jumps
 between your slots meanwhile. The Program Changes the message names then play them (unless you
 bind those to something else; before they're ready, their slots), and the tones page shows the
-song with the playing tone lit. Every other setting comes from your slots, so the levels stay yours. Off, Stagehand
+song with the playing tone lit. With Match amps off and nothing set by name, every other setting comes from your slots, so the levels stay yours. Off, Stagehand
 ignores the messages, leaves those Program Changes to the bindings and makes no tones. Try it
 without another app:
 `swift midi-send.swift sysex Tests/song-tones.json pc 8 wait 8 pc 9 wait 8 pc 10`
@@ -354,6 +374,7 @@ write to `…0002`, notifications on `…0001`, messages framed as
 | File | Purpose |
 |---|---|
 | `ble-scan.swift`, `build-blescan.sh` | Scanner/listener/sender (`BLEScan.app`): finds the speaker, dumps GATT, logs notifications, sends timed writes |
+| `tone-bench/`, `tone-bench.swift`, `build-tone-bench.sh`, `build-match-cli.sh` | Measuring the speaker's amps, cabs and knobs for Match amps, and checking its matches on the speaker: see `tone-bench/README.md` |
 | `scratch-probe.swift`, `build-scratch-probe.sh` | `ScratchProbe.app`: what song tones need (reading and saving a tone that isn't playing, write speed, how many user tones fit), on its own "Probe" tones, which it deletes |
 | `guided-session.sh` | Runs the listener and speaks prompts aloud, so each button press lines up with its message |
 | `capture-speaker-controls.sh`, `capture-app-controls.sh` | Guided sessions behind the notes: the speaker's own knobs, and the JBL app (recorded with PacketLogger) |

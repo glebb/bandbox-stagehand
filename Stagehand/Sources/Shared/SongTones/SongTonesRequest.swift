@@ -20,15 +20,24 @@ import Foundation
 // "style": the bank the templates come from (the current bank if there's none by that name);
 // "styles": every style the app may send, made as copies of Main if missing. "key" names the
 // tone on screen; "song", "artist" and "tempo" (for a delay without a time) are optional.
-// "drive" (how distorted the tone should sound, 0-1) and "amp" ("gear": the Rocksmith amp) are
-// optional too, and only used with Match amps on. Fields that aren't listed here are ignored.
+// "drive" (how distorted the tone should sound, 0-1) and "rig" (every gear item of the tone by its
+// slot: {"Amp": {"gear": "Amp_CA100", "knobs": {"Gain": 80, "Bass": 50}}, "Cabinet": {"gear":
+// "Cab_CA412C_57_Cone"}, "PrePedal1": {"gear": "Pedal_GermaniumDrive", "knobs": {"Gain": 45}}}) are
+// optional too, and only used with Match amps on ("amp": {"gear": ...} does for a rig with only an
+// amp). Fields that aren't listed here are ignored.
 //
 // Each tone becomes a scratch tone: its template with only the FX, Delay and Reverb pedals
 // changed, so it keeps the template's level. BandBoxMapping below picks the pedals. With Match
-// amps on, a driven tone also gets the amp model nearest its gear, at that model's defaults. Version 1
-// names them itself (for an app that knows the BandBox): "bank", "banks", and per tone "base"
-// (the category) and "set": {"FX"|"Delay"|"Reverb": {"on": true, "model": "Analog Echo",
-// "Time": 400, "Mix": 30}} with the models and knobs as the JBL app names them.
+// amps on, a tone with a guitar amp also gets the amp, drive, tone knobs, cabinet and drive pedal
+// nearest its rig, at the template's level (GearMatch.swift).
+//
+// A tone can also name the BandBox's own pedals, for an app that knows them: "set": {"Amp":
+// {"model": "US Metal", "Drive": 60, "Volume": 45}, "Cab": {"model": "Mebo 4x12"}, "Delay": {"on":
+// true, "model": "Analog Echo", "Time": 400, "Mix": 30}}, any of Gate, Comp, Dist, Amp, Cab, FX,
+// Delay and Reverb, with the models and knobs as the JBL app names them. It is applied last, over
+// everything else, and whoever sets Gate, Comp, Dist, Amp or Cab also sets the tone's level.
+// Version 1 has only that: "bank", "banks", and per tone "base" (the category) and "set", where
+// only FX, Delay and Reverb can be set.
 
 /// A song tones message, checked against the pedals and models Stagehand knows.
 struct SongTonesRequest: Equatable {
@@ -37,20 +46,30 @@ struct SongTonesRequest: Equatable {
     static let maxTones = 5           // scratch tones (a Rocksmith arrangement has up to five tones)
     /// The tone slots by the names a message uses for them, in ToneSlot order.
     static let slots = ["Clean", "Crunch", "Heavy", "Lead"]
-    /// The only pedals a song may change: the others set the tone's level.
+    /// The only pedals a version 1 message may change: the others set the tone's level.
     static let pedals: [String: EffectSlot] = ["FX": .fx, "Delay": .delay, "Reverb": .reverb]
+    /// Every pedal by its name, for a version 2 tone's "set".
+    static let allPedals = Dictionary(uniqueKeysWithValues: EffectSlot.allCases.map { ($0.name, $0) })
+
+    /// One item of a tone's rig, as the song has it: the game's name for the gear, and its knobs.
+    struct RigItem: Equatable {
+        let gear: String
+        var knobs: [String: Double] = [:]
+    }
 
     struct Tone: Equatable {
         let key: String
         let program: Int                    // the Program Change that plays it
         let slot: Int                       // the template: index into ToneSlot.all
         let changes: [EffectSlot: Change]
-        var amp: UInt16? = nil              // the amp model nearest the tone's gear, for Match amps
+        var named: Set<EffectSlot> = []     // the pedals the message set by name ("set"): they win over a match
+        var drive: Double? = nil            // how distorted it should sound, 0-1
+        var rig: [String: RigItem] = [:]    // its gear by slot ("Amp", "Cabinet", "PrePedal1" …), for Match amps
     }
 
-    /// What a song does to one pedal: on or off, perhaps another model, knobs by name.
+    /// What a song does to one pedal: on or off (nil: as the template has it), perhaps another model, knobs by name.
     struct Change: Equatable {
-        var on: Bool
+        var on: Bool?
         var model: UInt16?                  // nil: the template's model
         var knobs: [String: Float] = [:]
     }
@@ -94,9 +113,21 @@ struct SongTonesRequest: Equatable {
                 guard let fields = value as? [String: Any], let change = change(slot, fields, key, &warnings) else { continue }
                 changes[slot] = change
             }
-            let amp = v2 ? BandBoxMapping.amp(gear: (t["amp"] as? [String: Any])?["gear"] as? String,
-                                              drive: (t["drive"] as? NSNumber)?.doubleValue) : nil
-            return Tone(key: key, program: program, slot: slot, changes: changes, amp: amp)
+            guard v2 else { return Tone(key: key, program: program, slot: slot, changes: changes) }
+            // The BandBox's own pedals, named by the sender: over what the effects gave, and (in the plan) over a match.
+            var named: Set<EffectSlot> = []
+            for (name, value) in t["set"] as? [String: Any] ?? [:] {
+                guard let slot = allPedals.first(where: { $0.key.caseInsensitiveCompare(name) == .orderedSame })?.value else {
+                    warnings.append("\(key): no pedal \(name)")
+                    continue
+                }
+                guard let fields = value as? [String: Any], let change = change(slot, fields, key, &warnings,
+                                                                                on: fields["on"] as? Bool) else { continue }
+                changes[slot] = change
+                named.insert(slot)
+            }
+            return Tone(key: key, program: program, slot: slot, changes: changes, named: named,
+                        drive: (t["drive"] as? NSNumber)?.doubleValue, rig: rig(t))
         }
         return SongTonesRequest(song: json["song"] as? String ?? "", artist: json["artist"] as? String ?? "",
                                 bank: bankName(json[v2 ? "style" : "bank"] as? String ?? ""),
@@ -118,9 +149,31 @@ struct SongTonesRequest: Equatable {
         String(s.trimmingCharacters(in: .whitespaces).prefix(maxBankName)).trimmingCharacters(in: .whitespaces)
     }
 
+    /// A tone's rig: "rig" by slot, or just the amp of "amp". Knobs that aren't numbers are left out.
+    private static func rig(_ tone: [String: Any]) -> [String: RigItem] {
+        var out: [String: RigItem] = [:]
+        for (slot, value) in tone["rig"] as? [String: Any] ?? [:] {
+            guard let item = value as? [String: Any], let gear = item["gear"] as? String else { continue }
+            let knobs = (item["knobs"] as? [String: Any] ?? [:]).compactMapValues { v -> Double? in
+                guard let n = v as? NSNumber, CFGetTypeID(n) != CFBooleanGetTypeID(), n.doubleValue.isFinite else { return nil }
+                return n.doubleValue
+            }
+            out[slot] = RigItem(gear: gear, knobs: knobs)
+        }
+        if out["Amp"] == nil, let amp = tone["amp"] as? [String: Any], let gear = amp["gear"] as? String {
+            var knobs: [String: Double] = [:]
+            for (name, knob) in [("gain", "Gain"), ("bass", "Bass"), ("mid", "Mid"), ("treble", "Treble"), ("presence", "Pres")] {
+                if let n = amp[name] as? NSNumber { knobs[knob] = n.doubleValue }
+            }
+            out["Amp"] = RigItem(gear: gear, knobs: knobs)
+        }
+        return out
+    }
+
+    /// `on`: what the pedal's switch becomes when the fields don't say; version 1 and the effects turn it on.
     private static func change(_ slot: EffectSlot, _ fields: [String: Any], _ key: String,
-                               _ warnings: inout [String]) -> Change? {
-        var change = Change(on: fields["on"] as? Bool ?? true)
+                               _ warnings: inout [String], on: Bool?? = .some(true)) -> Change? {
+        var change = Change(on: fields["on"] as? Bool ?? (on ?? nil))
         if let name = fields["model"] as? String {
             guard let model = slot.models.first(where: { $0.name.caseInsensitiveCompare(name) == .orderedSame }) else {
                 warnings.append("\(key): \(slot.name) has no model \"\(name)\"; left as it is")
@@ -142,10 +195,10 @@ struct SongTonesRequest: Equatable {
     var summary: String {
         "\(bank.isEmpty ? "no bank" : bank): " + tones.enumerated().map { i, t in
             let on = EffectSlot.allCases.compactMap { slot -> String? in
-                guard let c = t.changes[slot], c.on else { return nil }
+                guard let c = t.changes[slot], c.on != false else { return nil }
                 return c.model.flatMap { slot.model($0)?.name }.map { "\(slot.name) \($0)" } ?? slot.name
             }
-            let amp = t.amp.flatMap { EffectSlot.amp.model($0)?.name }.map { ", amp \($0)" } ?? ""
+            let amp = t.rig["Amp"].map { ", amp \($0.gear)" } ?? ""
             return "PC \(t.program) \(t.key) (\(Self.slots[t.slot])" + (on.isEmpty ? "" : ", " + on.joined(separator: ", ")) + amp + ")"
         }.joined(separator: ", ")
     }
@@ -187,37 +240,6 @@ enum BandBoxMapping {
             set["Reverb"] = reverb
         }
         return set
-    }
-
-    /// A Rocksmith amp's family. The JBL app's own list gives each of its models a voice and a
-    /// class of gain, so a family and how driven a tone is name a model, with no knob to guess.
-    private enum Family {
-        case british, american, highGain
-
-        init?(gear: String) {
-            func any(_ prefixes: String...) -> Bool { prefixes.contains(where: gear.hasPrefix) }
-            if any("Amp_CA", "Amp_HG100", "Amp_HG180") { self = .highGain }
-            else if any("Amp_Marshall", "Amp_GB", "Amp_HG500", "Amp_EN", "Amp_Orange", "Amp_BT") { self = .british }
-            else if any("Amp_TW", "Amp_AT", "Amp_CS", "Amp_Gibson", "Amp_Epiphone") { self = .american }
-            else { return nil }
-        }
-
-        func model(heavy: Bool) -> String {
-            switch self {
-            case .british: heavy ? "British Lead" : "UK Crunch"
-            case .american: heavy ? "Vintage Drive" : "Yellow Tweed"
-            case .highGain: heavy ? "US Metal" : "Vintage Drive"
-            }
-        }
-    }
-
-    /// The amp model for a driven tone, by the bands of the message's drive. nil leaves the
-    /// template's amp: a clean tone (the player's own sound), a bass or a DI, an unknown amp, or
-    /// no drive given. American Gain Stack isn't used, as its default Drive is 0.
-    static func amp(gear: String?, drive: Double?) -> UInt16? {
-        guard let gear, let drive, drive >= 1.0 / 3, let family = Family(gear: gear) else { return nil }
-        let name = family.model(heavy: drive >= 2.0 / 3)
-        return EffectSlot.amp.models.first { $0.name == name }?.id
     }
 
     /// Whether a template's amp can be switched: only between guitar amps. Going back from Acoustic
@@ -297,24 +319,22 @@ enum ScratchPlan {
 
     /// What a scratch tone should hold: every block of `template`, with the song tone's changes
     /// to FX, Delay and Reverb. Knobs are found by name on the block's (new) model and kept in
-    /// their range; `warnings` gets the ones that aren't there. With `matchAmp`, a tone with an
-    /// amp also gets that model, at its defaults: the JBL app's own balance, unmeasured here.
+    /// their range; `warnings` gets the ones that aren't there. With `matchAmp`, a tone with a
+    /// guitar amp in its rig also gets the amp, cabinet and drive pedal nearest the rig, at the
+    /// template's level (GearMatch); `notes` gets what was picked. The pedals a message sets by
+    /// name come last, over both.
     static func target(template: ToneDetails, tone: SongTonesRequest.Tone, matchAmp: Bool = false,
-                       warnings: inout [String]) -> [KnownBlock] {
-        template.blocks.map { block in
-            var known = KnownBlock(block)
-            if matchAmp, block.slot == EffectSlot.amp.rawValue, let amp = tone.amp, amp != block.model,
-               BandBoxMapping.canSwitchAmp(from: block.model) {
-                known.model = amp
-                known.params = [:]          // the new model's defaults
-                return known
-            }
+                       warnings: inout [String], notes: inout [String]) -> [KnownBlock] {
+        let match = matchAmp ? GearMatch.match(template: template, tone: tone) : nil
+        if let match { notes.append("\(tone.key): \(match.note)") }
+        return template.blocks.map { block in
+            var known = match?.blocks[block.slot] ?? KnownBlock(block)
             guard let slot = EffectSlot(rawValue: block.slot), let change = tone.changes[slot] else { return known }
-            if let model = change.model, model != block.model {
+            if let model = change.model, model != known.model {
                 known.model = model
                 known.params = [:]          // the new model's defaults, unknown until the speaker answers
             }
-            known.bypassed = !change.on
+            if let on = change.on { known.bypassed = !on }
             let specs = slot.model(known.model)?.params ?? []
             for (name, value) in change.knobs.sorted(by: { $0.key < $1.key }) {
                 guard let spec = specs.first(where: { $0.name.caseInsensitiveCompare(name) == .orderedSame }) else {
@@ -327,6 +347,12 @@ enum ScratchPlan {
         }
     }
 
+    static func target(template: ToneDetails, tone: SongTonesRequest.Tone, matchAmp: Bool = false,
+                       warnings: inout [String]) -> [KnownBlock] {
+        var notes: [String] = []
+        return target(template: template, tone: tone, matchAmp: matchAmp, warnings: &warnings, notes: &notes)
+    }
+
     /// The writes that take a scratch tone from `current` (nil: unknown) to `target`, slot by
     /// slot: a model change first, then the knobs that differ, then the pedal's on/off.
     static func edits(from current: [KnownBlock]?, to target: [KnownBlock]) -> [Edit] {
@@ -337,8 +363,8 @@ enum ScratchPlan {
             for (id, value) in t.params.sorted(by: { $0.key < $1.key }) where newModel || now?.params[id] != value {
                 out.append(.param(slot: t.slot, model: t.model, param: id, value: value))
             }
-            // An amp keeps its on or off through a change of model, so that stays one write
-            let ampOnly = current != nil && t.slot == EffectSlot.amp.rawValue
+            // An amp or a cab keeps its on or off through a change of model, so that stays one write
+            let ampOnly = current != nil && (t.slot == EffectSlot.amp.rawValue || t.slot == EffectSlot.cab.rawValue)
             if (newModel && !ampOnly) || now?.bypassed != t.bypassed {
                 let params = t.params.sorted { $0.key < $1.key }.map { EffectParam(id: $0.key, value: $0.value) }
                 out.append(.bypass(slot: t.slot, model: t.model, bypassed: t.bypassed, params: params))
